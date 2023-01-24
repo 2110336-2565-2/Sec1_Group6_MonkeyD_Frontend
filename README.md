@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-
 Frontend for Monkey D Car Rent
 =======
 # Getting Started with Create React App
