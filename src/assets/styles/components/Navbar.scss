@@ -1,0 +1,50 @@
+.navbar-container {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: var(--navbar-height);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: white;
+  opacity: 0.6;
+  .logo {
+    height: 54px;
+    margin-left: 5%;
+  }
+  .content-container {
+    display: flex;
+    align-items: center;
+    margin-right: 3%;
+    nav {
+      display: flex;
+      align-items: center;
+      .content {
+        color: var(--primary-color);
+        font-size: var(--button3-fs);
+        font-weight: 400;
+        text-decoration: none;
+        background: none;
+        border: 0px;
+        padding: 12px 20px;
+        margin: 0 4px;
+        &:hover {
+          border: 1px solid black !important;
+          border-radius: 50px;
+          cursor: pointer;
+        }
+      }
+      .profile {
+        border: 1px solid black !important;
+        border-radius: 4px;
+        &:hover {
+          border-radius: 4px !important;
+        }
+      }
+    }
+    .fa-bell {
+      margin-left: 64px;
+      font-size: var(--icon-fs);
+    }
+  }
+}
