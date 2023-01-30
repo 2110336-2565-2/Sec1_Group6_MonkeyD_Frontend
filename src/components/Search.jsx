@@ -3,7 +3,7 @@ import React from "react";
 const Search = () => {
   return (
     <div className="search-container">
-      <div className="title">Find Cars</div>
+      <h1 className="title">Find Cars</h1>
       <div className="search-box">
         <input type="text" placeholder="Fill location" name="search" />
         <i className="fa-solid fa-magnifying-glass"></i>

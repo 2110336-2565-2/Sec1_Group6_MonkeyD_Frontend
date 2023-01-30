@@ -1,11 +1,17 @@
 @import "./utilities.scss";
 @import "./components/Navbar.scss";
 @import "./components/Search.scss";
+@import "./components/SlideFilter.scss";
+@import "./components/SlideBanner.scss";
+@import "./components/SearchResult.scss";
+@import "./components/CarCard.scss";
+@import "./components/Footer.scss";
 @import "./pages/HomePage.scss";
 
 * {
   font-size: 48px;
   font-family: $primary-font;
+  font-weight: 400;
 }
 
 body {
@@ -14,4 +20,22 @@ body {
 }
 html {
   scroll-behavior: smooth;
+}
+
+h1 {
+  font-size: var(--header1-fs);
+}
+h2 {
+  font-size: var(--header2-fs);
+}
+h3 {
+  font-size: var(--header3-fs);
+}
+p {
+  font-size: var(--paragraph1-fs);
+  margin: 0;
+  padding: 0;
+}
+i {
+  font-size: var(--icon-fs);
 }
