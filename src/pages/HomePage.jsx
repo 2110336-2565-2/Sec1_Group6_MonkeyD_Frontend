@@ -12,11 +12,29 @@ const HomePage = () => {
   const endDateInput = useRef(null);
   const [brandInputList, setBrandInputList] = useState([]);
 
-  const handleSearch = () => {
-    console.log(locationInput.current.value);
-    console.log(startDateInput.current.value);
-    console.log(endDateInput.current.value);
-    console.log(brandInputList);
+  const formatDate = (inputDate) => {
+    if (inputDate) {
+      let date = new Date(inputDate);
+      let formattedDate = date.toISOString();
+      return formattedDate;
+    }
+    return "";
+  };
+
+  const handleSearch = async () => {
+    const encodedBrandList = encodeURIComponent(JSON.stringify(brandInputList));
+    try {
+      const res = await axios.get(
+        `http://localhost:8080/car?startdate=${formatDate(
+          startDateInput.current.value
+        )}&enddate=${formatDate(endDateInput.current.value)}&province=${
+          locationInput.current.value
+        }&brandlist=${encodedBrandList}`
+      ); // change path to backend service
+      setCarList(res.data);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   useEffect(() => {

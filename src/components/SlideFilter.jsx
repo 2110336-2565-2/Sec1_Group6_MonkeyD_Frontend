@@ -50,8 +50,7 @@ const SlideFilter = ({brandInputList, setBrandInputList, handleSearch}) => {
     }
   };
 
-  const toggleList = (item) => {
-    var array = brandInputList;
+  const toggleList = (array, item) => {
     const index = array.indexOf(item);
     if (index === -1) {
       array.push(item);
@@ -61,7 +60,7 @@ const SlideFilter = ({brandInputList, setBrandInputList, handleSearch}) => {
     setBrandInputList(array);
     handleSearch();
   };
-
+  console.log(brandInputList);
   return (
     <div className="slide-container">
       <h2>Propertice by Brand</h2>
@@ -76,8 +75,22 @@ const SlideFilter = ({brandInputList, setBrandInputList, handleSearch}) => {
         <div className="brand-slide">
           {cars.slice(currentIndex, currentIndex + 6).map((car) => {
             return (
-              <div className="image-container" onClick={() => toggleList(car)}>
-                <div className="brand">
+              <div
+                className="image-container"
+                onClick={() => toggleList(brandInputList, car.brand)}
+              >
+                <div
+                  className="brand"
+                  style={{
+                    height: brandInputList.includes(car.brand) ? "100%" : "",
+                    alignItems: brandInputList.includes(car.brand)
+                      ? "center"
+                      : "",
+                    justifyContent: brandInputList.includes(car.brand)
+                      ? "center"
+                      : "",
+                  }}
+                >
                   <h3>{car.brand}</h3>
                 </div>
                 <img src={car.image} alt="car" />
