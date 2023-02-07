@@ -1,0 +1,52 @@
+.seo-footer {
+  padding: 36px 200px;
+  display: grid;
+  gap: 8px;
+  justify-items: center;
+  grid-template-columns: repeat(4, 1fr);
+  .contact {
+    p {
+      font-size: var(--paragraph2-fs);
+      margin-bottom: 8px;
+      color: var(--p-color);
+    }
+    .address {
+      display: block; /* or inline-block */
+      text-overflow: ellipsis;
+      word-wrap: break-word;
+      overflow: hidden;
+      max-height: 3.6em;
+      line-height: 1.8em;
+    }
+    .email {
+      white-space: nowrap;
+    }
+    .logo {
+      height: 54px;
+    }
+    .contact-logo {
+      margin-top: 18px;
+      display: flex;
+      gap: 12px;
+      img {
+        height: 42px;
+      }
+    }
+  }
+  .footer-list {
+    h3 {
+      margin-bottom: 20px;
+    }
+    ul {
+      li {
+        list-style: none;
+        font-size: var(--paragraph2-fs);
+        margin-bottom: 8px;
+        color: var(--p-color);
+      }
+      padding-inline-start: 0px;
+      margin-block-start: 0px;
+      margin-block-end: 0px;
+    }
+  }
+}

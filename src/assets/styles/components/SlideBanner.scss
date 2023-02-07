@@ -1,0 +1,28 @@
+.sildebanner-container {
+  position: absolute;
+  top: 0;
+  z-index: -1;
+  max-width: 100%;
+  .banner {
+    box-shadow: 0px 12px 60px 45px #d9deeb;
+    max-width: 100%;
+  }
+  button {
+    border: none;
+    background-color: transparent;
+    color: var(--contrast-color);
+    font-size: var(--button1-fs);
+    cursor: pointer;
+    &.left {
+      position: absolute;
+      top: 20vw;
+      z-index: 0;
+    }
+    &.right {
+      position: absolute;
+      top: 20vw;
+      right: 0;
+      z-index: 0;
+    }
+  }
+}

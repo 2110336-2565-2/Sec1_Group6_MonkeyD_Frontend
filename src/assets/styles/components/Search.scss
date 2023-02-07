@@ -1,12 +1,10 @@
 .search-container {
-  position: absolute;
   display: flex;
   flex-direction: column;
   align-items: center;
-  top: 24vw;
+  margin-top: 24vw;
   width: 100%;
   .title {
-    font-size: var(--header1-fs);
     margin-bottom: 20px;
     color: var(--contrast-color);
   }
@@ -39,7 +37,6 @@
       }
     }
     i {
-      font-size: var(--icon-fs);
       margin: 0 12px;
     }
   }
