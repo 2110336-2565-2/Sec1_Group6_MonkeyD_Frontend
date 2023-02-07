@@ -7,9 +7,11 @@
 @import "./components/CarCard.scss";
 @import "./components/Footer.scss";
 @import "./pages/HomePage.scss";
+@import "./components/SigninBox.scss";
+@import "./pages/SigninPage.scss";
 
 * {
-  font-size: 48px;
+  font-size: 16px;
   font-family: $primary-font;
   font-weight: 400;
 }
@@ -38,4 +40,10 @@ p {
 }
 i {
   font-size: var(--icon-fs);
+}
+label {
+  font-size: var(--label-fs);
+}
+input {
+  padding: 11px 15px;
 }
