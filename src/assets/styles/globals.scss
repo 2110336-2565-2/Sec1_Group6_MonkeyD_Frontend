@@ -1,4 +1,5 @@
 @import "./utilities.scss";
+@import "./pages/HomePage.scss";
 @import "./components/Navbar.scss";
 @import "./components/Search.scss";
 @import "./components/SlideFilter.scss";
@@ -6,7 +7,8 @@
 @import "./components/SearchResult.scss";
 @import "./components/CarCard.scss";
 @import "./components/Footer.scss";
-@import "./pages/HomePage.scss";
+@import "./components/ContactFooter.scss";
+@import "./components/SeoFooter.scss";
 
 * {
   font-size: 48px;
