@@ -22,15 +22,15 @@ const CarCard = ({
         </h3>
         <h3 className="price">฿ {rental_price} / day</h3>
         <div className="info">
-          <i class="fa-solid fa-user-astronaut"></i>
+          <i className="fa-solid fa-user-astronaut"></i>
           <p>{passenger}</p>
         </div>
         <div className="info">
-          <i class="fa-solid fa-car"></i>
+          <i className="fa-solid fa-car"></i>
           <p>{gear_type}</p>
         </div>
         <div className="info">
-          <i class="fa-solid fa-star"></i>
+          <i className="fa-solid fa-star"></i>
           <p>{rating}</p>
         </div>
         <div className="avatar">
