@@ -1,4 +1,5 @@
 @import "./utilities.scss";
+@import "./pages/HomePage.scss";
 @import "./components/Navbar.scss";
 @import "./components/Search.scss";
 @import "./components/SlideFilter.scss";
@@ -9,6 +10,8 @@
 @import "./pages/HomePage.scss";
 @import "./components/SigninBox.scss";
 @import "./pages/SigninPage.scss";
+@import "./components/ContactFooter.scss";
+@import "./components/SeoFooter.scss";
 
 * {
   font-size: 16px;

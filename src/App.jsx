@@ -4,6 +4,7 @@ import HomePage from "./pages/HomePage";
 import AboutUsPage from "./pages/AboutUsPage";
 import NoPage from "./pages/NoPage";
 import SigninPage from "./pages/SigninPage";
+import Footer from "./components/Footer";
 
 const App = () => {
   return (
@@ -15,6 +16,7 @@ const App = () => {
           <Route path="/about" element={<AboutUsPage />} />
           <Route path="*" element={<NoPage />} />
         </Routes>
+        <Footer />
         <Navbar />
       </BrowserRouter>
     </>
