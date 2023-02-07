@@ -1,29 +1,41 @@
 import React from "react";
 
-const CarCard = () => {
+const CarCard = ({
+  user_image,
+  car_image,
+  owner,
+  brand,
+  model,
+  rental_price,
+  passenger,
+  gear_type,
+  rating,
+}) => {
   return (
     <div className="card-container">
       <div className="header">
-        <img src={require("../assets/images/car2.png")} alt="car" />
+        <img src={car_image} alt="car" />
       </div>
       <div className="footer">
-        <h3>BMW series 3</h3>
-        <h3 className="price">฿ 2,500 / day</h3>
+        <h3>
+          {brand} {model}
+        </h3>
+        <h3 className="price">฿ {rental_price} / day</h3>
         <div className="info">
           <i class="fa-solid fa-user-astronaut"></i>
-          <p>4</p>
+          <p>{passenger}</p>
         </div>
         <div className="info">
           <i class="fa-solid fa-car"></i>
-          <p>Auto/Petro</p>
+          <p>{gear_type}</p>
         </div>
         <div className="info">
           <i class="fa-solid fa-star"></i>
-          <p>4.5</p>
+          <p>{rating}</p>
         </div>
         <div className="avatar">
-          <img src={require("../assets/images/avatar.png")} alt="car" />
-          <p>Jenny Wilson</p>
+          <img src={user_image} alt="car" />
+          <p>{owner}</p>
         </div>
       </div>
     </div>
