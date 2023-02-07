@@ -1,4 +1,6 @@
 .card-container {
+  border-radius: 4px;
+
   &:hover {
     cursor: pointer;
     transition: all 0.2s ease-in-out;
@@ -12,6 +14,7 @@
     display: flex;
     img {
       width: 100%;
+      border-radius: 4px;
     }
   }
   .footer {
