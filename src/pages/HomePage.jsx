@@ -22,7 +22,8 @@ const HomePage = () => {
   };
 
   const handleSearch = async () => {
-    const encodedBrandList = encodeURIComponent(JSON.stringify(brandInputList));
+    var encodedBrandList = encodeURIComponent(JSON.stringify(brandInputList));
+
     try {
       const res = await axios.get(
         `http://localhost:8080/car?startdate=${formatDate(
@@ -31,6 +32,13 @@ const HomePage = () => {
           locationInput.current.value
         }&brandlist=${encodedBrandList}`
       ); // change path to backend service
+      console.log(
+        `http://localhost:8080/car?startdate=${formatDate(
+          startDateInput.current.value
+        )}&enddate=${formatDate(endDateInput.current.value)}&province=${
+          locationInput.current.value
+        }&brandlist=${encodedBrandList}`
+      );
       setCarList(res.data);
     } catch (error) {
       console.error(error);

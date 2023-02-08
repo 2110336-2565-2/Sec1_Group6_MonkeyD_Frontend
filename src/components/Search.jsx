@@ -6,7 +6,6 @@ const Search = ({
   endDateInput,
   handleSearch,
 }) => {
-  const [selectedValue, setSelectedValue] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
   const ref = useRef(null);
 
@@ -91,7 +90,7 @@ const Search = ({
   ];
 
   const handleOptionClick = (value) => {
-    setSelectedValue(value);
+    locationInput.current.value = value;
     setShowDropdown(false);
   };
 
@@ -120,7 +119,7 @@ const Search = ({
           <input
             ref={locationInput}
             type="text"
-            placeholder={selectedValue || "Fill location"}
+            placeholder={"Fill location"}
             name="search"
             onClick={handleClick}
           />
