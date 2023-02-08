@@ -2,12 +2,17 @@ import React from "react";
 import Footer from "../components/Footer";
 import Signin from "../components/Signin";
 
-const SigninPage = () => {
-    return (
-        <div className="signin-page-container">
-            <Signin />
-        </div>
-    );
+const SigninPage = ({signin, signup}) => {
+  console.log(`${signin} ${signup}`);
+  return signin ? (
+    <div className="signin-page-container">
+      <Signin signin/>
+    </div>
+  ) : (
+    <div className="signin-page-container">
+      <Signin signup/>
+    </div>
+  );
 };
 
 export default SigninPage;

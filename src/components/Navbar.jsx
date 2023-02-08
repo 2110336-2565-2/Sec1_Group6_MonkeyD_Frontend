@@ -23,7 +23,9 @@ const Navbar = () => {
           <Link to="/signin" className="content">
             Sign in
           </Link>
-          <button className="profile content">Create Account</button>
+          <Link to="/signup" className="profile content">
+            Create Account
+          </Link>
         </nav>
         <i className="fa-regular fa-bell"></i>
       </div>
