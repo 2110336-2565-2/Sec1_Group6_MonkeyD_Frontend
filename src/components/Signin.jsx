@@ -1,4 +1,5 @@
 import React, {useState} from "react";
+import axios from "axios";
 
 const Signin = ({signin, signup}) => {
   const resetForm = {
@@ -10,6 +11,8 @@ const Signin = ({signin, signup}) => {
   const [form, setForm] = useState(resetForm);
 
   const [error, setError] = useState(resetForm);
+
+  const [resError, setResError] = useState("");
 
   const handleChange = (event) => {
     const {name, value} = event.target;
@@ -62,23 +65,52 @@ const Signin = ({signin, signup}) => {
     });
   };
 
-  const handleSignUp = (event) => {
+  const handleSignUp = async (event) => {
     event.preventDefault();
-
-    const {email, password, confirmPassword} = form;
-    if (JSON.stringify(error) === JSON.stringify(resetForm)) {
-      console.log("success");
-      setForm(resetForm);
+    if (JSON.stringify(error) !== JSON.stringify(resetForm)) {
+      return;
     }
+    const {email, password} = form;
+    const data = {user: {username: email.split("@")[0], email, password}};
+    console.log(data);
+
+    try {
+      const res = await axios.post(`http://localhost:8080/user`, data);
+      console.log("OK");
+      console.log(res);
+    } catch (error) {
+      console.error(error.response.data.error);
+      handleShowResError(error.response.data.error);
+    }
+
+    // setForm(resetForm);
   };
 
-  const handleSignIn = (event) => {
+  const handleSignIn = async (event) => {
     event.preventDefault();
-    const {email, password} = form;
-    if (JSON.stringify(error) === JSON.stringify(resetForm)) {
-      console.log("success");
-      setForm(resetForm);
+    if (JSON.stringify(error) !== JSON.stringify(resetForm)) {
+      return;
     }
+    const {email, password} = form;
+    const data = {user: {email, password}};
+    console.log(data);
+
+    try {
+      const res = await axios.post(`http://localhost:8080/user/login`, data);
+      console.log("OK");
+      console.log(res);
+    } catch (error) {
+      console.error(error.response.data.error);
+    }
+
+    // setForm(resetForm);
+  };
+
+  const handleShowResError = (text) => {
+    setResError(text);
+    setTimeout(() => {
+      setResError("");
+    }, 3000);
   };
 
   return (
@@ -126,6 +158,7 @@ const Signin = ({signin, signup}) => {
             </>
           )}
           <button type="submit">{signup ? "Get Started" : "Sign in"}</button>
+          {resError && <span className="error">{resError}</span>}
         </form>
         {/* <div className="social-links">
             <p>Or register using:</p>

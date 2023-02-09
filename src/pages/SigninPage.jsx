@@ -3,7 +3,6 @@ import Footer from "../components/Footer";
 import Signin from "../components/Signin";
 
 const SigninPage = ({signin, signup}) => {
-  console.log(`${signin} ${signup}`);
   return signin ? (
     <div className="signin-page-container">
       <Signin signin/>
