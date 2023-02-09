@@ -3,6 +3,7 @@ import Navbar from "./components/Navbar";
 import HomePage from "./pages/HomePage";
 import AboutUsPage from "./pages/AboutUsPage";
 import NoPage from "./pages/NoPage";
+import SigninPage from "./pages/SigninPage";
 import Footer from "./components/Footer";
 
 const App = () => {
@@ -11,6 +12,8 @@ const App = () => {
       <BrowserRouter>
         <Routes>
           <Route path="/" exact element={<HomePage />} />
+          <Route path="/signin" element={<SigninPage signin/>} />
+          <Route path="/signup" element={<SigninPage signup/>} />
           <Route path="/about" element={<AboutUsPage />} />
           <Route path="*" element={<NoPage />} />
         </Routes>
