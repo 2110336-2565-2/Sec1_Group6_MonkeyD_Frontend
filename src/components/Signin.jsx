@@ -72,14 +72,12 @@ const Signin = ({signin, signup}) => {
     }
     const {email, password} = form;
     const data = {user: {username: email.split("@")[0], email, password}};
-    console.log(data);
 
     try {
       const res = await axios.post(`http://localhost:8080/user`, data);
-      console.log("OK");
       console.log(res);
     } catch (error) {
-      console.error(error.response.data.error);
+      console.error(error);
       handleShowResError(error.response.data.error);
     }
 
@@ -97,10 +95,10 @@ const Signin = ({signin, signup}) => {
 
     try {
       const res = await axios.post(`http://localhost:8080/user/login`, data);
-      console.log("OK");
       console.log(res);
     } catch (error) {
-      console.error(error.response.data.error);
+      console.error(error);
+      handleShowResError(error.response.data.error);
     }
 
     // setForm(resetForm);
