@@ -1,3 +1,4 @@
+import React from "react";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import Navbar from "./components/Navbar";
 import HomePage from "./pages/HomePage";
@@ -12,8 +13,8 @@ const App = () => {
       <BrowserRouter>
         <Routes>
           <Route path="/" exact element={<HomePage />} />
-          <Route path="/signin" element={<SigninPage signin/>} />
-          <Route path="/signup" element={<SigninPage signup/>} />
+          <Route path="/signin" element={<SigninPage signin />} />
+          <Route path="/signup" element={<SigninPage signup />} />
           <Route path="/about" element={<AboutUsPage />} />
           <Route path="*" element={<NoPage />} />
         </Routes>

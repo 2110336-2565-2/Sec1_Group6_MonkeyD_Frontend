@@ -60,7 +60,7 @@ const SlideFilter = ({brandInputList, setBrandInputList, handleSearch}) => {
     setBrandInputList(array);
     handleSearch();
   };
-  console.log(brandInputList);
+
   return (
     <div className="slide-container">
       <h2>Propertice by Brand</h2>
@@ -78,6 +78,7 @@ const SlideFilter = ({brandInputList, setBrandInputList, handleSearch}) => {
               <div
                 className="image-container"
                 onClick={() => toggleList(brandInputList, car.brand)}
+                key={car.image} // have to change key later
               >
                 <div
                   className="brand"

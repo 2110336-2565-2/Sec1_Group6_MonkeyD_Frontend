@@ -28,6 +28,7 @@
         border: 0px;
         padding: 12px 20px;
         margin: 0 4px;
+        border: 1px solid transparent;
         &:hover {
           border: 1px solid black !important;
           border-radius: 50px;
@@ -35,6 +36,17 @@
         }
       }
       .profile {
+        margin-left: 32px;
+        height: 36px;
+        &:hover {
+          cursor: pointer;
+        }
+        img {
+          height: 100%;
+          object-fit: cover;
+        }
+      }
+      .signup {
         border: 1px solid black !important;
         border-radius: 4px;
         &:hover {
