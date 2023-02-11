@@ -1,6 +1,6 @@
 import React from "react";
 
-const CarInforTable = () => {
+const CarInforTable = ({ infor }) => {
   return (
     <div className="car-infor">
       <table>
@@ -13,31 +13,54 @@ const CarInforTable = () => {
           </tr>
           <tr>
             <td>Year</td>
-            <td>2012</td>
+            <td>
+              <i className="fa-solid fa-calendar-days" />
+              {infor.age}
+            </td>
           </tr>
           <tr>
             <td>Gear type</td>
-            <td>Auto</td>
+            <td>
+              <i className="fa-solid fa-car" />
+              {infor.gearType}
+            </td>
           </tr>
           <tr>
             <td>Energy type</td>
-            <td>Petrol</td>
+            <td>
+              <i className="fa-sharp fa-solid fa-gas-pump" />
+              {infor.energyTypes.map((type) => {
+                return `${type} `;
+              })}
+            </td>
           </tr>
           <tr>
             <td>Location</td>
-            <td>Bangna</td>
+            <td>
+              <i className="fa-solid fa-location-dot" />
+              {infor.province}
+            </td>
           </tr>
           <tr>
             <td>Price</td>
-            <td>฿2500 / days</td>
+            <td>
+              <i className="fa-solid fa-comment-dollar" />฿{infor.rental_price}{" "}
+              / days
+            </td>
           </tr>
           <tr>
             <td>Car Rating</td>
-            <td>4.5</td>
+            <td>
+              <i className="fa-solid fa-star" />
+              {infor.rating}
+            </td>
           </tr>
           <tr>
             <td>Passenger</td>
-            <td>4</td>
+            <td>
+              <i className="fa-solid fa-user" />
+              {infor.passenger}
+            </td>
           </tr>
         </tbody>
       </table>
