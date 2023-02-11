@@ -1,0 +1,84 @@
+.profile-detail {
+  .lessor-name {
+    white-space: nowrap;
+    font-size: var(--header2-fs);
+    font-weight: 500;
+    text-decoration: underline;
+    text-underline-offset: 8px;
+    color: var(--secondary-color);
+  }
+  .user-role {
+    margin-top: 8px;
+    font-weight: 500;
+    font-size: 24px;
+    color: #6a6f73;
+  }
+  .lessor-status {
+    display: flex;
+    align-items: center;
+    img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      margin: 20px;
+      object-fit: scale-down;
+    }
+    .status {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      li {
+        display: list-item;
+        height: 35px;
+        div {
+          display: flex;
+          align-items: center;
+          text-align: left;
+          height: auto;
+          letter-spacing: normal;
+          white-space: normal;
+          color: var(--p-color);
+          i {
+            width: 23px;
+            height: 23px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            font-size: var(--icon-fs);
+          }
+          p {
+            font-size: var(--paragraph1-fs);
+          }
+        }
+      }
+    }
+  }
+  .more-infor {
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+    button {
+      white-space: nowrap;
+      border: transparent;
+      border-radius: 5px;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+      padding: 12px;
+      font-weight: 500;
+      font-size: var(--header3-fs);
+      color: var(--contrast-color);
+      cursor: pointer;
+    }
+    .view-review-btn {
+      margin-right: 48px;
+      background-color: var(--secondary-color);
+    }
+    .chat-btn {
+      background-color: #4ccd59;
+      i {
+        font-size: var(--header3-fs);
+        margin-right: 12px;
+      }
+    }
+  }
+}
