@@ -1,16 +1,18 @@
 import React from "react";
 
-const LessorProfile = () => {
+const LessorProfile = ({ lessor }) => {
+  // const averageRating =
+  //   lessor.review.reduce(
+  //     (accumulator, currentValue) => accumulator + currentValue,
+  //     0
+  //   ) / lessor.review.length;
+
   return (
     <div className="profile-detail">
-      <div className="lessor-name">Nuttawat Likhitsomboon</div>
+      <div className="lessor-name">{lessor.username}</div>
       <div className="user-role">Lessor</div>
       <div className="lessor-status">
-        <img
-          src={require("../assets/images/cars/lessor-profile.png")}
-          alt="lessorProfile"
-          className="profile-image"
-        />
+        <img src={lessor.image} alt="lessorProfile" className="profile-image" />
         <ul className="status">
           <li>
             <div>
@@ -21,19 +23,19 @@ const LessorProfile = () => {
           <li>
             <div>
               <i className="fa-sharp fa-solid fa-award" />
-              <p>15 Reviews</p>
+              <p>{lessor.review.length} Reviews</p>
             </div>
           </li>
           <li>
             <div>
               <i className="fa-solid fa-users" />
-              <p>20 Renter</p>
+              <p>{lessor.rentedCount} Renter</p>
             </div>
           </li>
           <li>
             <div>
               <i className="fa-solid fa-car-side" />
-              <p>4 Cars</p>
+              <p>{lessor.ownercar.length} Cars</p>
             </div>
           </li>
         </ul>
