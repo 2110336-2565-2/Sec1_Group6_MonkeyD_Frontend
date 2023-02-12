@@ -26,7 +26,6 @@ const Navbar = () => {
     const fetchNavbar = async () => {
       const result = await checkLogin();
       if (result.isLogin) {
-        console.log(result.isLogin);
         try {
           const res = await axios.get(`http://localhost:8080/user/navbar`, {
             headers: {
