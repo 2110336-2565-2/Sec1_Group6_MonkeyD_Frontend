@@ -3,7 +3,7 @@ import axios from "axios";
 export const checkLogin = async () => {
   if (sessionStorage.getItem("user_id")) {
     try {
-      const res = await axios.get(`http://localhost:8080/user/checkLogin`, {
+      const res = await axios.get(`http://localhost:8080/user/check-login`, {
         withCredentials: true,
       });
       return res.data;

@@ -155,6 +155,18 @@ const Signin = ({signin, signup}) => {
               )}
             </>
           )}
+          <div className="option-login">
+            <label>
+              <input
+                type="checkbox"
+                // checked={isChecked}
+                // onChange={handleCheckboxChange}
+              />
+              <p>Remember me</p>
+            </label>
+            <a href="/forgotPassword">Forgot password?</a>
+          </div>
+
           <button type="submit">{signup ? "Get Started" : "Sign in"}</button>
           {resError && <span className="error">{resError}</span>}
         </form>
