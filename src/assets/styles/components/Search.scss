@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 24vw;
+  margin-top: calc(38.6vw - 220px);
   width: 100%;
   .title {
     margin-bottom: 20px;
@@ -17,7 +17,7 @@
     .search-box {
       display: flex;
       align-items: center;
-      background-color: rgba(255, 255, 255, 0.85);
+      background-color: white;
       border-radius: 8px;
       input {
         border: none;
@@ -68,20 +68,23 @@
     }
   }
   .filter-box {
-    background-color: rgba(255, 255, 255, 0.85);
+    // background-color: rgba(255, 255, 255, 0.85);
+    background-color: white;
     border-radius: 8px;
     padding: 28px 56px;
     margin-top: 20px;
     display: flex;
+    align-items: center;
     gap: 48px;
     .time-filter {
       display: flex;
-      gap: 8px;
+      gap: 12px;
       flex-direction: column;
       label {
         font-size: var(--paragraph2-fs);
       }
       input {
+        padding: 0;
         font-size: var(--paragraph2-fs);
         color: var(--placeholder-color);
         background-color: transparent;
@@ -98,15 +101,18 @@
       }
     }
     button {
-      border: none;
+      border: 1px solid var(--primary-color);
+      height: 48px;
       border-radius: 8px;
-      padding: 8px 16px;
-      background-color: var(--secondary-color);
-      color: var(--contrast-color);
+      padding: 8px 16px !important;
+      color: var(--primary-color);
+      background-color: transparent;
       font-size: var(--button2-fs);
       &:hover {
         cursor: pointer;
-        background-color: #31488b;
+        background-color: var(--secondary-color);
+        border: 1px solid transparent;
+        color: var(--contrast-color);
       }
     }
   }
