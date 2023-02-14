@@ -6,8 +6,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: white;
-  opacity: 0.6;
+  background-color: rgba($color: #ffffff, $alpha: 0.6);
+  // opacity: 0.6;
   .logo {
     height: 54px;
     margin-left: 5%;
@@ -19,6 +19,7 @@
     nav {
       display: flex;
       align-items: center;
+      gap: 2px;
       .content {
         color: var(--primary-color);
         font-size: var(--button3-fs);
@@ -29,16 +30,31 @@
         padding: 12px 20px;
         margin: 0 4px;
         &:hover {
-          border: 1px solid black !important;
           border-radius: 50px;
           cursor: pointer;
+          color: var(--secondary-color);
+          font-weight: 600;
         }
       }
       .profile {
+        margin-left: 32px;
+        height: 36px;
+        &:hover {
+          cursor: pointer;
+        }
+        img {
+          height: 100%;
+          object-fit: cover;
+        }
+      }
+      .signup {
         border: 1px solid black !important;
         border-radius: 4px;
         &:hover {
           border-radius: 4px !important;
+          color: var(--contrast-color);
+          border: 1px solid var(--secondary-color) !important;
+          background-color: var(--secondary-color);
         }
       }
     }

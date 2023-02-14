@@ -9,9 +9,7 @@ const Signin = ({signin, signup}) => {
   };
 
   const [form, setForm] = useState(resetForm);
-
   const [error, setError] = useState(resetForm);
-
   const [resError, setResError] = useState("");
 
   const handleChange = (event) => {
@@ -91,11 +89,13 @@ const Signin = ({signin, signup}) => {
     }
     const {email, password} = form;
     const data = {user: {email, password}};
-    console.log(data);
 
     try {
-      const res = await axios.post(`http://localhost:8080/user/login`, data);
-      console.log(res);
+      const res = await axios.post(`http://localhost:8080/user/login`, data, {
+        withCredentials: true,
+      });
+      sessionStorage.setItem("user_id", res.headers.user_id);
+      window.location.assign("/");
     } catch (error) {
       console.error(error);
       handleShowResError(error.response.data.error);
@@ -155,6 +155,18 @@ const Signin = ({signin, signup}) => {
               )}
             </>
           )}
+          <div className="option-login">
+            <label>
+              <input
+                type="checkbox"
+                // checked={isChecked}
+                // onChange={handleCheckboxChange}
+              />
+              <p>Remember me</p>
+            </label>
+            <a href="/forgotPassword">Forgot password?</a>
+          </div>
+
           <button type="submit">{signup ? "Get Started" : "Sign in"}</button>
           {resError && <span className="error">{resError}</span>}
         </form>
