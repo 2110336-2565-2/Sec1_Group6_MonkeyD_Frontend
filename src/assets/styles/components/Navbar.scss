@@ -37,6 +37,7 @@
         }
       }
       .profile {
+        position: relative;
         margin-left: 32px;
         height: 36px;
         &:hover {
@@ -45,6 +46,44 @@
         img {
           height: 100%;
           object-fit: cover;
+          // &:hover {
+          //   filter: opacity(0.5);
+          // }
+        }
+        .dropdown {
+          position: absolute;
+          right: -15px;
+          margin-top: 16px;
+          width: 200px;
+          // transition: height 500ms ease;
+          border-radius: 8px;
+          background-color: var(--contrast-color);
+          ::after{
+              content: " ";
+              position: absolute;
+              border-width: 0 10px 8px;
+              top: -8px;
+              border-color: var(--contrast-color) transparent;
+              border-style: solid;
+              right: 24px;
+          }
+          .menu {
+            width: 100%;
+            margin: 0;
+            padding: 12px;
+            box-sizing: border-box;
+            .menu-item {
+              height: 1.5rem;
+              display: flex;
+              align-items: center;
+              padding: 0.5rem;
+              &:hover {
+                cursor: pointer;
+                color: var(--secondary-color);
+                font-weight: 600;
+              }
+            }
+          }
         }
       }
       .signup {

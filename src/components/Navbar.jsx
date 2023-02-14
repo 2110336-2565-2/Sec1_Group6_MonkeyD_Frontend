@@ -5,6 +5,7 @@ import {checkLogin} from "../utils/auth";
 
 const Navbar = () => {
   const [navbarInfo, setNavbarInfo] = useState(null);
+  const [openDropdown, setOpenDropdown] = useState(false);
 
   const handleLogout = async () => {
     sessionStorage.clear();
@@ -41,6 +42,7 @@ const Navbar = () => {
     };
     fetchNavbar();
   }, []);
+  
   return (
     <div className="navbar-container">
       <img
@@ -62,8 +64,23 @@ const Navbar = () => {
           <button className="content">CONTACT US</button>
           {navbarInfo ? (
             <>
-              <div onClick={() => handleLogout()} className="profile">
-                <img src={navbarInfo.user.image} alt="" />
+              <div
+                onClick={() => setOpenDropdown(!openDropdown)}
+                className="profile"
+              >
+                <img src={navbarInfo.user.image} alt="" style={openDropdown ? {opacity: 0.5} : {}} />
+                {openDropdown && (
+                  <div className="dropdown">
+                    <ul role="menu" className="menu">
+                      <li className="menu-item">My profile</li>
+                      <li className="menu-item">My booking</li>
+                      <li className="menu-item">Be a lessor</li>
+                      <li className="menu-item" onClick={handleLogout}>
+                        Logout
+                      </li>
+                    </ul>
+                  </div>
+                )}
               </div>
             </>
           ) : (
