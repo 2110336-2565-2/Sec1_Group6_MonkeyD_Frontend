@@ -2,10 +2,13 @@ import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {Link} from "react-router-dom";
 import {checkLogin} from "../utils/auth";
+import useOutsideClick from "../hooks/useOutsideClick";
 
 const Navbar = () => {
   const [navbarInfo, setNavbarInfo] = useState(null);
   const [openDropdown, setOpenDropdown] = useState(false);
+
+  const ref = useOutsideClick(() => setOpenDropdown(false));
 
   const handleLogout = async () => {
     sessionStorage.clear();
@@ -70,7 +73,7 @@ const Navbar = () => {
               >
                 <img src={navbarInfo.user.image} alt="" style={openDropdown ? {opacity: 0.5} : {}} />
                 {openDropdown && (
-                  <div className="dropdown">
+                  <div className="dropdown" ref={ref}>
                     <ul role="menu" className="menu">
                       <li className="menu-item">My profile</li>
                       <li className="menu-item">My booking</li>

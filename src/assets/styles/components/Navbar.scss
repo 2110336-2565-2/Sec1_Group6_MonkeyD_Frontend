@@ -38,7 +38,7 @@
       }
       .profile {
         position: relative;
-        margin-left: 32px;
+        margin-left: 16px;
         height: 36px;
         &:hover {
           cursor: pointer;
@@ -53,7 +53,7 @@
         .dropdown {
           position: absolute;
           right: -15px;
-          margin-top: 16px;
+          margin-top: 8px;
           width: 200px;
           // transition: height 500ms ease;
           border-radius: 8px;
