@@ -73,8 +73,8 @@ const Signin = ({signin, signup}) => {
     const data = {user: {username: email.split("@")[0], email, password}};
 
     try {
-      const res = await axios.post(`http://localhost:8080/user`, data);
-      console.log(res);
+      await axios.post(`http://localhost:8080/user`, data);
+      window.location.assign("/");
     } catch (error) {
       console.error(error);
       handleShowResError(error.response.data.error);
