@@ -28,8 +28,22 @@
           margin: 16px 0 8px;
         }
         img {
-          width: 50px;
-          height: 50px;
+          width: 100px;
+          height: 100px;
+          object-fit: cover;
+        }
+        button {
+          cursor: pointer;
+          border: none;
+          border-radius: 4px;
+          margin: 24px 0 0;
+          padding: 16px;
+          font-size: var(--button2-fs);
+          background-color: var(--secondary-color);
+          color: var(--contrast-color);
+        }
+        #carimages, #bookimg{
+          padding-left: 0;
         }
     }
   }

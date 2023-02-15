@@ -1,18 +1,34 @@
 import React, {useState, useEffect} from "react";
 import axios from "axios";
-
+import {provinces} from "../utils/mockData";
 const AddCar = () => {
   const resetForm = {
     brand: "",
     model: "",
     year: "",
     gear_type: "",
-    passengers: "",
+    passenger: "",
     energy_types: [],
     province: "",
+    description: "",
     license_plate: "",
     rental_price: "",
     registration_book_id: "",
+  };
+  const errorForm = {
+    brand: "",
+    model: "",
+    year: "",
+    gear_type: "",
+    passenger: "",
+    energy_types: "",
+    province: "",
+    description: "",
+    license_plate: "",
+    rental_price: "",
+    registration_book_id: "",
+    book_img: "",
+    car_images: "",
   };
   const year = new Date().getFullYear();
   const years = Array.from(new Array(20), (val, index) => year - index);
@@ -30,7 +46,7 @@ const AddCar = () => {
   ];
 
   const [form, setForm] = useState(resetForm);
-  const [error, setError] = useState(resetForm);
+  const [error, setError] = useState(errorForm);
   const [registration_book_image, setBookImg] = useState();
   const [resError, setResError] = useState("");
   const [brands, setBrands] = useState([]);
@@ -55,19 +71,15 @@ const AddCar = () => {
         const res = await axios.get(
           `https://private-anon-25f08158ff-carsapi1.apiary-mock.com/manufacturers`
         );
-        //console.log(res.data);
         let brands = [];
         for (const e of res.data) {
           brands.push(e.name);
         }
         brands.sort();
         setBrands(brands);
-        // for (const e of brands) {
-        //   console.log(e);
-        // }
       } catch (error) {
         console.error(error);
-        //handleShowResError(error.response.data.error);
+        handleShowResError(error);
       }
     };
 
@@ -76,7 +88,6 @@ const AddCar = () => {
   const numberValidator = (value) => {
     if (value.length > 0) {
       const last = value.charAt(value.length - 1);
-      console.log("last", last);
       if (!last.match(/^(\d)$/) || (value.length == 1 && last == "0")) {
         return value.slice(0, value.length - 1);
       }
@@ -85,7 +96,6 @@ const AddCar = () => {
   };
   const handleImage = async (event) => {
     const {name, files} = event.target;
-    console.log(files, files.length);
     if (name === "book_img") {
       setBookImg(URL.createObjectURL(files[0]));
     } else if (name === "car_images") {
@@ -94,18 +104,18 @@ const AddCar = () => {
     validateImage(event);
   };
   const validateImage = (event) => {
-    let {name} = event.target;
+    let {name, files} = event.target;
     setError((prev) => {
       const stateObj = {...prev, [name]: ""};
       switch (name) {
         case "book_img":
-          if (!registration_book_image) {
+          if (!registration_book_image && !files.length) {
             stateObj[name] = "Please insert registration_book_image.";
           }
           break;
 
         case "car_images":
-          if (car_images.length < 5) {
+          if (car_images.length + files.length < 5) {
             stateObj[name] = "Please insert at least 5 images.";
           }
           break;
@@ -119,8 +129,6 @@ const AddCar = () => {
 
   const handleChange = (event) => {
     const {name, value, checked} = event.target;
-    console.log(name, value, typeof value);
-    console.log(form.energy_types);
     let added;
     if (name === "energy_types") {
       added = form.energy_types;
@@ -132,9 +140,8 @@ const AddCar = () => {
           added.splice(index, 1);
         }
       }
-    } else if (name === "passengers" || name === "rental_price") {
+    } else if (name === "passenger" || name === "rental_price") {
       added = numberValidator(value);
-      console.log("num", added);
     } else {
       added = value;
     }
@@ -175,12 +182,17 @@ const AddCar = () => {
           }
           break;
 
-        case "passengers":
+        case "passenger":
           if (!value) {
             stateObj[name] = "Please enter the number of passengers";
           }
           break;
 
+        case "province":
+          if (!value) {
+            stateObj[name] = "Please select province.";
+          }
+          break;
         case "energy_types":
           if (!form.energy_types.length) {
             stateObj[name] = "Please select at least one energy type";
@@ -213,14 +225,52 @@ const AddCar = () => {
     });
   };
 
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    if (JSON.stringify(error) !== JSON.stringify(errorForm)) {
+      return;
+    }
+
+    const data = {
+      car: {
+        ...form,
+        rating: 5, //under this must be changed
+        registration_book_url:
+          "https://image.bangkokbiznews.com/uploads/images/contents/w1024/2021/10/WrsO3P0xh1qMhQYq6m7W.jpg" +
+          Math.random(),
+        car_images: [
+          "https://img.khaorot.com/2021/01/21/5Cq7JfHF/dsc02704-83a7.jpg",
+          "https://img.khaorot.com/2021/01/21/5Cq7JfHF/dsc02700-0888.jpg",
+          "https://img.khaorot.com/2021/01/22/5Cq7JfHF/12000-eed2.jpg",
+          "https://img.khaorot.com/2021/01/21/5Cq7JfHF/dsc02715-2447.jpg",
+          "https://img.khaorot.com/2021/01/21/5Cq7JfHF/dsc02718-c974.jpg",
+        ],
+        owner: "jenny",
+      },
+    };
+
+    try {
+      const res = await axios.post(`http://localhost:8080/car`, data, {
+        withCredentials: true,
+      });
+      window.location.assign("/");
+    } catch (error) {
+      handleShowResError(error.response.data.error);
+    }
+  };
+
+  const handleShowResError = (text) => {
+    setResError(text);
+    setTimeout(() => {
+      setResError("");
+    }, 3000);
+  };
+
   return (
     <div className="addcar-container">
       <div className="addcar-box">
         <h2>Register Your Car</h2>
-        <form
-          //onSubmit={}
-          className="addcar-form"
-        >
+        <form onSubmit={handleSubmit} className="addcar-form">
           <label>Brand</label>
           <select
             name="brand"
@@ -232,8 +282,6 @@ const AddCar = () => {
             {brands.map((brand) => {
               return <option value={brand}>{brand}</option>;
             })}
-            {/* <option value="Toyota">Toyota</option>
-            <option value="Honda">Honda</option> */}
           </select>
           {error.brand && <span className="error">{error.brand}</span>}
           <label>Model</label>
@@ -266,9 +314,9 @@ const AddCar = () => {
           <div>
             <input
               type="radio"
-              id="automatic"
+              id="auto"
               name="gear_type"
-              value="automatic"
+              value="Auto"
               onChange={handleChange}
               onBlur={validateForm}
             />
@@ -277,7 +325,7 @@ const AddCar = () => {
               type="radio"
               id="manual"
               name="gear_type"
-              value="manual"
+              value="Manual"
               onChange={handleChange}
               onBlur={validateForm}
             />
@@ -305,16 +353,36 @@ const AddCar = () => {
           )}
           <label>Passengers</label>
           <input
-            name="passengers"
+            name="passenger"
             // type="number"
             // min="0"
             onChange={handleChange}
             onBlur={validateForm}
-            value={form.passengers}
+            value={form.passenger}
           ></input>
-          {error.passengers && (
-            <span className="error">{error.passengers}</span>
-          )}
+          {error.passenger && <span className="error">{error.passenger}</span>}
+
+          <label>Description</label>
+          <input
+            name="description"
+            onChange={handleChange}
+            onBlur={validateForm}
+            value={form.description}
+          ></input>
+
+          <label>Province</label>
+          <select
+            name="province"
+            id="province"
+            onChange={handleChange}
+            onBlur={validateForm}
+          >
+            <option selected disabled hidden></option>
+            {provinces.map((province) => {
+              return <option value={province.value}>{province.value}</option>;
+            })}
+          </select>
+          {error.province && <span className="error">{error.province}</span>}
           <label>License Plate</label>
           <input
             id="licenseplate"
@@ -364,6 +432,7 @@ const AddCar = () => {
             onBlur={validateImage}
             onChange={handleImage}
             accept="image/png, image/gif, image/jpeg"
+            style={{width: "90px"}}
           />
           {registration_book_image ? (
             <img src={registration_book_image} />
@@ -377,9 +446,10 @@ const AddCar = () => {
             id="carimages"
             name="car_images"
             multiple
-            onChange={onImageChange}
+            onChange={handleImage}
             onBlur={validateImage}
             accept="image/png, image/gif, image/jpeg"
+            style={{width: "95px"}}
           />
           <div>
             {car_images.map((value) => {
@@ -390,7 +460,9 @@ const AddCar = () => {
             <span className="error">{error.car_images}</span>
           )}
 
-          <button type="submit">Register</button>
+          <button type="submit" disabled={form === resetForm}>
+            Register
+          </button>
           {resError && <span className="error">{resError}</span>}
         </form>
       </div>
