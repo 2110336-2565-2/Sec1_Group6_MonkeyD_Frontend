@@ -1,6 +1,7 @@
 import React from "react";
 
 const CarCard = ({
+  car_id,
   user_image,
   car_image,
   owner,
@@ -11,8 +12,12 @@ const CarCard = ({
   gear_type,
   rating,
 }) => {
+  const handleClick = () => {
+    window.location.assign(`/carDetail/${car_id}`);
+  };
+
   return (
-    <div className="card-container">
+    <div onClick={handleClick} className="card-container">
       <div className="header">
         <img src={car_image} alt="car" />
       </div>
