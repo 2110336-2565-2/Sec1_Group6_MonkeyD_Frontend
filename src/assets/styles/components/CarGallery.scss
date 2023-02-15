@@ -26,7 +26,6 @@ $gallery-gap: 12px;
     }
     .other-view {
       overflow: scroll;
-      /* Hide scrollbar for all elements */
       display: grid;
       gap: 12px;
       grid-template-rows: repeat(3, auto);

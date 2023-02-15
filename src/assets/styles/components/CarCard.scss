@@ -16,6 +16,7 @@
     img {
       width: 100%;
       border-radius: 4px;
+      object-fit: cover;
     }
   }
   .footer {
@@ -55,6 +56,7 @@
       img {
         border-radius: 50%;
         width: 28px;
+        object-fit: cover;
         margin-right: 8px;
       }
     }
