@@ -8,6 +8,7 @@ import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import NoPage from "./pages/NoPage";
 import SigninPage from "./pages/SigninPage";
 import Footer from "./components/Footer";
+import AddCarPage from "./pages/AddCarPage";
 
 const App = () => {
   return (
@@ -20,6 +21,7 @@ const App = () => {
           <Route path="/about" element={<AboutUsPage />} />
           <Route path="/resetPassword" element={<ResetPasswordPage />} />
           <Route path="/forgotPassword" element={<ForgotPasswordPage />} />
+          <Route path="/addCar" element={<AddCarPage />} />
           <Route path="*" element={<NoPage />} />
         </Routes>
         <Footer />
