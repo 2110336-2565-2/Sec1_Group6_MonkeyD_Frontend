@@ -26,6 +26,9 @@
       > label {
         margin: 16px 0 8px;
       }
+      input.error-validate {
+        border-color: var(--caution-color);
+      }
       button {
         cursor: pointer;
         border: none;

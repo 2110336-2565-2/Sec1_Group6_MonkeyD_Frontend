@@ -128,6 +128,7 @@ const Signin = ({signin, signup}) => {
             value={form.email}
             onChange={handleChange}
             onBlur={validateForm}
+            className={error.email ? "error-validate" : ""}
           />
           {error.email && <span className="error">{error.email}</span>}
           <label>Password</label>
@@ -169,7 +170,7 @@ const Signin = ({signin, signup}) => {
             <a href="/forgotPassword">Forgot password?</a>
           </div>
 
-          <button type="submit" disabled={JSON.stringify(error) === JSON.stringify(resetForm)}>{signup ? "Get Started" : "Sign in"}</button>
+          <button type="submit" disabled={form === resetForm}>{signup ? "Get Started" : "Sign in"}</button>
           {resError && <span className="error">{resError}</span>}
         </form>
         {/* <div className="social-links">
