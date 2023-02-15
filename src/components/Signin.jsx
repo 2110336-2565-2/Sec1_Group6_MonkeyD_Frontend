@@ -129,6 +129,7 @@ const Signin = ({signin, signup}) => {
             onChange={handleChange}
             onBlur={validateForm}
             className={error.email ? "error-validate" : ""}
+            required
           />
           {error.email && <span className="error">{error.email}</span>}
           <label>Password</label>
@@ -139,6 +140,7 @@ const Signin = ({signin, signup}) => {
             value={form.password}
             onChange={handleChange}
             onBlur={validateForm}
+            required
           />
           {error.password && <span className="error">{error.password}</span>}
           {signup && (
