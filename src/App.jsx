@@ -4,6 +4,7 @@ import Navbar from "./components/Navbar";
 import HomePage from "./pages/HomePage";
 import AboutUsPage from "./pages/AboutUsPage";
 import CarDetail from "./pages/CarDetail";
+import MyBookingPage from "./pages/MyBookingPage";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import NoPage from "./pages/NoPage";
@@ -20,6 +21,7 @@ const App = () => {
           <Route path="/" exact element={<HomePage />} />
           <Route path="/signin" element={<SigninPage signin />} />
           <Route path="/signup" element={<SigninPage signup />} />
+          <Route path="/mybooking" element={<MyBookingPage />} />
           <Route path="/about" element={<AboutUsPage />} />
           <Route path="/carDetail/:carId" element={<CarDetail />} />
           <Route path="/resetPassword" element={<ResetPasswordPage />} />

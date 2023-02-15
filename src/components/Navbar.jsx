@@ -51,6 +51,9 @@ const Navbar = () => {
   const handleAddCar = () => {
     window.location.assign("/addCar");
   };
+  const handleMyBooking = () => {
+    window.location.assign("/mybooking");
+  };
 
   useEffect(() => {
     const fetchNavbar = async () => {
@@ -113,7 +116,9 @@ const Navbar = () => {
                           My profile
                         </Link>
                       </li>
-                      <li className="menu-item">My booking</li>
+                      <li onClick={handleMyBooking} className="menu-item">
+                        My booking
+                      </li>
 
                       {navbarInfo.isLessor ? (
                         <li className="menu-item" onClick={handleAddCar}>
