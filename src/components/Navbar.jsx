@@ -7,7 +7,6 @@ import useOutsideClick from "../hooks/useOutsideClick";
 const Navbar = () => {
   const [navbarInfo, setNavbarInfo] = useState(null);
   const [openDropdown, setOpenDropdown] = useState(false);
-  const [isLessor, setLessor] = useState(false);
 
   const toggleDropdown = () => {
     setOpenDropdown(!openDropdown);
@@ -31,7 +30,23 @@ const Navbar = () => {
     window.location.assign("/");
   };
 
-  const handleRegisterLessor = () => {};
+  const handleRegisterLessor = async () => {
+    try {
+      await axios.patch(
+        `http://localhost:8080/user/update-role`,
+        {},
+        {
+          headers: {
+            user_id: sessionStorage.getItem("user_id"),
+          },
+          withCredentials: true,
+        }
+      ); // change path to backend service
+      window.location.reload();
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   useEffect(() => {
     const fetchNavbar = async () => {
@@ -44,7 +59,7 @@ const Navbar = () => {
             },
             withCredentials: true,
           }); // change path to backend service
-          setNavbarInfo(res.data);
+          setNavbarInfo(res.data.user);
           console.log(res.data);
         } catch (error) {
           console.error(error);
@@ -77,7 +92,7 @@ const Navbar = () => {
             <>
               <div className="profile" ref={ref}>
                 <img
-                  src={navbarInfo.user.image}
+                  src={navbarInfo.image}
                   alt=""
                   style={openDropdown ? {opacity: 0.5} : {}}
                   onClick={toggleDropdown}
@@ -95,7 +110,17 @@ const Navbar = () => {
                         </Link>
                       </li>
                       <li className="menu-item">My booking</li>
-                      <li className="menu-item">Be a lessor</li>
+
+                      {navbarInfo.isLessor ? (
+                        <li className="menu-item">Add your car</li>
+                      ) : (
+                        <li
+                          onClick={handleRegisterLessor}
+                          className="menu-item"
+                        >
+                          Be a lessor
+                        </li>
+                      )}
                       <li className="menu-item" onClick={handleLogout}>
                         Logout
                       </li>

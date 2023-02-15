@@ -1,5 +1,6 @@
 import React, {useState, useRef, useEffect} from "react";
 import {provinces} from "../utils/mockData";
+
 const Search = ({
   locationInput,
   startDateInput,
