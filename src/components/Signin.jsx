@@ -61,6 +61,7 @@ const Signin = ({signin, signup}) => {
 
       return stateObj;
     });
+    console.log(error);
   };
 
   const handleSignUp = async (event) => {
@@ -127,6 +128,7 @@ const Signin = ({signin, signup}) => {
             value={form.email}
             onChange={handleChange}
             onBlur={validateForm}
+            className={error.email ? "error-validate" : ""}
           />
           {error.email && <span className="error">{error.email}</span>}
           <label>Password</label>
@@ -149,6 +151,7 @@ const Signin = ({signin, signup}) => {
                 value={form.confirmPassword}
                 onChange={handleChange}
                 onBlur={validateForm}
+                required
               />
               {error.confirmPassword && (
                 <span className="error">{error.confirmPassword}</span>
@@ -167,7 +170,7 @@ const Signin = ({signin, signup}) => {
             <a href="/forgotPassword">Forgot password?</a>
           </div>
 
-          <button type="submit">{signup ? "Get Started" : "Sign in"}</button>
+          <button type="submit" disabled={form === resetForm}>{signup ? "Get Started" : "Sign in"}</button>
           {resError && <span className="error">{resError}</span>}
         </form>
         {/* <div className="social-links">

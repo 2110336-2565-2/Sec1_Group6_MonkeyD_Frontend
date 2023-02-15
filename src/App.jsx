@@ -9,6 +9,7 @@ import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import NoPage from "./pages/NoPage";
 import SigninPage from "./pages/SigninPage";
 import Footer from "./components/Footer";
+import ProfilePage from "./pages/ProfilePage";
 
 const App = () => {
   return (
@@ -22,6 +23,7 @@ const App = () => {
           <Route path="/carDetail/:carId" element={<CarDetail />} />
           <Route path="/resetPassword" element={<ResetPasswordPage />} />
           <Route path="/forgotPassword" element={<ForgotPasswordPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
           <Route path="*" element={<NoPage />} />
         </Routes>
         <Footer />
