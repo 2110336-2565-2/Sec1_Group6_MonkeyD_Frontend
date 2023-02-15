@@ -15,6 +15,7 @@ const CarDetail = () => {
         const res = await axios.get(`http://localhost:8080/car/${carId}`); // change path to backend service
         setCarDetail(res.data);
       } catch (error) {
+        window.location.assign("/404");
         console.error(error);
       }
     };
