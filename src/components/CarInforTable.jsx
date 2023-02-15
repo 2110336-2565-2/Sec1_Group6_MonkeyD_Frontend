@@ -1,6 +1,10 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
+import axios from "axios";
+import {checkLogin} from "../utils/auth";
 
 const CarInforTable = ({
+  owner_id,
+  car_id,
   year,
   gear_type,
   energy_types,
@@ -9,6 +13,44 @@ const CarInforTable = ({
   rating,
   passenger,
 }) => {
+  const handleClick = async () => {
+    if (checkLogin()) {
+      try {
+        const resToggle = await axios.patch(
+          `http://localhost:8080/car`,
+          {
+            headers: {
+              car_id: car_id,
+              renter_id: sessionStorage.getItem("user_id"),
+            },
+          },
+          {
+            withCredentials: true,
+          }
+        );
+      } catch (error) {
+        console.error(error);
+      }
+      try {
+        const resUpdate = await axios.patch(
+          `http://localhost:8080/user`,
+          {
+            headers: {
+              lessor_id: owner_id,
+              renter_id: sessionStorage.getItem("user_id"),
+            },
+          },
+          {
+            withCredentials: true,
+          }
+        );
+      } catch (error) {
+        console.error(error);
+      }
+    } else {
+      window.location.assign("/");
+    }
+  };
   return (
     <div className="car-spec">
       <div className="car-table">
@@ -67,7 +109,7 @@ const CarInforTable = ({
           </div>
         </div>
       </div>
-      <button className="rent-btn">
+      <button onClick={handleClick} className="rent-btn">
         <i className="fa-sharp fa-solid fa-hand-holding-hand" />
         Rent
       </button>
