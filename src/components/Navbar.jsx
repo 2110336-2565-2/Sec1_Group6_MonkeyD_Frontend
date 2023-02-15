@@ -30,10 +30,35 @@ const Navbar = () => {
     window.location.assign("/");
   };
 
+  const handleRegisterLessor = async () => {
+    try {
+      await axios.patch(
+        `http://localhost:8080/user/update-role`,
+        {},
+        {
+          headers: {
+            user_id: sessionStorage.getItem("user_id"),
+          },
+          withCredentials: true,
+        }
+      ); // change path to backend service
+      window.location.reload();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleAddCar = () => {
+    window.location.assign("/addCar");
+  };
+  const handleMyBooking = () => {
+    window.location.assign("/mybooking");
+  };
+
   useEffect(() => {
     const fetchNavbar = async () => {
       const result = await checkLogin();
-      if (result.isLogin) {
+      if (result) {
         try {
           const res = await axios.get(`http://localhost:8080/user/navbar`, {
             headers: {
@@ -41,7 +66,8 @@ const Navbar = () => {
             },
             withCredentials: true,
           }); // change path to backend service
-          setNavbarInfo(res.data);
+          setNavbarInfo(res.data.user);
+          console.log(res.data);
         } catch (error) {
           console.error(error);
         }
@@ -73,7 +99,7 @@ const Navbar = () => {
             <>
               <div className="profile" ref={ref}>
                 <img
-                  src={navbarInfo.user.image}
+                  src={navbarInfo.image}
                   alt=""
                   style={openDropdown ? {opacity: 0.5} : {}}
                   onClick={toggleDropdown}
@@ -82,12 +108,30 @@ const Navbar = () => {
                   <div className="dropdown">
                     <ul role="menu" className="menu">
                       <li className="menu-item">
-                        <Link to="/profile" className="link" onClick={toggleDropdown}>
+                        <Link
+                          to="/profile"
+                          className="link"
+                          onClick={toggleDropdown}
+                        >
                           My profile
                         </Link>
                       </li>
-                      <li className="menu-item">My booking</li>
-                      <li className="menu-item">Be a lessor</li>
+                      <li onClick={handleMyBooking} className="menu-item">
+                        My booking
+                      </li>
+
+                      {navbarInfo.isLessor ? (
+                        <li className="menu-item" onClick={handleAddCar}>
+                          Add your car
+                        </li>
+                      ) : (
+                        <li
+                          onClick={handleRegisterLessor}
+                          className="menu-item"
+                        >
+                          Be a lessor
+                        </li>
+                      )}
                       <li className="menu-item" onClick={handleLogout}>
                         Logout
                       </li>

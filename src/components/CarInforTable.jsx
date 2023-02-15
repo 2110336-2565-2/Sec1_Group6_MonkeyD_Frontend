@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React from "react";
 import axios from "axios";
 import {checkLogin} from "../utils/auth";
 
@@ -14,41 +14,42 @@ const CarInforTable = ({
   passenger,
 }) => {
   const handleClick = async () => {
-    if (checkLogin()) {
-      try {
-        const resToggle = await axios.patch(
-          `http://localhost:8080/car`,
-          {
-            headers: {
-              car_id: car_id,
-              renter_id: sessionStorage.getItem("user_id"),
-            },
-          },
-          {
-            withCredentials: true,
-          }
-        );
-      } catch (error) {
-        console.error(error);
-      }
-      try {
-        const resUpdate = await axios.patch(
-          `http://localhost:8080/user`,
-          {
-            headers: {
-              lessor_id: owner_id,
-              renter_id: sessionStorage.getItem("user_id"),
-            },
-          },
-          {
-            withCredentials: true,
-          }
-        );
-      } catch (error) {
-        console.error(error);
-      }
-    } else {
+    const isLogin = await checkLogin();
+    if (!isLogin) {
+      alert("Please sign in before renting car.");
       window.location.assign("/");
+      return;
+    }
+    try {
+      await axios.patch(
+        `http://localhost:8080/car`,
+        {},
+        {
+          headers: {
+            car_id: car_id,
+            renter_id: sessionStorage.getItem("user_id"),
+          },
+          withCredentials: true,
+        }
+      );
+      window.location.assign("/");
+    } catch (error) {
+      console.error(error);
+    }
+    try {
+      await axios.patch(
+        `http://localhost:8080/user`,
+        {},
+        {
+          headers: {
+            lessor_id: owner_id,
+            renter_id: sessionStorage.getItem("user_id"),
+          },
+          withCredentials: true,
+        }
+      );
+    } catch (error) {
+      console.error(error);
     }
   };
   return (

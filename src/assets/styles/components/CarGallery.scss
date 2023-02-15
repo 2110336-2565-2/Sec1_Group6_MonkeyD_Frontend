@@ -21,6 +21,9 @@ $gallery-gap: 12px;
         object-fit: cover;
       }
     }
+    ::-webkit-scrollbar {
+      display: none;
+    }
     .other-view {
       overflow: scroll;
       display: grid;
