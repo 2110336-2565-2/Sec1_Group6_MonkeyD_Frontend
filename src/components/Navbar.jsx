@@ -48,6 +48,10 @@ const Navbar = () => {
     }
   };
 
+  const handleAddCar = () => {
+    window.location.assign("/addCar");
+  };
+
   useEffect(() => {
     const fetchNavbar = async () => {
       const result = await checkLogin();
@@ -112,7 +116,9 @@ const Navbar = () => {
                       <li className="menu-item">My booking</li>
 
                       {navbarInfo.isLessor ? (
-                        <li className="menu-item">Add your car</li>
+                        <li className="menu-item" onClick={handleAddCar}>
+                          Add your car
+                        </li>
                       ) : (
                         <li
                           onClick={handleRegisterLessor}

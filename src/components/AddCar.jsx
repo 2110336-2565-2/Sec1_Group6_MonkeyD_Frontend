@@ -277,10 +277,15 @@ const AddCar = () => {
             id="brand"
             onChange={handleChange}
             onBlur={validateForm}
+            defaultValue=""
           >
-            <option selected disabled hidden></option>
+            <option disabled hidden></option>
             {brands.map((brand) => {
-              return <option value={brand}>{brand}</option>;
+              return (
+                <option key={brand} value={brand}>
+                  {brand}
+                </option>
+              );
             })}
           </select>
           {error.brand && <span className="error">{error.brand}</span>}
@@ -299,8 +304,9 @@ const AddCar = () => {
             id="year"
             onChange={handleChange}
             onBlur={validateForm}
+            defaultValue=""
           >
-            <option selected disabled hidden></option>
+            <option disabled hidden></option>
             {years.map((year, index) => {
               return (
                 <option key={`year${index}`} value={year}>
@@ -320,7 +326,7 @@ const AddCar = () => {
               onChange={handleChange}
               onBlur={validateForm}
             />
-            <label for="age1">Automatic</label>
+            <label htmlFor="age1">Automatic</label>
             <input
               type="radio"
               id="manual"
@@ -329,13 +335,13 @@ const AddCar = () => {
               onChange={handleChange}
               onBlur={validateForm}
             />
-            <label for="manual">Manual</label>
+            <label htmlFor="manual">Manual</label>
           </div>
           {error.gear_type && <span className="error">{error.gear_type}</span>}
           <label>Energy Types</label>
           {energy_types.map((type) => {
             return (
-              <div>
+              <div key={type}>
                 <input
                   type="checkbox"
                   id={type}
@@ -344,7 +350,7 @@ const AddCar = () => {
                   onChange={handleChange}
                   onBlur={validateForm}
                 />
-                <label for={type}>{type}</label>
+                <label htmlFor={type}>{type}</label>
               </div>
             );
           })}
@@ -376,10 +382,15 @@ const AddCar = () => {
             id="province"
             onChange={handleChange}
             onBlur={validateForm}
+            defaultValue=""
           >
-            <option selected disabled hidden></option>
+            <option disabled hidden></option>
             {provinces.map((province) => {
-              return <option value={province.value}>{province.value}</option>;
+              return (
+                <option key={province.value} value={province.value}>
+                  {province.value}
+                </option>
+              );
             })}
           </select>
           {error.province && <span className="error">{error.province}</span>}
