@@ -6,6 +6,10 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    h2 {
+      margin-bottom: 0.33rem;
+      text-align: center;
+    }
     .addcar-box {
       //margin-top: 4vw;
       margin-bottom: 4vw;
@@ -41,6 +45,10 @@
           font-size: var(--button2-fs);
           background-color: var(--secondary-color);
           color: var(--contrast-color);
+        }
+        textarea{
+          resize: none;
+          height: 100px;
         }
         #carimages, #bookimg{
           padding-left: 0;

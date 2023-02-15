@@ -234,6 +234,7 @@ const AddCar = () => {
     const data = {
       car: {
         ...form,
+        owner: sessionStorage.getItem("username"),
         rating: 5, //under this must be changed
         registration_book_url:
           "https://image.bangkokbiznews.com/uploads/images/contents/w1024/2021/10/WrsO3P0xh1qMhQYq6m7W.jpg" +
@@ -245,7 +246,6 @@ const AddCar = () => {
           "https://img.khaorot.com/2021/01/21/5Cq7JfHF/dsc02715-2447.jpg",
           "https://img.khaorot.com/2021/01/21/5Cq7JfHF/dsc02718-c974.jpg",
         ],
-        owner: "jenny",
       },
     };
 
@@ -363,12 +363,12 @@ const AddCar = () => {
           {error.passenger && <span className="error">{error.passenger}</span>}
 
           <label>Description</label>
-          <input
+          <textarea
             name="description"
             onChange={handleChange}
             onBlur={validateForm}
             value={form.description}
-          ></input>
+          ></textarea>
 
           <label>Province</label>
           <select
