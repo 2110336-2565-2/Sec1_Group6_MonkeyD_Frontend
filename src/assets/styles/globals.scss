@@ -17,6 +17,8 @@
 @import "./components/SigninBox.scss";
 @import "./components/ContactFooter.scss";
 @import "./components/SeoFooter.scss";
+@import "./pages/AddCarPage.scss";
+@import "./components/AddCarBox.scss";
 
 * {
   font-size: 16px;
@@ -53,5 +55,8 @@ label {
   font-size: var(--label-fs);
 }
 input {
+  padding: 11px 15px;
+}
+select {
   padding: 11px 15px;
 }
