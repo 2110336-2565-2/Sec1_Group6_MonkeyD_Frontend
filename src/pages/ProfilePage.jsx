@@ -18,15 +18,6 @@ const ProfilePage = () => {
     });
   };
 
-  //   if(req.body.username != null) user.username = req.body.username;
-  //   if(req.body.image != null) user.image = req.body.image;
-  //   if(req.body.owncars != null) user.owncars = req.body.owncars;
-  //   if(req.body.isLesser != null) user.isLesser = req.body.isLesser;
-  //   if(req.body.firstName != null) user.firstName = req.body.firstName;
-  //   if(req.body.lastName != null) user.lastName = req.body.lastName;
-  //   if(req.body.phoneNumber != null) user.phoneNumber = req.body.phoneNumber;
-  //   if(req.body.prefix != null) user.prefix = req.body.prefix;
-
   const submitUserInfo = async () => {
     try {
       const id = sessionStorage.getItem("user_id");
@@ -111,6 +102,7 @@ const ProfilePage = () => {
                           className=""
                           value={userInfo[key]}
                           onChange={handleChange}
+                          disabled={key === "username" || key === "email" || key === "image"}
                         />
                       ) : (
                         <h5 className="value">{userInfo[key]}</h5>
