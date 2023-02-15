@@ -8,8 +8,11 @@ const Navbar = () => {
   const [navbarInfo, setNavbarInfo] = useState(null);
   const [openDropdown, setOpenDropdown] = useState(false);
 
+  const toggleDropdown = () => {
+    setOpenDropdown(!openDropdown);
+  };
+
   const ref = useOutsideClick(() => setOpenDropdown(false));
-  // const ref = useOutsideClick(() => {});
 
   const handleLogout = async () => {
     sessionStorage.clear();
@@ -73,14 +76,16 @@ const Navbar = () => {
                   src={navbarInfo.user.image}
                   alt=""
                   style={openDropdown ? {opacity: 0.5} : {}}
-                  onClick={() => {
-                    setOpenDropdown(!openDropdown);
-                  }}
+                  onClick={toggleDropdown}
                 />
                 {openDropdown && (
                   <div className="dropdown">
                     <ul role="menu" className="menu">
-                      <li className="menu-item">My profile</li>
+                      <li className="menu-item">
+                        <Link to="/profile" className="link" onClick={toggleDropdown}>
+                          My profile
+                        </Link>
+                      </li>
                       <li className="menu-item">My booking</li>
                       <li className="menu-item">Be a lessor</li>
                       <li className="menu-item" onClick={handleLogout}>

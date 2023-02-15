@@ -43,6 +43,7 @@
         img {
           height: 100%;
           object-fit: cover;
+          border-radius: 50%;
           &:hover {
             cursor: pointer;
           }
@@ -77,6 +78,14 @@
                 cursor: pointer;
                 color: var(--secondary-color);
                 font-weight: 600;
+              }
+              .link {
+                text-decoration: none;
+                color: var(--primary-color);
+                &:hover {
+                  color: var(--secondary-color);
+                  font-weight: 600;
+                }
               }
             }
           }
