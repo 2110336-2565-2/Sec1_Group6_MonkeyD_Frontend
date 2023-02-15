@@ -9,6 +9,7 @@ const Navbar = () => {
   const [openDropdown, setOpenDropdown] = useState(false);
 
   const ref = useOutsideClick(() => setOpenDropdown(false));
+  // const ref = useOutsideClick(() => {});
 
   const handleLogout = async () => {
     sessionStorage.clear();
@@ -45,7 +46,7 @@ const Navbar = () => {
     };
     fetchNavbar();
   }, []);
-  
+
   return (
     <div className="navbar-container">
       <img
@@ -67,13 +68,17 @@ const Navbar = () => {
           <button className="content">CONTACT US</button>
           {navbarInfo ? (
             <>
-              <div
-                onClick={() => setOpenDropdown(!openDropdown)}
-                className="profile"
-              >
-                <img src={navbarInfo.user.image} alt="" style={openDropdown ? {opacity: 0.5} : {}} />
+              <div className="profile" ref={ref}>
+                <img
+                  src={navbarInfo.user.image}
+                  alt=""
+                  style={openDropdown ? {opacity: 0.5} : {}}
+                  onClick={() => {
+                    setOpenDropdown(!openDropdown);
+                  }}
+                />
                 {openDropdown && (
-                  <div className="dropdown" ref={ref}>
+                  <div className="dropdown">
                     <ul role="menu" className="menu">
                       <li className="menu-item">My profile</li>
                       <li className="menu-item">My booking</li>

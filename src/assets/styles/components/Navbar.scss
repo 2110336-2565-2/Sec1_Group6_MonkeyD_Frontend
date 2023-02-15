@@ -40,22 +40,18 @@
         position: relative;
         margin-left: 16px;
         height: 36px;
-        &:hover {
-          cursor: pointer;
-        }
         img {
           height: 100%;
           object-fit: cover;
-          // &:hover {
-          //   filter: opacity(0.5);
-          // }
+          &:hover {
+            cursor: pointer;
+          }
         }
         .dropdown {
           position: absolute;
           right: -15px;
           margin-top: 8px;
           width: 200px;
-          // transition: height 500ms ease;
           border-radius: 8px;
           background-color: var(--contrast-color);
           ::after{
