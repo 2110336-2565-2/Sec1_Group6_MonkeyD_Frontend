@@ -236,9 +236,7 @@ const AddCar = () => {
         ...form,
         owner: sessionStorage.getItem("username"),
         rating: 5, //under this must be changed
-        registration_book_url:
-          "https://image.bangkokbiznews.com/uploads/images/contents/w1024/2021/10/WrsO3P0xh1qMhQYq6m7W.jpg" +
-          Math.random(),
+        registration_book_url: `https://image.bangkokbiznews.com/uploads/images/contents/w1024/2021/10/WrsO3P0xh1qMhQYq6m7W.jpg${Math.random()}`,
         car_images: [
           "https://img.khaorot.com/2021/01/21/5Cq7JfHF/dsc02704-83a7.jpg",
           "https://img.khaorot.com/2021/01/21/5Cq7JfHF/dsc02700-0888.jpg",

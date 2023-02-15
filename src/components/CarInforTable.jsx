@@ -32,6 +32,7 @@ const CarInforTable = ({
           withCredentials: true,
         }
       );
+      window.location.assign("/");
     } catch (error) {
       console.error(error);
     }
