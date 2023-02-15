@@ -96,6 +96,7 @@ const Signin = ({signin, signup}) => {
         withCredentials: true,
       });
       sessionStorage.setItem("user_id", res.headers.user_id);
+      sessionStorage.setItem("username", res.headers.username);
       window.location.assign("/");
     } catch (error) {
       console.error(error);
@@ -170,7 +171,9 @@ const Signin = ({signin, signup}) => {
             <a href="/forgotPassword">Forgot password?</a>
           </div>
 
-          <button type="submit" disabled={form === resetForm}>{signup ? "Get Started" : "Sign in"}</button>
+          <button type="submit" disabled={form === resetForm}>
+            {signup ? "Get Started" : "Sign in"}
+          </button>
           {resError && <span className="error">{resError}</span>}
         </form>
         {/* <div className="social-links">
