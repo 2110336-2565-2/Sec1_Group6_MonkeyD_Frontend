@@ -40,6 +40,9 @@
         // color: var(--p-color);
         font-size: var(--paragraph2-fs);
       }
+      ::-webkit-scrollbar {
+        display: none;
+      }
       .value {
         display: flex;
         align-items: center;

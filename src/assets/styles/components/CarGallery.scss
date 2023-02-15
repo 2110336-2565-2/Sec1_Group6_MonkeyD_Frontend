@@ -21,8 +21,12 @@ $gallery-gap: 12px;
         object-fit: cover;
       }
     }
+    ::-webkit-scrollbar {
+      display: none;
+    }
     .other-view {
       overflow: scroll;
+      /* Hide scrollbar for all elements */
       display: grid;
       gap: 12px;
       grid-template-rows: repeat(3, auto);

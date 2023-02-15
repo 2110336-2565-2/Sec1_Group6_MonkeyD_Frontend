@@ -7,6 +7,7 @@ import useOutsideClick from "../hooks/useOutsideClick";
 const Navbar = () => {
   const [navbarInfo, setNavbarInfo] = useState(null);
   const [openDropdown, setOpenDropdown] = useState(false);
+  const [isLessor, setLessor] = useState(false);
 
   const toggleDropdown = () => {
     setOpenDropdown(!openDropdown);
@@ -30,10 +31,12 @@ const Navbar = () => {
     window.location.assign("/");
   };
 
+  const handleRegisterLessor = () => {};
+
   useEffect(() => {
     const fetchNavbar = async () => {
       const result = await checkLogin();
-      if (result.isLogin) {
+      if (result) {
         try {
           const res = await axios.get(`http://localhost:8080/user/navbar`, {
             headers: {
@@ -42,6 +45,7 @@ const Navbar = () => {
             withCredentials: true,
           }); // change path to backend service
           setNavbarInfo(res.data);
+          console.log(res.data);
         } catch (error) {
           console.error(error);
         }
@@ -82,7 +86,11 @@ const Navbar = () => {
                   <div className="dropdown">
                     <ul role="menu" className="menu">
                       <li className="menu-item">
-                        <Link to="/profile" className="link" onClick={toggleDropdown}>
+                        <Link
+                          to="/profile"
+                          className="link"
+                          onClick={toggleDropdown}
+                        >
                           My profile
                         </Link>
                       </li>
