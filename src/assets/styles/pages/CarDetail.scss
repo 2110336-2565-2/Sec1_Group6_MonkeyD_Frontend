@@ -1,46 +1,8 @@
 .car-detail-page {
-  .car-name {
-    padding: 12px 4px;
-    font-size: var(--header1-fs);
-    font-weight: 600;
-    color: var(--contrast-color);
-    background-color: var(--primary-color);
-  }
+  margin-top: var(--navbar-height);
   .information-wrapper {
+    padding: 25px 100px;
     display: flex;
-    justify-content: space-around;
-    align-items: flex-start;
-    .lessor-detail {
-      margin: 12px 0px;
-    }
-    .vertical-line {
-      width: 1px;
-      height: 420px;
-      margin-top: 12px 20px;
-      border-left: 1px solid var(--primary-color);
-    }
-    .car-detail {
-      .car-name {
-        margin: 16px 0px;
-        color: var(--secondary-color);
-        font-size: var(--header1-fs);
-      }
-      .detail {
-        margin-top: 28px;
-        font-size: 32px;
-        color: var(--placeholder-color);
-      }
-    }
-  }
-}
-
-@media (max-width: 950px) {
-  .information-wrapper {
-    flex-direction: column;
-    justify-content: center !important;
-    align-items: center !important;
-    .vertical-line {
-      display: none;
-    }
+    justify-content: space-between;
   }
 }

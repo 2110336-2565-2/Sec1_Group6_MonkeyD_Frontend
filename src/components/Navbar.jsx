@@ -2,9 +2,17 @@ import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {Link} from "react-router-dom";
 import {checkLogin} from "../utils/auth";
+import useOutsideClick from "../hooks/useOutsideClick";
 
 const Navbar = () => {
   const [navbarInfo, setNavbarInfo] = useState(null);
+  const [openDropdown, setOpenDropdown] = useState(false);
+
+  const toggleDropdown = () => {
+    setOpenDropdown(!openDropdown);
+  };
+
+  const ref = useOutsideClick(() => setOpenDropdown(false));
 
   const handleLogout = async () => {
     sessionStorage.clear();
@@ -41,6 +49,7 @@ const Navbar = () => {
     };
     fetchNavbar();
   }, []);
+
   return (
     <div className="navbar-container">
       <img
@@ -62,8 +71,29 @@ const Navbar = () => {
           <button className="content">CONTACT US</button>
           {navbarInfo ? (
             <>
-              <div onClick={() => handleLogout()} className="profile">
-                <img src={navbarInfo.user.image} alt="" />
+              <div className="profile" ref={ref}>
+                <img
+                  src={navbarInfo.user.image}
+                  alt=""
+                  style={openDropdown ? {opacity: 0.5} : {}}
+                  onClick={toggleDropdown}
+                />
+                {openDropdown && (
+                  <div className="dropdown">
+                    <ul role="menu" className="menu">
+                      <li className="menu-item">
+                        <Link to="/profile" className="link" onClick={toggleDropdown}>
+                          My profile
+                        </Link>
+                      </li>
+                      <li className="menu-item">My booking</li>
+                      <li className="menu-item">Be a lessor</li>
+                      <li className="menu-item" onClick={handleLogout}>
+                        Logout
+                      </li>
+                    </ul>
+                  </div>
+                )}
               </div>
             </>
           ) : (

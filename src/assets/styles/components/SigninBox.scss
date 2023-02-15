@@ -26,6 +26,9 @@
       > label {
         margin: 16px 0 8px;
       }
+      input.error-validate {
+        border-color: var(--caution-color);
+      }
       button {
         cursor: pointer;
         border: none;
@@ -36,6 +39,11 @@
         background-color: var(--secondary-color);
         color: var(--contrast-color);
       }
+      button:disabled,
+button[disabled]{
+  background-color: #cccccc;
+  color: #666666;
+}
       .option-login {
         margin-top: 12px;
         margin-bottom: 8px;

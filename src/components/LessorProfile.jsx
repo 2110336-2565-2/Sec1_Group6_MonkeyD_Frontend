@@ -1,51 +1,35 @@
 import React from "react";
 
-const LessorProfile = ({ lessor }) => {
-  // const averageRating =
-  //   lessor.review.reduce(
-  //     (accumulator, currentValue) => accumulator + currentValue,
-  //     0
-  //   ) / lessor.review.length;
-
+const LessorProfile = ({
+  user_image,
+  owner,
+  user_rating,
+  brand,
+  model,
+  description,
+}) => {
   return (
     <div className="profile-detail">
-      <div className="lessor-name">{lessor.username}</div>
-      <div className="user-role">Lessor</div>
-      <div className="lessor-status">
-        <img src={lessor.image} alt="lessorProfile" className="profile-image" />
-        <ul className="status">
-          <li>
-            <div>
-              <i className="fa-solid fa-star" />
-              <p>4.5 Lessor Rating</p>
-            </div>
-          </li>
-          <li>
-            <div>
-              <i className="fa-sharp fa-solid fa-award" />
-              <p>{lessor.review.length} Reviews</p>
-            </div>
-          </li>
-          <li>
-            <div>
-              <i className="fa-solid fa-users" />
-              <p>{lessor.rentedCount} Renter</p>
-            </div>
-          </li>
-          <li>
-            <div>
-              <i className="fa-solid fa-car-side" />
-              <p>{lessor.ownercar.length} Cars</p>
-            </div>
-          </li>
-        </ul>
+      <div className="lessor-name">
+        <img src={user_image} alt="lessorProfile" className="profile-image" />
+        <h3>{owner}</h3>
       </div>
-      <div className="more-infor">
+      <div className="more-info">
+        <div>
+          <i className="fa-solid fa-star" />
+          <p>{user_rating}</p>
+        </div>
         <button className="view-review-btn">View Lessor Reviews</button>
         <button className="chat-btn">
           <i className="fa-solid fa-comments" />
           Start Chat Now
         </button>
+      </div>
+      <div className="car-info">
+        <h3>
+          {brand} {model}
+        </h3>
+        <p className="description">{description}</p>
       </div>
     </div>
   );

@@ -28,6 +28,7 @@ const ResetPasswordPage = () => {
 
       if (response.status === 200) {
         setMessage("Your password is reset!");
+        window.location.assign("/");
       } else {
         setMessage("An error occurred. Please try again later.");
       }

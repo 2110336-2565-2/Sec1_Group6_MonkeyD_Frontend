@@ -11,6 +11,7 @@ const SearchResult = ({carList}) => {
           return (
             <CarCard
               key={car._id}
+              car_id={car._id}
               user_image={
                 car.user_image ||
                 "https://i.pinimg.com/550x/4d/72/97/4d7297dad94265c0acbc3b677d418935.jpg" // have to change image by default
