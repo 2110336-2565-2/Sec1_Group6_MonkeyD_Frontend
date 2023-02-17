@@ -8,7 +8,6 @@ import {useParams} from "react-router-dom";
 const CarDetail = () => {
   const [carDetail, setCarDetail] = useState();
   const {carId} = useParams();
-
   useEffect(() => {
     const fetchCarDetail = async () => {
       try {
