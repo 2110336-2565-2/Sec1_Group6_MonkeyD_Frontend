@@ -1,0 +1,28 @@
+.my-profile {
+  .header {
+    padding: 1.5rem 2rem;
+    border-bottom: 2px solid var(--secondary-background);
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+  .info-container {
+    padding: 0 2rem;
+    .text {
+      padding: 1rem 0;
+      border-bottom: 1px solid var(--secondary-background);
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      h5 {
+        width: 25%;
+      }
+      input {
+        width: 75%;
+      }
+      .value {
+        color: var(--placeholder-color);
+      }
+    }
+  }
+}
