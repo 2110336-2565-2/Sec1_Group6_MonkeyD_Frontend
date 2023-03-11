@@ -12,6 +12,7 @@ const CarInforTable = ({
   rental_price,
   rating,
   passenger,
+  rented_out,
 }) => {
   const handleClick = async () => {
     const isLogin = await checkLogin();
@@ -107,6 +108,13 @@ const CarInforTable = ({
           <div className="value">
             <i className="fa-solid fa-user" />
             {passenger}
+          </div>
+        </div>
+        <div className="car-row">
+          <p>Rented out</p>
+          <div className="value">
+            <i className="fa-solid fa-gavel"></i>
+            {rented_out} times
           </div>
         </div>
       </div>
