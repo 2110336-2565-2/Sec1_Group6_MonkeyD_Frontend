@@ -3,7 +3,7 @@ import {useState} from "react";
 const MyBooking = () => {
   const statuses = {1: "Pending", 2: "Cancelled", 3: "Rented", 4: "Completed"};
   const [status, Setstatus] = useState(1);
-  Object.entries(statuses).forEach(([key, value]) => console.log(key, value));
+
   return (
     <div className="my-booking">
       <div className="status-bar">

@@ -4,7 +4,15 @@ import MyBooking from "../components/MyBooking";
 import MyProfile from "../components/MyProfile";
 
 const ProfilePage = () => {
+  const menus = {
+    1: "My profile",
+    2: "Be a lessor",
+    3: "My booking",
+    4: "Logout",
+  };
+
   const [userInfo, setUserInfo] = useState({});
+  const [menuId, setMenuId] = useState(1);
 
   useEffect(() => {
     const fetchUserInfo = async () => {
@@ -43,19 +51,25 @@ const ProfilePage = () => {
             <p>{`@${userInfo.username}`}</p>
           </div>
           <div className="menu card">
-            <button>My profile</button>
-            <button>Be a lessor</button>
-            <button>My booking</button>
-            <button>Log out</button>
+            {Object.keys(menus).map((key) => {
+              return (
+                <button
+                  value={key}
+                  key={`${key}-${menus[key]}`}
+                  className={key == menuId ? "selected" : ""}
+                  onClick={() => setMenuId(key)}
+                >
+                  {menus[key]}
+                </button>
+              );
+            })}
           </div>
         </div>
         <div className="content">
           <div className="card">
-            <MyBooking />
+            {menuId == 1 && <MyProfile userInfo={userInfo} setUserInfo={setUserInfo} />}
+            {menuId == 3 && <MyBooking />}
           </div>
-          {/* <div className="card">
-            <MyProfile userInfo={userInfo} setUserInfo={setUserInfo} />
-          </div> */}
         </div>
       </div>
     </div>

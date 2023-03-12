@@ -43,9 +43,15 @@
         padding: 1rem;
         text-align: left;
         border-radius: 4px;
+        color: var(--p-color);
         &:hover {
           background-color: var(--secondary-background);
+          cursor: pointer;
         }
+      }
+      button.selected {
+        color: var(--secondary-color);
+        font-weight: 600;
       }
     }
 
