@@ -172,15 +172,23 @@ const Signin = ({signin, signup}) => {
             </label>
             <a href="/forgotPassword">Forgot password?</a>
           </div>
-
           <button type="submit" disabled={form === resetForm}>
             {signup ? "Get Started" : "Sign in"}
           </button>
           {resError && <span className="error">{resError}</span>}
         </form>
-        {/* <div className="social-links">
-            <p>Or register using:</p>
-        </div> */}
+        <div className="divider">
+          <hr />
+          <p>or</p>
+          <hr />
+        </div>
+        <a href="http://localhost:8080/auth/google" class="btn-google">
+          <img
+            src="https://www.freepnglogos.com/uploads/google-logo-png/google-logo-png-webinar-optimizing-for-success-google-business-webinar-13.png"
+            alt="Google logo"
+          />
+          <span>Continue with Google</span>
+        </a>
       </div>
     </div>
   );

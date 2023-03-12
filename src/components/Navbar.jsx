@@ -67,7 +67,6 @@ const Navbar = () => {
             withCredentials: true,
           }); // change path to backend service
           setNavbarInfo(res.data.user);
-          console.log(res.data);
         } catch (error) {
           console.error(error);
         }
