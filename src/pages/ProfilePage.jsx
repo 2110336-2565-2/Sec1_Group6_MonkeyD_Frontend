@@ -4,21 +4,35 @@ import MyBooking from "../components/MyBooking";
 import MyProfile from "../components/MyProfile";
 
 const ProfilePage = () => {
-  var menus = {
+  const [menus, setMenus] = useState({
     1: "My profile",
-    2: "Be a lessor",
     3: "My booking",
     4: "My Cars",
     5: "Logout",
-  };
-
+  });
   const [userInfo, setUserInfo] = useState({});
   const [menuId, setMenuId] = useState(1);
 
   useEffect(() => {
+    const id = sessionStorage.getItem("user_id");
+    const fetchLessor = async () => {
+      const res = await axios.post(
+        `http://localhost:8080/user/role`,
+        {
+          id: id,
+        },
+        {
+          withCredentials: true,
+        }
+      );
+      if (res.data.userRole !== "lessor") {
+        var newMenus = menus;
+        newMenus[2] = "Be a lessor";
+        setMenus(newMenus);
+      }
+    };
     const fetchUserInfo = async () => {
       try {
-        const id = sessionStorage.getItem("user_id");
         const res = await axios.post(
           `http://localhost:8080/user/info`,
           {
@@ -40,15 +54,12 @@ const ProfilePage = () => {
     };
 
     fetchUserInfo();
+    fetchLessor();
   }, []);
 
   const handleMenuClick = (key) => {
     if (key === 2) {
-      // Remove "Be a lessor" button when clicked
-      const newMenus = {...menus};
-      delete newMenus[2];
-      setMenuId(1);
-      menus = newMenus;
+      window.location.assign("/lessorRegister");
     } else {
       setMenuId(key);
     }
