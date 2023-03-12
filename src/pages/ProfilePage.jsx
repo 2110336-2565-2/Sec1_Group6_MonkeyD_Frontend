@@ -4,11 +4,12 @@ import MyBooking from "../components/MyBooking";
 import MyProfile from "../components/MyProfile";
 
 const ProfilePage = () => {
-  const menus = {
+  var menus = {
     1: "My profile",
     2: "Be a lessor",
     3: "My booking",
-    4: "Logout",
+    4: "My Cars",
+    5: "Logout",
   };
 
   const [userInfo, setUserInfo] = useState({});
@@ -41,6 +42,18 @@ const ProfilePage = () => {
     fetchUserInfo();
   }, []);
 
+  const handleMenuClick = (key) => {
+    if (key === 2) {
+      // Remove "Be a lessor" button when clicked
+      const newMenus = {...menus};
+      delete newMenus[2];
+      setMenuId(1);
+      menus = newMenus;
+    } else {
+      setMenuId(key);
+    }
+  };
+
   return (
     <div className="profilepage-container">
       <div className="profile-container">
@@ -52,12 +65,13 @@ const ProfilePage = () => {
           </div>
           <div className="menu card">
             {Object.keys(menus).map((key) => {
+              key = Number(key);
               return (
                 <button
                   value={key}
                   key={`${key}-${menus[key]}`}
-                  className={key == menuId ? "selected" : ""}
-                  onClick={() => setMenuId(key)}
+                  className={key === menuId ? "selected" : ""}
+                  onClick={() => handleMenuClick(key)}
                 >
                   {menus[key]}
                 </button>
@@ -67,8 +81,10 @@ const ProfilePage = () => {
         </div>
         <div className="content">
           <div className="card">
-            {menuId == 1 && <MyProfile userInfo={userInfo} setUserInfo={setUserInfo} />}
-            {menuId == 3 && <MyBooking />}
+            {menuId === 1 && (
+              <MyProfile userInfo={userInfo} setUserInfo={setUserInfo} />
+            )}
+            {menuId === 3 && <MyBooking />}
           </div>
         </div>
       </div>
