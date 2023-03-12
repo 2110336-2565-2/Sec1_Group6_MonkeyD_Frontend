@@ -1,42 +1,18 @@
 import axios from "axios";
 import {useEffect, useState} from "react";
+import MyBooking from "../components/MyBooking";
+import MyProfile from "../components/MyProfile";
 
 const ProfilePage = () => {
-  const [isEdit, setIsEdit] = useState(false);
+  const menus = {
+    1: "My profile",
+    2: "Be a lessor",
+    3: "My booking",
+    4: "Logout",
+  };
+
   const [userInfo, setUserInfo] = useState({});
-
-  const toggleIsEdit = () => {
-    setIsEdit(!isEdit);
-  };
-
-  const handleChange = (event) => {
-    console.log(event);
-    const {name, value} = event.target;
-    setUserInfo({
-      ...userInfo,
-      [name]: value,
-    });
-  };
-
-  const submitUserInfo = async () => {
-    try {
-      const id = sessionStorage.getItem("user_id");
-      const res = await axios.patch(
-        `http://localhost:8080/user/info`,
-        {
-          id: id,
-          ...userInfo,
-        },
-        {
-          withCredentials: true,
-        }
-      );
-      console.log("55");
-      toggleIsEdit();
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const [menuId, setMenuId] = useState(1);
 
   useEffect(() => {
     const fetchUserInfo = async () => {
@@ -69,52 +45,35 @@ const ProfilePage = () => {
     <div className="profilepage-container">
       <div className="profile-container">
         <div className="content">
-          <div className="profile card">
+          <div className="profile-tag card">
             <img className="profile-picture" src={userInfo.image} alt="" />
             <h3>{`${userInfo.firstName} ${userInfo.lastName}`}</h3>
             <p>{`@${userInfo.username}`}</p>
           </div>
           <div className="menu card">
-            <button>My profile</button>
-            <button>Be a lessor</button>
-            <button>My booking</button>
-            <button>Log out</button>
+            {Object.keys(menus).map((key) => {
+              return (
+                <button
+                  value={key}
+                  key={`${key}-${menus[key]}`}
+                  className={key == menuId ? "selected" : ""}
+                  onClick={() => setMenuId(key)}
+                >
+                  {menus[key]}
+                </button>
+              );
+            })}
           </div>
         </div>
         <div className="content">
-          <div className="detail card">
-            <div className="header">
-              <h2>My profile</h2>
-              <button onClick={isEdit ? submitUserInfo : toggleIsEdit}>
-                {isEdit ? "Save" : "Edit"}
-              </button>
-            </div>
-            <div className="info-container">
-              {userInfo &&
-                Object.keys(userInfo).map((key, index) => {
-                  return (
-                    <div className="text" key={`${key}`}>
-                      <h5>{key}</h5>
-                      {isEdit ? (
-                        <input
-                          id={`${key}`}
-                          name={`${key}`}
-                          className=""
-                          value={userInfo[key]}
-                          onChange={handleChange}
-                          disabled={key === "username" || key === "email" || key === "image"}
-                        />
-                      ) : (
-                        <h5 className="value">{userInfo[key]}</h5>
-                      )}
-                    </div>
-                  );
-                })}
-            </div>
+          <div className="card">
+            {menuId == 1 && <MyProfile userInfo={userInfo} setUserInfo={setUserInfo} />}
+            {menuId == 3 && <MyBooking />}
           </div>
         </div>
       </div>
     </div>
   );
 };
+
 export default ProfilePage;

@@ -1,0 +1,38 @@
+.my-booking {
+  .status-bar {
+    display: flex;
+    // border-bottom: solid 2px var(--secondary-color);
+    .status {
+      flex: 1 100%;
+      text-align: center;
+      padding: 1rem;
+    }
+    .status.selected {
+        border-bottom: solid 2px var(--secondary-color);
+        color: var(--secondary-color);
+    }
+  }
+  .booking-container {
+    // height: 50vh;
+    display: flex;
+    flex-direction: column;
+
+    .booking {
+        height: 13rem;
+        padding: 2rem;
+        display: grid;
+        gap: 2rem;
+        grid-template-columns: 1fr 4fr;
+        .img-test {
+            background-color: var(--secondary-color);
+            width: 13rem;
+        }
+        .booking-info {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+    }
+
+  }
+}
