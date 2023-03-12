@@ -1,5 +1,6 @@
 import axios from "axios";
 import {useEffect, useState} from "react";
+import MyBooking from "../components/MyBooking";
 import MyProfile from "../components/MyProfile";
 
 const ProfilePage = () => {
@@ -50,8 +51,11 @@ const ProfilePage = () => {
         </div>
         <div className="content">
           <div className="card">
-            <MyProfile userInfo={userInfo} setUserInfo={setUserInfo} />
+            <MyBooking />
           </div>
+          {/* <div className="card">
+            <MyProfile userInfo={userInfo} setUserInfo={setUserInfo} />
+          </div> */}
         </div>
       </div>
     </div>
