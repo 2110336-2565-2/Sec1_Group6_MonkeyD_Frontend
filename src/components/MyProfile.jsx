@@ -49,7 +49,7 @@ const MyProfile = ({userInfo, setUserInfo}) => {
           Object.keys(userInfo).map((key, index) => {
             return (
               <div className="text" key={`${key}`}>
-                <h5>{key}</h5>
+                <h5 className="label">{key}</h5>
                 {isEdit ? (
                   <input
                     id={`${key}`}

@@ -14,14 +14,17 @@
       display: flex;
       flex-direction: row;
       align-items: center;
-      h5 {
+      .label {
         width: 25%;
       }
       input {
         width: 75%;
       }
       .value {
+        width: 75%;
         color: var(--placeholder-color);
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
     }
   }
