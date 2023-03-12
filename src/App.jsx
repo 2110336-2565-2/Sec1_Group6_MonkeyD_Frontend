@@ -12,6 +12,7 @@ import SigninPage from "./pages/SigninPage";
 import Footer from "./components/Footer";
 import ProfilePage from "./pages/ProfilePage";
 import AddCarPage from "./pages/AddCarPage";
+import LessorRegisterationPage from "./pages/LessorRegisterationPage";
 
 const App = () => {
   return (
@@ -28,6 +29,7 @@ const App = () => {
           <Route path="/forgotPassword" element={<ForgotPasswordPage />} />
           <Route path="/addCar" element={<AddCarPage />} />
           <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/lessorRegister" element={<LessorRegisterationPage />} />
           <Route path="*" element={<NoPage />} />
         </Routes>
         <Footer />
