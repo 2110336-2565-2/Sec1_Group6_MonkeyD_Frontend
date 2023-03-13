@@ -1,0 +1,13 @@
+.add-review-box{
+    label {
+        margin: 16px 0 8px;
+    }
+    .flex-column{
+        display: flex;
+        flex-direction: column;
+    }
+    textarea{
+        resize: none;
+        height: 100px;
+      }
+}
