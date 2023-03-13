@@ -41,10 +41,13 @@ const HomePage = () => {
 
   const handleCookiesAuth = () => {
     // handle cookie auth from google
-    if (cookieExists("userID")) {
-      const cookieValue = getCookie("userID");
-      sessionStorage.setItem("user_id", cookieValue);
+    if (cookieExists("userID") && cookieExists("username")) {
+      const useridValue = getCookie("userID");
+      const usernameValue = getCookie("username");
+      sessionStorage.setItem("user_id", useridValue);
+      sessionStorage.setItem("username", usernameValue);
       deleteCookie("userID");
+      deleteCookie("username");
     } else {
       return;
     }

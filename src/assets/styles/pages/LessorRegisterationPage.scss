@@ -5,16 +5,18 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  min-height: 80vh;
+  padding: 32px;
   .head-title {
-    margin-bottom: 20px;
-    font-size: var(--header1-fs);
+    margin-top: 0;
+    margin-bottom: 32px;
     display: flex;
     justify-content: center;
   }
   .register-form {
     background-color: var(--contrast-color);
-    margin: 24px 0;
-    padding: 32px;
+    padding: 48px;
+    padding-bottom: 40px;
     box-shadow: 0 2px 4px -1px rgba(5, 25, 45, 0.3);
     .row-input {
       display: grid;
@@ -34,7 +36,7 @@
     .submit-btn {
       display: flex;
       justify-content: flex-end;
-      margin-top: 16px;
+      margin-top: 28px;
       button {
         font-size: var(--button1-fs);
         width: 100%;

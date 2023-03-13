@@ -110,7 +110,15 @@ const Navbar = () => {
                           My booking
                         </Link>
                       </li>
-
+                      <li className="menu-item">
+                        <Link
+                          to="/profile?menu=car"
+                          className="link"
+                          onClick={toggleDropdown}
+                        >
+                          My cars
+                        </Link>
+                      </li>
                       {navbarInfo.isLessor ? (
                         <li className="menu-item" onClick={handleAddCar}>
                           Add your car

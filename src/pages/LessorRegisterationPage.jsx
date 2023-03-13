@@ -68,7 +68,7 @@ const LessorRegisterationPage = () => {
   return (
     <div className="lessor-registeration">
       <form onSubmit={handleSubmit} className="register-form">
-        <div className="head-title">Be a Lessor</div>
+        <h2 className="head-title">Be a Lessor</h2>
         <div className="row-input">
           <label>Prefix: </label>
           <div>
