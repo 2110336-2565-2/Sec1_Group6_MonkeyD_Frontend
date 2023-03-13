@@ -11,17 +11,13 @@
     .text {
       padding: 1rem 0;
       border-bottom: 1px solid var(--secondary-background);
-      display: flex;
-      flex-direction: row;
+      display: grid;
+      grid-template-columns: 30% 70%;
       align-items: center;
-      h5 {
-        width: 25%;
-      }
-      input {
-        width: 75%;
-      }
       .value {
         color: var(--placeholder-color);
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
     }
   }

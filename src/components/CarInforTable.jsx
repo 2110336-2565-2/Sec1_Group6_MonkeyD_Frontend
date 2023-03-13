@@ -13,6 +13,8 @@ const CarInforTable = ({
   rating,
   passenger,
   rented_out,
+  set_user_info,
+  set_show_modal,
 }) => {
   const handleClick = async () => {
     const isLogin = await checkLogin();
@@ -21,37 +23,81 @@ const CarInforTable = ({
       window.location.assign("/");
       return;
     }
+
     try {
-      await axios.patch(
-        `http://localhost:8080/car`,
-        {},
+      const id = sessionStorage.getItem("user_id");
+      const res = await axios.post(
+        `http://localhost:8080/user/info`,
         {
-          headers: {
-            car_id: car_id,
-            renter_id: sessionStorage.getItem("user_id"),
-          },
+          id: id,
+        },
+        {
           withCredentials: true,
         }
       );
-      // window.location.assign("/");
+      const {
+        username,
+        email,
+        prefix,
+        firstName,
+        lastName,
+        phoneNumber,
+        image,
+        IDCardNumber,
+        IDCardImage,
+        drivingLicenseNumber,
+        drivingLicenseImage,
+      } = res.data.user;
+      const selectedUserInfo = {
+        username,
+        email,
+        prefix,
+        firstName,
+        lastName,
+        phoneNumber,
+        image,
+        IDCardNumber,
+        IDCardImage,
+        drivingLicenseNumber,
+        drivingLicenseImage,
+      };
+      set_user_info(selectedUserInfo);
+      set_show_modal(true);
     } catch (error) {
       console.error(error);
     }
-    try {
-      await axios.patch(
-        `http://localhost:8080/user`,
-        {},
-        {
-          headers: {
-            lessor_id: owner_id,
-            renter_id: sessionStorage.getItem("user_id"),
-          },
-          withCredentials: true,
-        }
-      );
-    } catch (error) {
-      console.error(error);
-    }
+
+    // try {
+    //   await axios.patch(
+    //     `http://localhost:8080/car`,
+    //     {},
+    //     {
+    //       headers: {
+    //         car_id: car_id,
+    //         renter_id: sessionStorage.getItem("user_id"),
+    //       },
+    //       withCredentials: true,
+    //     }
+    //   );
+    //   // window.location.assign("/");
+    // } catch (error) {
+    //   console.error(error);
+    // }
+    // try {
+    //   await axios.patch(
+    //     `http://localhost:8080/user`,
+    //     {},
+    //     {
+    //       headers: {
+    //         lessor_id: owner_id,
+    //         renter_id: sessionStorage.getItem("user_id"),
+    //       },
+    //       withCredentials: true,
+    //     }
+    //   );
+    // } catch (error) {
+    //   console.error(error);
+    // }
   };
   return (
     <div className="car-spec">
@@ -100,7 +146,7 @@ const CarInforTable = ({
           <p>Car Rating</p>
           <div className="value">
             <i className="fa-solid fa-star" />
-            {rating}
+            {rating.toFixed(2)}
           </div>
         </div>
         <div className="car-row">

@@ -25,7 +25,11 @@
 @import "./components/MyProfile.scss";
 @import "./components/MyBooking.scss";
 @import "./components/MyCars.scss";
+@import "./components/AddReviewBox.scss";
+@import "./components/CommentBox.scss";
+@import "./pages/AddReviewPage.scss";
 @import "./pages/LessorRegisterationPage.scss";
+@import "./components/ModalCarRent.scss";
 
 * {
   font-size: 16px;

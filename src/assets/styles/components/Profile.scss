@@ -8,7 +8,7 @@
     width: 100%;
   }
   display: grid;
-  grid-template-columns: 1fr 3fr;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 3fr);
   gap: 24px;
   .content {
     width: 100%;
@@ -32,6 +32,12 @@
         width: 75px;
         border-radius: 50%;
         background-color: var(--contrast-color);
+      }
+      h3 {
+        overflow-wrap: break-word;
+      }
+      p {
+        word-break: break-all;
       }
     }
     .card.menu {

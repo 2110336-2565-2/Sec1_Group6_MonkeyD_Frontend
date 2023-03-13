@@ -1,39 +1,31 @@
 import axios from "axios";
 import {useEffect, useState} from "react";
+import {useSearchParams} from "react-router-dom";
 import MyBooking from "../components/MyBooking";
 import MyProfile from "../components/MyProfile";
-import MyCars from "../components/MyCars";
 
 const ProfilePage = () => {
-  const [menus, setMenus] = useState({
-    1: "My profile",
-    3: "My booking",
-    4: "My cars",
-    5: "Logout",
-  });
+  const menus = {
+    me: "My profile",
+    lessor: "Be a lessor",
+    booking: "My booking",
+    car: "My cars",
+    logout: "Logout",
+  };
+
   const [userInfo, setUserInfo] = useState({});
-  const [menuId, setMenuId] = useState(1);
+  const [menu, setMenu] = useState("");
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const changeParamsMenu = (event) => {
+    searchParams.set("menu", event.target.value);
+    setSearchParams(searchParams);
+  };
 
   useEffect(() => {
-    const id = sessionStorage.getItem("user_id");
-    const fetchLessor = async () => {
-      const res = await axios.post(
-        `http://localhost:8080/user/role`,
-        {
-          id: id,
-        },
-        {
-          withCredentials: true,
-        }
-      );
-      if (res.data.userRole !== "lessor") {
-        var newMenus = menus;
-        newMenus[2] = "Be a lessor";
-        setMenus(newMenus);
-      }
-    };
     const fetchUserInfo = async () => {
       try {
+        const id = sessionStorage.getItem("user_id");
         const res = await axios.post(
           `http://localhost:8080/user/info`,
           {
@@ -44,27 +36,55 @@ const ProfilePage = () => {
           }
         );
         const filtered = Object.fromEntries(
-          Object.entries(res.data).filter(
+          Object.entries(res.data.user).filter(
             ([key, val]) => typeof val === "string"
           )
         );
-        setUserInfo(filtered);
+        const {
+          username,
+          email,
+          prefix,
+          firstName,
+          lastName,
+          phoneNumber,
+          image,
+          IDCardNumber,
+          IDCardImage,
+          drivingLicenseNumber,
+          drivingLicenseImage,
+        } = res.data.user;
+        const selectedUserInfo = {
+          username,
+          email,
+          prefix,
+          firstName,
+          lastName,
+          phoneNumber,
+          image,
+          IDCardNumber,
+          IDCardImage,
+          drivingLicenseNumber,
+          drivingLicenseImage,
+        };
+        setUserInfo(selectedUserInfo);
       } catch (error) {
         console.log(error);
       }
     };
 
     fetchUserInfo();
-    fetchLessor();
   }, []);
 
-  const handleMenuClick = (key) => {
-    if (key === 2) {
-      window.location.assign("/lessorRegister");
-    } else {
-      setMenuId(key);
+  useEffect(() => {
+    if (
+      searchParams.get("menu") === null ||
+      !(searchParams.get("menu") in menus)
+    ) {
+      searchParams.set("menu", "me");
+      setSearchParams(searchParams);
     }
-  };
+    setMenu(searchParams.get("menu"));
+  }, [searchParams, setSearchParams]);
 
   return (
     <div className="profilepage-container">
@@ -77,13 +97,12 @@ const ProfilePage = () => {
           </div>
           <div className="menu card">
             {Object.keys(menus).map((key) => {
-              key = Number(key);
               return (
                 <button
                   value={key}
                   key={`${key}-${menus[key]}`}
-                  className={key === menuId ? "selected" : ""}
-                  onClick={() => handleMenuClick(key)}
+                  className={key === menu ? "selected" : ""}
+                  onClick={changeParamsMenu}
                 >
                   {menus[key]}
                 </button>
@@ -93,11 +112,10 @@ const ProfilePage = () => {
         </div>
         <div className="content">
           <div className="card">
-            {menuId === 1 && (
+            {menu === "me" && (
               <MyProfile userInfo={userInfo} setUserInfo={setUserInfo} />
             )}
-            {menuId === 3 && <MyBooking />}
-            {menuId === 4 && <MyCars />}
+            {menu === "booking" && <MyBooking />}
           </div>
         </div>
       </div>
