@@ -15,7 +15,6 @@ const MyBookingPage = () => {
           }
         ); // change path to backend service
         setCarList(res.data);
-        console.log(carList);
       } catch (error) {
         console.error(error);
       }

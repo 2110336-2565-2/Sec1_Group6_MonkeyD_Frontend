@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState } from "react";
+import {useState} from "react";
 
 const MyProfile = ({userInfo, setUserInfo}) => {
   const [isEdit, setIsEdit] = useState(false);
@@ -29,7 +29,6 @@ const MyProfile = ({userInfo, setUserInfo}) => {
           withCredentials: true,
         }
       );
-      console.log("55");
       toggleIsEdit();
     } catch (error) {
       console.log(error);

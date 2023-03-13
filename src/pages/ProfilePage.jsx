@@ -2,12 +2,13 @@ import axios from "axios";
 import {useEffect, useState} from "react";
 import MyBooking from "../components/MyBooking";
 import MyProfile from "../components/MyProfile";
+import MyCars from "../components/MyCars";
 
 const ProfilePage = () => {
   const [menus, setMenus] = useState({
     1: "My profile",
     3: "My booking",
-    4: "My Cars",
+    4: "My cars",
     5: "Logout",
   });
   const [userInfo, setUserInfo] = useState({});
@@ -96,6 +97,7 @@ const ProfilePage = () => {
               <MyProfile userInfo={userInfo} setUserInfo={setUserInfo} />
             )}
             {menuId === 3 && <MyBooking />}
+            {menuId === 4 && <MyCars />}
           </div>
         </div>
       </div>

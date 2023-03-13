@@ -4,13 +4,10 @@ export const getCookie = (name) => {
     .split("; ")
     .find((row) => row.startsWith(`${name}=`))
     .split("=")[1]; // get the value after "auth="
-  console.log(cookieValue);
   const userId = decodeURIComponent(cookieValue);
 
-  console.log(userId);
   const parsedCookie = JSON.parse(userId.slice(2)); // remove the 'j:' prefix
-  const newUserId = parsedCookie.userID; // "640cfd781bd74dc9f57b3ebc"
-  console.log(newUserId);
+  const newUserId = parsedCookie.userID || parsedCookie.username; // "640cfd781bd74dc9f57b3ebc"
   // const userId = JSON.parse(decodeURIComponent(cookieValue)).userID;
   return newUserId;
 };
