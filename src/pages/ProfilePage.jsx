@@ -3,11 +3,12 @@ import {useEffect, useState} from "react";
 import {useSearchParams} from "react-router-dom";
 import MyBooking from "../components/MyBooking";
 import MyProfile from "../components/MyProfile";
+import MyCars from "../components/MyCars";
 
 const ProfilePage = () => {
   const menus = {
     me: "My profile",
-    lessor: "Be a lessor",
+    // lessor: "Be a lessor",
     booking: "My booking",
     car: "My cars",
     logout: "Logout",
@@ -116,6 +117,7 @@ const ProfilePage = () => {
               <MyProfile userInfo={userInfo} setUserInfo={setUserInfo} />
             )}
             {menu === "booking" && <MyBooking />}
+            {menu === "car" && <MyCars />}
           </div>
         </div>
       </div>

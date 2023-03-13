@@ -50,7 +50,7 @@ const UnavailableDatesMap = ({unavailableTimes = [], onSlotSelect}) => {
           }}
         />
       ) : (
-        <p>No unavailable times to display.</p>
+        <p style={{textAlign: "center"}}>No unavailable times to display.</p>
       )}
     </div>
   );

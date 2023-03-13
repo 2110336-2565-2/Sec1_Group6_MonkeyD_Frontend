@@ -10,7 +10,7 @@
     flex-direction: column;
     align-items: center;
     width: 700px;
-    height: 65%;
+    height: 60%;
     border-radius: 12px;
     padding: 24px;
     // justify-content: center;
@@ -118,11 +118,18 @@
         -webkit-appearance: none;
         -moz-appearance: none;
         background-image: none;
+        &:hover {
+          cursor: pointer;
+          background-color: #495fa0;
+          color: white;
+        }
       }
     }
   }
   hr {
-    // border-color: var(--secondary-col  or);
+    border-color: #f2f2f218;
+    color: #f2f2f2;
+    background-color: #f2f2f2;
   }
   .mycars-container {
     display: flex;
