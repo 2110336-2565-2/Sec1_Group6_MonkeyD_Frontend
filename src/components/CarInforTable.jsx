@@ -100,7 +100,7 @@ const CarInforTable = ({
           <p>Car Rating</p>
           <div className="value">
             <i className="fa-solid fa-star" />
-            {rating}
+            {rating.toFixed(2)}
           </div>
         </div>
         <div className="car-row">
