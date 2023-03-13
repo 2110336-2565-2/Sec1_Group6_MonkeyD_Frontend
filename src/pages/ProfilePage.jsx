@@ -49,7 +49,7 @@ const ProfilePage = () => {
   }, []);
 
   useEffect(() => {
-    if (searchParams.get("menu") === null) {
+    if (searchParams.get("menu") === null || !(searchParams.get("menu") in menus)) {
       searchParams.set("menu", "me");
       setSearchParams(searchParams);
     }
