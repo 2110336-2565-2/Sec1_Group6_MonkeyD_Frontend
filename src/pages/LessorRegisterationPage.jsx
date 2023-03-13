@@ -63,7 +63,6 @@ const LessorRegisterationPage = () => {
       }
       window.location.assign("/");
     }
-    console.log(formValidate);
   };
 
   return (

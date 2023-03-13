@@ -3,13 +3,25 @@ import axios from "axios";
 import CarInforTable from "../components/CarInforTable";
 import CarGallery from "../components/CarGallery";
 import LessorProfile from "../components/LessorProfile";
+import ModalCarRent from "../components/ModalCarRent";
 import {useParams} from "react-router-dom";
 import CommentBox from "../components/CommentBox";
 
 const CarDetail = () => {
   const [carDetail, setCarDetail] = useState();
-  const [carReview, setCarReview] = useState([]);
+  const [userInfo, setUserInfo] = useState({});
+  const [showModal, setShowModal] = useState(false);
   const {carId} = useParams();
+
+  const setUserInfoHandler = (fill) => {
+    setUserInfo(fill);
+  };
+
+  const setShowModalHandler = (modalShow) => {
+    setShowModal(modalShow);
+  };
+
+  const [carReview, setCarReview] = useState([]);
   const reviews = [
     {
       owner: "Cha Eunwoo",
@@ -86,6 +98,8 @@ const CarDetail = () => {
               rating={carDetail.rating}
               passenger={carDetail.passenger}
               rented_out={carDetail.rentedOutCount}
+              set_user_info={setUserInfoHandler}
+              set_show_modal={setShowModalHandler}
             />
           </div>
           {carReview.length && (
@@ -98,6 +112,19 @@ const CarDetail = () => {
             />
           )}
         </>
+      ) : (
+        <></>
+      )}
+      {showModal ? (
+        <ModalCarRent
+          owner_id={carDetail.owner_id}
+          car_id={carDetail._id}
+          rental_price={carDetail.rental_price}
+          user_info={userInfo}
+          showModal={showModal}
+          set_show_modal={setShowModalHandler}
+          location={carDetail.available_location}
+        />
       ) : (
         <></>
       )}
