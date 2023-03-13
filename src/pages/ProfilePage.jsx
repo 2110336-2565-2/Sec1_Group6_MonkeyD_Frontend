@@ -35,11 +35,37 @@ const ProfilePage = () => {
           }
         );
         const filtered = Object.fromEntries(
-          Object.entries(res.data).filter(
+          Object.entries(res.data.user).filter(
             ([key, val]) => typeof val === "string"
           )
         );
-        setUserInfo(filtered);
+        const {
+          username,
+          email,
+          prefix,
+          firstName,
+          lastName,
+          phoneNumber,
+          image,
+          IDCardNumber,
+          IDCardImage,
+          drivingLicenseNumber,
+          drivingLicenseImage,
+        } = res.data.user;
+        const selectedUserInfo = {
+          username,
+          email,
+          prefix,
+          firstName,
+          lastName,
+          phoneNumber,
+          image,
+          IDCardNumber,
+          IDCardImage,
+          drivingLicenseNumber,
+          drivingLicenseImage,
+        }
+        setUserInfo(selectedUserInfo);
       } catch (error) {
         console.log(error);
       }
@@ -49,7 +75,10 @@ const ProfilePage = () => {
   }, []);
 
   useEffect(() => {
-    if (searchParams.get("menu") === null || !(searchParams.get("menu") in menus)) {
+    if (
+      searchParams.get("menu") === null ||
+      !(searchParams.get("menu") in menus)
+    ) {
       searchParams.set("menu", "me");
       setSearchParams(searchParams);
     }

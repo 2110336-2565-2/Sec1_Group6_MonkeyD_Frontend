@@ -20,10 +20,11 @@
     // height: 50vh;
     display: flex;
     flex-direction: column;
+    .no-result {
+      text-align: center;
+      padding: 6rem 0;
+    }
     .booking {
-      &:hover {
-        cursor: pointer;
-      }
       min-height: 13rem;
       padding: 2rem;
       display: grid;
@@ -36,6 +37,9 @@
         height: 13rem;
         object-fit: cover;
         border-radius: 4px;
+        &:hover {
+          cursor: pointer;
+        }
       }
       .booking-info {
         display: flex;
@@ -49,17 +53,35 @@
           h2 {
             word-break: break-all;
             min-width: 0;
+            &:hover {
+              cursor: pointer;
+            }
+          }
+          .status-cancel {
+            color: var(--caution-color);
           }
         }
         p {
           color: var(--p-color);
           overflow-wrap: break-word;
         }
-        .price {
-          text-align: end;
-          color: var(--secondary-color);
-          font-weight: 600;
+        .footer {
+          display: flex;
+          justify-content: space-between;
+          align-items: end;
           margin-top: auto;
+          .cancel {
+            color: var(--caution-color);
+            align-items: center;
+            &:hover {
+              cursor: pointer;
+            }
+          }
+          .price {
+            color: var(--secondary-color);
+            font-weight: 600;
+            margin-top: auto;
+          }
         }
       }
     }
