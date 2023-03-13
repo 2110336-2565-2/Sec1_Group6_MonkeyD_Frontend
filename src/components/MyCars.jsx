@@ -9,69 +9,6 @@ const MyCars = () => {
   const [showCalendar, setShowCalendar] = useState(false);
   const [status, setStatus] = useState();
 
-  // const [cars, setCars] = useState([
-  //   {
-  //     status: "Available", // ถ้า status ไม่ใช่ unavailable ให้ส่งเป็น available มาเลย
-  //     energy_types: ["Gasohol95", "EV"],
-  //     rating: 5,
-  //     rentedOutCount: 0,
-  //     brand: "Toyota",
-  //     model: "530e",
-  //     gear_type: "Auto",
-  //     available_location: "Chonburi",
-  //     rental_price: 2000,
-  //     passenger: 4,
-  //     totalprice: 10000,
-  //     car_image:
-  //       "https://img.khaorot.com/2021/01/21/5Cq7JfHF/dsc02704-83a7.jpg",
-  //     available_times: [
-  //       {start: "2023-08-12T17:00:00.000Z", end: "2023-08-14T17:00:00.000Z"},
-  //       {start: "2023-08-16T17:00:00.000Z", end: "2023-08-18T17:00:00.000Z"},
-  //     ],
-  // unavailable_times: [
-  //   {
-  //     start: "2023-08-22T17:00:00.000Z",
-  //     end: "2023-08-24T17:00:00.000Z",
-  //     username: "perm",
-  //   },
-  //       {
-  //         start: "2023-08-25T17:00:00.000Z",
-  //         end: "2023-08-26T17:00:00.000Z",
-  //         username: "perm",
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     status: "Available", // ถ้า status ไม่ใช่ unavailable ให้ส่งเป็น available มาเลย
-  //     energy_types: ["Gasohol95", "EV"],
-  //     rating: 5,
-  //     rentedOutCount: 0,
-  //     brand: "Toyota",
-  //     model: "530e",
-  //     gear_type: "Auto",
-  //     available_location: "Chonburi",
-  //     rental_price: 2000,
-  //     passenger: 4,
-  //     totalprice: 10000,
-  //     car_image:
-  //       "https://img.khaorot.com/2021/01/21/5Cq7JfHF/dsc02704-83a7.jpg",
-  //     available_times: [
-  //       {start: "2023-08-12T17:00:00.000Z", end: "2023-08-14T17:00:00.000Z"},
-  //     ],
-  //     unavailable_times: [
-  //       {
-  //         start: "2023-08-12T17:00:00.000Z",
-  //         end: "2023-08-14T17:00:00.000Z",
-  //         username: "perm",
-  //       },
-  //       {
-  //         start: "2023-08-12T17:00:00.000Z",
-  //         end: "2023-08-14T17:00:00.000Z",
-  //         username: "perm",
-  //       },
-  //     ],
-  //   },
-  // ]);
   const [cars, setCars] = useState([]);
 
   const toggleSwitch = () => {
