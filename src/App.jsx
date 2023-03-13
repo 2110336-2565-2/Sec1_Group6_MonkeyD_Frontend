@@ -12,6 +12,7 @@ import SigninPage from "./pages/SigninPage";
 import Footer from "./components/Footer";
 import ProfilePage from "./pages/ProfilePage";
 import AddCarPage from "./pages/AddCarPage";
+import AddReviewPage from "./pages/AddReviewPage";
 import LessorRegisterationPage from "./pages/LessorRegisterationPage";
 
 const App = () => {
@@ -30,6 +31,7 @@ const App = () => {
           <Route path="/addCar" element={<AddCarPage />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/lessorRegister" element={<LessorRegisterationPage />} />
+          <Route path="/addReview" element={<AddReviewPage />} />
           <Route path="*" element={<NoPage />} />
         </Routes>
         <Footer />

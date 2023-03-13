@@ -5,6 +5,7 @@ import CarGallery from "../components/CarGallery";
 import LessorProfile from "../components/LessorProfile";
 import ModalCarRent from "../components/ModalCarRent";
 import {useParams} from "react-router-dom";
+import CommentBox from "../components/CommentBox";
 
 const CarDetail = () => {
   const [carDetail, setCarDetail] = useState();
@@ -20,6 +21,33 @@ const CarDetail = () => {
     setShowModal(modalShow);
   };
 
+  const [carReview, setCarReview] = useState([]);
+  const reviews = [
+    {
+      owner: "Cha Eunwoo",
+      owner_img: "https://data.whicdn.com/images/334823840/original.jpg",
+      review: "Good service, friendly doctor, and not expensive",
+      date: "12 February 2023",
+      rating: 4,
+    },
+    {
+      owner: "Lalisa",
+      owner_img:
+        "https://storage.googleapis.com/k-react.appspot.com/images/profilePicture/Z0PS2szWPBVpJN3hj9mc_300x300.jpg",
+      review:
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release .",
+      date: "13 February 2023",
+      rating: 3.5,
+    },
+    {
+      owner: "dlwlrma",
+      owner_img: "https://image.kpopmap.com/2019/02/IU-LILAC.jpg",
+      review:
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release .",
+      date: "14 February 2023",
+      rating: 2.7,
+    },
+  ];
   useEffect(() => {
     const fetchCarDetail = async () => {
       try {
@@ -30,7 +58,19 @@ const CarDetail = () => {
         console.error(error);
       }
     };
+    const fetchCarReview = async () => {
+      try {
+        const res = await axios.get(
+          `http://localhost:8080/review?carID=${carId}`
+        ); // change path to backend service
+        setCarReview(res.data.reviews);
+      } catch (error) {
+        window.location.assign("/404");
+        console.error(error);
+      }
+    };
     fetchCarDetail();
+    fetchCarReview();
   }, [carId]);
 
   return (
@@ -62,6 +102,15 @@ const CarDetail = () => {
               set_show_modal={setShowModalHandler}
             />
           </div>
+          {carReview.length && (
+            <CommentBox
+              reviews={carReview}
+              carRating={carDetail.rating}
+              hygieneRating={carDetail.hygieneRating}
+              carConditionRating={carDetail.carConditionRating}
+              serviceRating={carDetail.serviceRating}
+            />
+          )}
         </>
       ) : (
         <></>
