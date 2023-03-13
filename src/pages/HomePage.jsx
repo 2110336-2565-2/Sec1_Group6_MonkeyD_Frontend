@@ -4,6 +4,7 @@ import Search from "../components/Search";
 import SlideFilter from "../components/SlideFilter";
 import SlideBanner from "../components/SlideBanner";
 import SearchResult from "../components/SearchResult";
+import {getCookie, deleteCookie, cookieExists} from "../utils/cookies";
 
 const HomePage = () => {
   const [carList, setCarList] = useState([]);
@@ -37,6 +38,17 @@ const HomePage = () => {
       console.error(error);
     }
   };
+
+  const handleCookiesAuth = () => {
+    // handle cookie auth from google
+    if (cookieExists("userID")) {
+      const cookieValue = getCookie("userID");
+      sessionStorage.setItem("user_id", cookieValue);
+      deleteCookie("userID");
+    } else {
+      return;
+    }
+  };
   useEffect(() => {
     const fetchCars = async () => {
       try {
@@ -46,6 +58,7 @@ const HomePage = () => {
         console.error(error);
       }
     };
+    handleCookiesAuth();
     fetchCars();
   }, []);
   return (

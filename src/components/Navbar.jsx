@@ -31,21 +31,7 @@ const Navbar = () => {
   };
 
   const handleRegisterLessor = async () => {
-    try {
-      await axios.patch(
-        `http://localhost:8080/user/update-role`,
-        {},
-        {
-          headers: {
-            user_id: sessionStorage.getItem("user_id"),
-          },
-          withCredentials: true,
-        }
-      ); // change path to backend service
-      window.location.reload();
-    } catch (error) {
-      console.error(error);
-    }
+    window.location.assign("/lessorRegister");
   };
 
   const handleAddCar = () => {
@@ -67,7 +53,6 @@ const Navbar = () => {
             withCredentials: true,
           }); // change path to backend service
           setNavbarInfo(res.data.user);
-          console.log(res.data);
         } catch (error) {
           console.error(error);
         }
@@ -126,8 +111,8 @@ const Navbar = () => {
                         </li>
                       ) : (
                         <li
-                          onClick={handleRegisterLessor}
                           className="menu-item"
+                          onClick={handleRegisterLessor}
                         >
                           Be a lessor
                         </li>

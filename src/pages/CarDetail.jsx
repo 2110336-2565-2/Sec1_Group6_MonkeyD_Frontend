@@ -85,6 +85,7 @@ const CarDetail = () => {
               rental_price={carDetail.rental_price}
               rating={carDetail.rating}
               passenger={carDetail.passenger}
+              rented_out={carDetail.rentedOutCount}
             />
           </div>
           {carReview.length && (

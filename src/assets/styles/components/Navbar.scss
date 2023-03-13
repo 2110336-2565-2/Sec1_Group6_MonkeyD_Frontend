@@ -55,14 +55,14 @@
           width: 200px;
           border-radius: 8px;
           background-color: var(--contrast-color);
-          ::after{
-              content: " ";
-              position: absolute;
-              border-width: 0 10px 8px;
-              top: -8px;
-              border-color: var(--contrast-color) transparent;
-              border-style: solid;
-              right: 24px;
+          ::after {
+            content: " ";
+            position: absolute;
+            border-width: 0 10px 8px;
+            top: -8px;
+            border-color: var(--contrast-color) transparent;
+            border-style: solid;
+            right: 24px;
           }
           .menu {
             width: 100%;
