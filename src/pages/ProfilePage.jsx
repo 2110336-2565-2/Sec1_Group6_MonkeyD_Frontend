@@ -1,18 +1,25 @@
 import axios from "axios";
 import {useEffect, useState} from "react";
+import {useSearchParams} from "react-router-dom";
 import MyBooking from "../components/MyBooking";
 import MyProfile from "../components/MyProfile";
 
 const ProfilePage = () => {
   const menus = {
-    1: "My profile",
-    2: "Be a lessor",
-    3: "My booking",
-    4: "Logout",
+    me: "My profile",
+    lessor: "Be a lessor",
+    booking: "My booking",
+    logout: "Logout",
   };
 
   const [userInfo, setUserInfo] = useState({});
-  const [menuId, setMenuId] = useState(1);
+  const [menu, setMenu] = useState("");
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const changeParamsMenu = (event) => {
+    searchParams.set("menu", event.target.value);
+    setSearchParams(searchParams);
+  };
 
   useEffect(() => {
     const fetchUserInfo = async () => {
@@ -41,6 +48,14 @@ const ProfilePage = () => {
     fetchUserInfo();
   }, []);
 
+  useEffect(() => {
+    if (searchParams.get("menu") === null) {
+      searchParams.set("menu", "me");
+      setSearchParams(searchParams);
+    }
+    setMenu(searchParams.get("menu"));
+  }, [searchParams, setSearchParams]);
+
   return (
     <div className="profilepage-container">
       <div className="profile-container">
@@ -56,8 +71,8 @@ const ProfilePage = () => {
                 <button
                   value={key}
                   key={`${key}-${menus[key]}`}
-                  className={key == menuId ? "selected" : ""}
-                  onClick={() => setMenuId(key)}
+                  className={key === menu ? "selected" : ""}
+                  onClick={changeParamsMenu}
                 >
                   {menus[key]}
                 </button>
@@ -67,8 +82,10 @@ const ProfilePage = () => {
         </div>
         <div className="content">
           <div className="card">
-            {menuId == 1 && <MyProfile userInfo={userInfo} setUserInfo={setUserInfo} />}
-            {menuId == 3 && <MyBooking />}
+            {menu === "me" && (
+              <MyProfile userInfo={userInfo} setUserInfo={setUserInfo} />
+            )}
+            {menu === "booking" && <MyBooking />}
           </div>
         </div>
       </div>
