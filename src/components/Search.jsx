@@ -10,6 +10,12 @@ const Search = ({
   const [showDropdown, setShowDropdown] = useState(false);
   const ref = useRef(null);
 
+  // // Get the current date in the format expected by the input element
+  // const currentDate = new Date().toISOString().substr(0, 10);
+
+  // // Set the default value of the input element to the current date
+  // startDateInput.current.defaultValue = currentDate;
+
   const handleOptionClick = (value) => {
     locationInput.current.value = value;
     setShowDropdown(false);
@@ -60,12 +66,24 @@ const Search = ({
       </div>
       <div className="filter-box">
         <div className="time-filter">
-          <label>Start Date And Time</label>
-          <input ref={startDateInput} type="date" />
+          <label>Start Date:</label>
+          <input
+            defaultValue={new Date().toISOString().substr(0, 10)}
+            ref={startDateInput}
+            type="date"
+          />
         </div>
         <div className="time-filter">
           <label>Return Date And Time</label>
-          <input ref={endDateInput} type="date" />
+          <input
+            defaultValue={new Date(
+              new Date().getTime() + 3 * 24 * 60 * 60 * 1000
+            )
+              .toISOString()
+              .substr(0, 10)}
+            ref={endDateInput}
+            type="date"
+          />
         </div>
         <button onClick={handleSearch}>Search</button>
       </div>
