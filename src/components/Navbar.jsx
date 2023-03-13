@@ -101,8 +101,14 @@ const Navbar = () => {
                           My profile
                         </Link>
                       </li>
-                      <li onClick={handleMyBooking} className="menu-item">
-                        My booking
+                      <li className="menu-item">
+                        <Link
+                          to="/profile?menu=booking"
+                          className="link"
+                          onClick={toggleDropdown}
+                        >
+                          My booking
+                        </Link>
                       </li>
 
                       {navbarInfo.isLessor ? (
