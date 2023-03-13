@@ -1,41 +1,24 @@
 import axios from "axios";
 import {useEffect, useState} from "react";
+import {useSearchParams} from "react-router-dom";
+import MyBooking from "../components/MyBooking";
+import MyProfile from "../components/MyProfile";
 
 const ProfilePage = () => {
-  const [isEdit, setIsEdit] = useState(false);
+  const menus = {
+    me: "My profile",
+    lessor: "Be a lessor",
+    booking: "My booking",
+    logout: "Logout",
+  };
+
   const [userInfo, setUserInfo] = useState({});
+  const [menu, setMenu] = useState("");
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  const toggleIsEdit = () => {
-    setIsEdit(!isEdit);
-  };
-
-  const handleChange = (event) => {
-    console.log(event);
-    const {name, value} = event.target;
-    setUserInfo({
-      ...userInfo,
-      [name]: value,
-    });
-  };
-
-  const submitUserInfo = async () => {
-    try {
-      const id = sessionStorage.getItem("user_id");
-      const res = await axios.patch(
-        `http://localhost:8080/user/info`,
-        {
-          id: id,
-          ...userInfo,
-        },
-        {
-          withCredentials: true,
-        }
-      );
-      console.log("55");
-      toggleIsEdit();
-    } catch (error) {
-      console.log(error);
-    }
+  const changeParamsMenu = (event) => {
+    searchParams.set("menu", event.target.value);
+    setSearchParams(searchParams);
   };
 
   useEffect(() => {
@@ -52,11 +35,37 @@ const ProfilePage = () => {
           }
         );
         const filtered = Object.fromEntries(
-          Object.entries(res.data).filter(
+          Object.entries(res.data.user).filter(
             ([key, val]) => typeof val === "string"
           )
         );
-        setUserInfo(filtered);
+        const {
+          username,
+          email,
+          prefix,
+          firstName,
+          lastName,
+          phoneNumber,
+          image,
+          IDCardNumber,
+          IDCardImage,
+          drivingLicenseNumber,
+          drivingLicenseImage,
+        } = res.data.user;
+        const selectedUserInfo = {
+          username,
+          email,
+          prefix,
+          firstName,
+          lastName,
+          phoneNumber,
+          image,
+          IDCardNumber,
+          IDCardImage,
+          drivingLicenseNumber,
+          drivingLicenseImage,
+        }
+        setUserInfo(selectedUserInfo);
       } catch (error) {
         console.log(error);
       }
@@ -65,56 +74,52 @@ const ProfilePage = () => {
     fetchUserInfo();
   }, []);
 
+  useEffect(() => {
+    if (
+      searchParams.get("menu") === null ||
+      !(searchParams.get("menu") in menus)
+    ) {
+      searchParams.set("menu", "me");
+      setSearchParams(searchParams);
+    }
+    setMenu(searchParams.get("menu"));
+  }, [searchParams, setSearchParams]);
+
   return (
     <div className="profilepage-container">
       <div className="profile-container">
         <div className="content">
-          <div className="profile card">
+          <div className="profile-tag card">
             <img className="profile-picture" src={userInfo.image} alt="" />
             <h3>{`${userInfo.firstName} ${userInfo.lastName}`}</h3>
             <p>{`@${userInfo.username}`}</p>
           </div>
           <div className="menu card">
-            <button>My profile</button>
-            <button>Be a lessor</button>
-            <button>My booking</button>
-            <button>Log out</button>
+            {Object.keys(menus).map((key) => {
+              return (
+                <button
+                  value={key}
+                  key={`${key}-${menus[key]}`}
+                  className={key === menu ? "selected" : ""}
+                  onClick={changeParamsMenu}
+                >
+                  {menus[key]}
+                </button>
+              );
+            })}
           </div>
         </div>
         <div className="content">
-          <div className="detail card">
-            <div className="header">
-              <h2>My profile</h2>
-              <button onClick={isEdit ? submitUserInfo : toggleIsEdit}>
-                {isEdit ? "Save" : "Edit"}
-              </button>
-            </div>
-            <div className="info-container">
-              {userInfo &&
-                Object.keys(userInfo).map((key, index) => {
-                  return (
-                    <div className="text" key={`${key}`}>
-                      <h5>{key}</h5>
-                      {isEdit ? (
-                        <input
-                          id={`${key}`}
-                          name={`${key}`}
-                          className=""
-                          value={userInfo[key]}
-                          onChange={handleChange}
-                          disabled={key === "username" || key === "email" || key === "image"}
-                        />
-                      ) : (
-                        <h5 className="value">{userInfo[key]}</h5>
-                      )}
-                    </div>
-                  );
-                })}
-            </div>
+          <div className="card">
+            {menu === "me" && (
+              <MyProfile userInfo={userInfo} setUserInfo={setUserInfo} />
+            )}
+            {menu === "booking" && <MyBooking />}
           </div>
         </div>
       </div>
     </div>
   );
 };
+
 export default ProfilePage;
