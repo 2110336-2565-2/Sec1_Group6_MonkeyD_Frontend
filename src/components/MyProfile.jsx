@@ -1,9 +1,7 @@
 import axios from "axios";
 import {useState} from "react";
 
-const MyProfile = ({userInfo, setUserInfo}) => {
-  const [isEdit, setIsEdit] = useState(false);
-
+const MyProfile = ({isEdit, setIsEdit, userInfo, setUserInfo, imageFile}) => {
   const toggleIsEdit = () => {
     setIsEdit(!isEdit);
   };
@@ -19,16 +17,22 @@ const MyProfile = ({userInfo, setUserInfo}) => {
   const submitUserInfo = async () => {
     try {
       const id = sessionStorage.getItem("user_id");
-      const res = await axios.patch(
-        `http://localhost:8080/user/info`,
-        {
-          id: id,
-          ...userInfo,
+      const formData = new FormData();
+      formData.append("id", id);
+
+      for (const [key, value] of Object.entries(userInfo)) {
+        formData.append(key, value);
+      }
+
+      if (imageFile) {
+        formData.append("image", imageFile);
+      }
+      await axios.patch(`http://localhost:8080/user/info`, formData, {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "multipart/form-data",
         },
-        {
-          withCredentials: true,
-        }
-      );
+      });
       toggleIsEdit();
     } catch (error) {
       console.log(error);
@@ -46,6 +50,7 @@ const MyProfile = ({userInfo, setUserInfo}) => {
       <div className="info-container">
         {userInfo &&
           Object.keys(userInfo).map((key, index) => {
+            if (key === "image") return null;
             return (
               <div className="text" key={`${key}`}>
                 <h5 className="label">{key}</h5>
