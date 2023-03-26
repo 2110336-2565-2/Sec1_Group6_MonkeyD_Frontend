@@ -15,6 +15,7 @@ const AddCar = () => {
     rental_price: "",
     registration_book_id: "",
   };
+
   const errorForm = {
     brand: "",
     model: "",
@@ -53,38 +54,10 @@ const AddCar = () => {
   const [new_car_images, setNewCarImages] = useState([]);
   const [car_images, setCarImages] = useState([]);
 
-  useEffect(() => {
-    if (new_car_images.length < 1) return;
-    const URLs = [];
-    new_car_images.forEach((image) => URLs.push(URL.createObjectURL(image)));
-    setCarImages(car_images.concat(URLs));
-  }, [new_car_images]);
-
   const onImageChange = (e) => {
     setNewCarImages([...e.target.files]);
   };
 
-  useEffect(() => {
-    // fetch data
-    const dataFetch = async () => {
-      try {
-        const res = await axios.get(
-          `https://private-anon-25f08158ff-carsapi1.apiary-mock.com/manufacturers`
-        );
-        let brands = [];
-        for (const e of res.data) {
-          brands.push(e.name);
-        }
-        brands.sort();
-        setBrands(brands);
-      } catch (error) {
-        console.error(error);
-        handleShowResError(error);
-      }
-    };
-
-    dataFetch();
-  }, []);
   const numberValidator = (value) => {
     if (value.length > 0) {
       const last = value.charAt(value.length - 1);
@@ -94,6 +67,7 @@ const AddCar = () => {
     }
     return value;
   };
+
   const handleImage = async (event) => {
     const {name, files} = event.target;
     if (name === "book_img") {
@@ -103,6 +77,7 @@ const AddCar = () => {
     }
     validateImage(event);
   };
+
   const validateImage = (event) => {
     let {name, files} = event.target;
     setError((prev) => {
@@ -231,25 +206,28 @@ const AddCar = () => {
       return;
     }
 
-    const data = {
-      car: {
-        ...form,
-        owner: sessionStorage.getItem("username"),
-        rating: 5, //under this must be changed
-        registration_book_url: `https://image.bangkokbiznews.com/uploads/images/contents/w1024/2021/10/WrsO3P0xh1qMhQYq6m7W.jpg${Math.random()}`,
-        car_images: [
-          "https://img.khaorot.com/2021/01/21/5Cq7JfHF/dsc02704-83a7.jpg",
-          "https://img.khaorot.com/2021/01/21/5Cq7JfHF/dsc02700-0888.jpg",
-          "https://img.khaorot.com/2021/01/22/5Cq7JfHF/12000-eed2.jpg",
-          "https://img.khaorot.com/2021/01/21/5Cq7JfHF/dsc02715-2447.jpg",
-          "https://img.khaorot.com/2021/01/21/5Cq7JfHF/dsc02718-c974.jpg",
-        ],
-      },
-    };
+    const formData = new FormData();
+    for (const [key, value] of Object.entries(form)) {
+      formData.append(key, value);
+    }
+    formData.append("owner_user_id", sessionStorage.getItem("user_id"));
+    formData.append("owner", sessionStorage.getItem("username"));
+    formData.append("rating", 0);
+
+    const registrationBookImage = document.querySelector("#bookimg").files[0];
+    formData.append("registration_book_image", registrationBookImage);
+
+    const carImages = document.querySelector("#carimages").files;
+    for (let i = 0; i < carImages.length; i++) {
+      formData.append("car_images", carImages[i]);
+    }
 
     try {
-      const res = await axios.post(`http://localhost:8080/car`, data, {
+      await axios.post(`http://localhost:8080/car`, formData, {
         withCredentials: true,
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       });
       window.location.assign("/");
     } catch (error) {
@@ -263,6 +241,35 @@ const AddCar = () => {
       setResError("");
     }, 3000);
   };
+
+  useEffect(() => {
+    if (new_car_images.length < 1) return;
+    const URLs = [];
+    new_car_images.forEach((image) => URLs.push(URL.createObjectURL(image)));
+    setCarImages(car_images.concat(URLs));
+  }, [new_car_images]);
+
+  useEffect(() => {
+    // fetch data
+    const dataFetch = async () => {
+      try {
+        const res = await axios.get(
+          `https://private-anon-25f08158ff-carsapi1.apiary-mock.com/manufacturers`
+        );
+        let brands = [];
+        for (const e of res.data) {
+          brands.push(e.name);
+        }
+        brands.sort();
+        setBrands(brands);
+      } catch (error) {
+        console.error(error);
+        handleShowResError(error);
+      }
+    };
+
+    dataFetch();
+  }, []);
 
   return (
     <div className="addcar-container">
@@ -444,7 +451,7 @@ const AddCar = () => {
             style={{width: "90px"}}
           />
           {registration_book_image ? (
-            <img src={registration_book_image} />
+            <img src={registration_book_image} alt="registration_book_image" />
           ) : null}
 
           {error.book_img && <span className="error">{error.book_img}</span>}
@@ -460,11 +467,16 @@ const AddCar = () => {
             accept="image/png, image/gif, image/jpeg"
             style={{width: "95px"}}
           />
-          <div>
-            {car_images.map((value) => {
-              return <img src={value} />;
-            })}
-          </div>
+          {car_images ? (
+            <div>
+              {car_images.map((value) => {
+                return <img src={value} alt="car_images" />;
+              })}
+            </div>
+          ) : (
+            <></>
+          )}
+
           {error.car_images && (
             <span className="error">{error.car_images}</span>
           )}

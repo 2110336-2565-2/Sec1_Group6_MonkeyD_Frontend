@@ -14,13 +14,33 @@ const ProfilePage = () => {
     logout: "Logout",
   };
 
+  const [isEdit, setIsEdit] = useState(false);
   const [userInfo, setUserInfo] = useState({});
+  const [imageFile, setImageFile] = useState(null);
   const [menu, setMenu] = useState("");
   const [searchParams, setSearchParams] = useSearchParams();
 
   const changeParamsMenu = (event) => {
     searchParams.set("menu", event.target.value);
     setSearchParams(searchParams);
+  };
+
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+
+    const reader = new FileReader();
+
+    reader.onloadend = () => {
+      setUserInfo({
+        ...userInfo,
+        image: reader.result,
+      });
+    };
+
+    if (file) {
+      setImageFile(file); // Store the file object
+      reader.readAsDataURL(file);
+    }
   };
 
   useEffect(() => {
@@ -36,11 +56,7 @@ const ProfilePage = () => {
             withCredentials: true,
           }
         );
-        const filtered = Object.fromEntries(
-          Object.entries(res.data.user).filter(
-            ([key, val]) => typeof val === "string"
-          )
-        );
+
         const {
           username,
           email,
@@ -50,10 +66,9 @@ const ProfilePage = () => {
           phoneNumber,
           image,
           IDCardNumber,
-          IDCardImage,
           drivingLicenseNumber,
-          drivingLicenseImage,
-        } = res.data.user;
+        } = res.data;
+
         const selectedUserInfo = {
           username,
           email,
@@ -63,10 +78,9 @@ const ProfilePage = () => {
           phoneNumber,
           image,
           IDCardNumber,
-          IDCardImage,
           drivingLicenseNumber,
-          drivingLicenseImage,
         };
+
         setUserInfo(selectedUserInfo);
       } catch (error) {
         console.log(error);
@@ -93,6 +107,15 @@ const ProfilePage = () => {
         <div className="content">
           <div className="profile-tag card">
             <img className="profile-picture" src={userInfo.image} alt="" />
+            {isEdit && (
+              <input
+                type="file"
+                id="image"
+                name="image"
+                onChange={handleImageChange}
+                accept="image/*"
+              />
+            )}
             <h3>{`${userInfo.firstName} ${userInfo.lastName}`}</h3>
             <p>{`@${userInfo.username}`}</p>
           </div>
@@ -114,7 +137,13 @@ const ProfilePage = () => {
         <div className="content">
           <div className="card">
             {menu === "me" && (
-              <MyProfile userInfo={userInfo} setUserInfo={setUserInfo} />
+              <MyProfile
+                isEdit={isEdit}
+                setIsEdit={setIsEdit}
+                userInfo={userInfo}
+                setUserInfo={setUserInfo}
+                imageFile={imageFile}
+              />
             )}
             {menu === "booking" && <MyBooking />}
             {menu === "car" && <MyCars />}

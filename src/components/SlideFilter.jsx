@@ -22,7 +22,7 @@ const SlideFilter = ({brandInputList, setBrandInputList, handleSearch}) => {
         "https://media.ed.edmunds-media.com/honda/cr-v/2023/oem/2023_honda_cr-v_4dr-suv_sport-hybrid_fq_oem_1_600.jpg",
     },
     {
-      brand: "Ramborghini",
+      brand: "Lamborghini",
       image:
         "https://www.lamborghini.com/sites/it-en/files/DAM/lamborghini/facelift_2019/model_detail/few_off/sian-fkp-37/2022/06_20/gallery/sian_05_m.jpg",
     },

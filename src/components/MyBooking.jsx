@@ -4,7 +4,7 @@ import {useNavigate} from "react-router-dom";
 
 const MyBooking = () => {
   // const statuses = {1: "Pending", 2: "Cancelled", 3: "Rented", 4: "Completed"};
-  const statuses = ["All", "Pending", "Cancelled", "Rented", "Completed"];
+  const statuses = ["All", "Pending", "Cancelled", "Rented", "Complete"];
   const [status, setStatus] = useState("All");
   const [bookings, setBookings] = useState({All: []});
   // const [bookings, setBookings] = useState({});
@@ -105,6 +105,7 @@ const MyBooking = () => {
                 <img
                   className="car-picture"
                   src={pic}
+                  alt=""
                   onClick={() => navigate(`/carDetail/${car_id}`)}
                 />
                 <div className="booking-info">
@@ -112,7 +113,11 @@ const MyBooking = () => {
                     <h2
                       onClick={() => navigate(`/carDetail/${car_id}`)}
                     >{`${brand} ${model}`}</h2>
-                    <h3 className={status === "Cancelled" ? "status-cancel" : ""}>{status}</h3>
+                    <h3
+                      className={status === "Cancelled" ? "status-cancel" : ""}
+                    >
+                      {status}
+                    </h3>
                   </div>
                   <h3>{`${license_plate}`}</h3>
                   <p>{`Pickup : ${pickupDate.toLocaleString()} at ${pickupLocation}`}</p>
