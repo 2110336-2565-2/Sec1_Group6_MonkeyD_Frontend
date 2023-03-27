@@ -6,8 +6,7 @@ const MyBooking = () => {
   // const statuses = {1: "Pending", 2: "Cancelled", 3: "Rented", 4: "Completed"};
   const statuses = ["All", "Pending", "Cancelled", "Rented", "Complete"];
   const [status, setStatus] = useState("All");
-  const [bookings, setBookings] = useState({All: []});
-  // const [bookings, setBookings] = useState({});
+  const [bookings, setBookings] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
 
@@ -15,6 +14,27 @@ const MyBooking = () => {
     return Math.round(
       Math.abs((firstDate - secondDate) / (24 * 60 * 60 * 1000)) * rate
     );
+  };
+
+  const fetchMyBooking = async () => {
+    try {
+      setIsLoading(true);
+      const id = sessionStorage.getItem("user_id");
+      const res = await axios.get(`http://localhost:8080/match/me/${id}`, {
+        params: {
+          ...(status !== "All"
+            ? {
+                status: status,
+              }
+            : {}),
+        },
+        withCredentials: true,
+      });
+      setBookings(res.data);
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const cancelBooking = async (car_id, match_id) => {
@@ -36,30 +56,10 @@ const MyBooking = () => {
     fetchMyBooking();
   };
 
-  const fetchMyBooking = async () => {
-    try {
-      setIsLoading(true);
-      const id = sessionStorage.getItem("user_id");
-      const res = await axios.get(`http://localhost:8080/match/me/${id}`, {
-        withCredentials: true,
-      });
-      const filtered = {};
-      statuses.forEach((status) => (filtered[status] = []));
-      res.data.matches.forEach((match) => {
-        filtered["All"].push(match);
-        filtered[match.status].push(match);
-      });
-      setBookings(filtered);
-      setIsLoading(false);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   useEffect(() => {
     fetchMyBooking();
     // setIsLoading(false);
-  }, []);
+  }, [status, setStatus]);
 
   return (
     <div className="my-booking">
@@ -72,16 +72,19 @@ const MyBooking = () => {
                 className={item == status ? "status selected" : "status"}
                 onClick={() => setStatus(item)}
               >
-                {statuses[i]}
+                {item}
               </div>
             );
           })}
       </div>
       <div className="booking-container">
-        {!isLoading && bookings?.[status]?.length === 0 ? (
+        {isLoading || bookings?.count === 0 ? (
           <div className="no-result">No result</div>
         ) : (
-          bookings[status].map((item, index) => {
+          bookings?.matches.map((match, index) => {
+            if (match.car == null) {
+              return;
+            }
             const {
               car: {
                 _id: car_id,
@@ -97,7 +100,7 @@ const MyBooking = () => {
               returnDateTime,
               returnLocation,
               status,
-            } = item;
+            } = match;
             const pickupDate = new Date(pickUpDateTime);
             const returnDate = new Date(returnDateTime);
             return (
@@ -123,12 +126,14 @@ const MyBooking = () => {
                   <p>{`Pickup : ${pickupDate.toLocaleString()} at ${pickupLocation}`}</p>
                   <p>{`Return : ${returnDate.toLocaleString()} at ${returnLocation}`}</p>
                   <div className="footer">
-                    <h3
-                      className="cancel"
-                      onClick={() => cancelBooking(car_id, match_id)}
-                    >
-                      {status !== "Cancelled" && "✖ Cancel booking"}
-                    </h3>
+                    {status === "Pending" && (
+                      <h3
+                        className="cancel"
+                        onClick={() => cancelBooking(car_id, match_id)}
+                      >
+                        ✖ Cancel booking
+                      </h3>
+                    )}
                     <h3 className="price">{`${calculatePrice(
                       pickupDate,
                       returnDate,
