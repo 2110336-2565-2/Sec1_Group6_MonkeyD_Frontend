@@ -4,20 +4,26 @@ import {useSearchParams} from "react-router-dom";
 import MyBooking from "../components/MyBooking";
 import MyProfile from "../components/MyProfile";
 import MyCars from "../components/MyCars";
+import Approval from "../components/Approval";
 
 const ProfilePage = () => {
-  const menus = {
+  const userMenus = {
     me: "My profile",
     // lessor: "Be a lessor",
     booking: "My booking",
     car: "My cars",
-    logout: "Logout",
+  };
+
+  const adminMenus = {
+    approval: "Approval management",
+    matches: "Matches management",
   };
 
   const [isEdit, setIsEdit] = useState(false);
   const [userInfo, setUserInfo] = useState({});
   const [imageFile, setImageFile] = useState(null);
   const [menu, setMenu] = useState("");
+  const [isAdmin, setIsAdmin] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
 
   const changeParamsMenu = (event) => {
@@ -67,6 +73,7 @@ const ProfilePage = () => {
           image,
           IDCardNumber,
           drivingLicenseNumber,
+          isAdmin,
         } = res.data;
 
         const selectedUserInfo = {
@@ -81,6 +88,7 @@ const ProfilePage = () => {
           drivingLicenseNumber,
         };
 
+        setIsAdmin(isAdmin);
         setUserInfo(selectedUserInfo);
       } catch (error) {
         console.log(error);
@@ -93,7 +101,10 @@ const ProfilePage = () => {
   useEffect(() => {
     if (
       searchParams.get("menu") === null ||
-      !(searchParams.get("menu") in menus)
+      !(
+        searchParams.get("menu") in userMenus ||
+        searchParams.get("menu") in adminMenus
+      )
     ) {
       searchParams.set("menu", "me");
       setSearchParams(searchParams);
@@ -120,18 +131,32 @@ const ProfilePage = () => {
             <p>{`@${userInfo.username}`}</p>
           </div>
           <div className="menu card">
-            {Object.keys(menus).map((key) => {
+            {Object.keys(userMenus).map((key) => {
               return (
                 <button
                   value={key}
-                  key={`${key}-${menus[key]}`}
+                  key={`${key}-${userMenus[key]}`}
                   className={key === menu ? "selected" : ""}
                   onClick={changeParamsMenu}
                 >
-                  {menus[key]}
+                  {userMenus[key]}
                 </button>
               );
             })}
+            {!isAdmin &&
+              Object.keys(adminMenus).map((key) => {
+                return (
+                  <button
+                    value={key}
+                    key={`${key}-${adminMenus[key]}`}
+                    className={key === menu ? "selected" : ""}
+                    onClick={changeParamsMenu}
+                  >
+                    {adminMenus[key]}
+                  </button>
+                );
+              })}
+            <button onClick={changeParamsMenu}>Log out</button>
           </div>
         </div>
         <div className="content">
@@ -147,6 +172,7 @@ const ProfilePage = () => {
             )}
             {menu === "booking" && <MyBooking />}
             {menu === "car" && <MyCars />}
+            {menu === "approval" && <Approval />}
           </div>
         </div>
       </div>
