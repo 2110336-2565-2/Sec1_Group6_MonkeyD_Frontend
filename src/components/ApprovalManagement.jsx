@@ -1,29 +1,32 @@
 import axios from "axios";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {useNavigate} from "react-router-dom";
 
-const Approval = () => {
+const ApprovalManagement = () => {
   const statuses = ["All", "Pending", "Rejected", "Accepted"];
   const [status, setStatus] = useState("All");
-  const [approvals, setapprovals] = useState({});
+  const [approvals, setApprovals] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
 
+  const searchRef = useRef();
+
   const fetchMyBooking = async () => {
+    const params = {
+      ...(status !== "All" && {
+        status: status,
+      }),
+      search: searchRef.current.value,
+    };
+
     try {
       setIsLoading(true);
       const id = sessionStorage.getItem("user_id");
       const res = await axios.get(`http://localhost:8080/match/me/${id}`, {
-        params: {
-          ...(status !== "All"
-            ? {
-                status: status,
-              }
-            : {}),
-        },
+        params,
         withCredentials: true,
       });
-      setapprovals(res.data);
+      setApprovals(res.data);
       setIsLoading(false);
     } catch (error) {
       console.log(error);
@@ -49,6 +52,11 @@ const Approval = () => {
     fetchMyBooking();
   };
 
+  const handleSearch = async (event) => {
+    event.preventDefault();
+    fetchMyBooking();
+  };
+
   useEffect(() => {
     fetchMyBooking();
     // setIsLoading(false);
@@ -69,6 +77,16 @@ const Approval = () => {
               </div>
             );
           })}
+      </div>
+      <div className="search-bar">
+        <div className="grey-bg">
+          <form onSubmit={handleSearch}>
+            <button type="submit">
+              <i className="fa-solid fa-magnifying-glass"></i>
+            </button>
+            <input type="text" ref={searchRef} placeholder="search"/>
+          </form>
+        </div>
       </div>
       <div className="booking-container">
         {isLoading || approvals?.count === 0 ? (
@@ -138,4 +156,4 @@ const Approval = () => {
     </div>
   );
 };
-export default Approval;
+export default ApprovalManagement;

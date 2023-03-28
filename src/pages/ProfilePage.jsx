@@ -4,7 +4,8 @@ import {useSearchParams} from "react-router-dom";
 import MyBooking from "../components/MyBooking";
 import MyProfile from "../components/MyProfile";
 import MyCars from "../components/MyCars";
-import Approval from "../components/Approval";
+import ApprovalManagement from "../components/ApprovalManagement";
+import MatchManagement from "../components/MatchManagement";
 
 const ProfilePage = () => {
   const userMenus = {
@@ -16,7 +17,7 @@ const ProfilePage = () => {
 
   const adminMenus = {
     approval: "Approval management",
-    matches: "Matches management",
+    match: "Match management",
   };
 
   const [isEdit, setIsEdit] = useState(false);
@@ -172,7 +173,8 @@ const ProfilePage = () => {
             )}
             {menu === "booking" && <MyBooking />}
             {menu === "car" && <MyCars />}
-            {menu === "approval" && <Approval />}
+            {menu === "approval" && <ApprovalManagement />}
+            {menu === "match" && <MatchManagement />}
           </div>
         </div>
       </div>

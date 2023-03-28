@@ -2,21 +2,14 @@ import axios from "axios";
 import {useEffect, useRef, useState} from "react";
 import {useNavigate} from "react-router-dom";
 
-const MyBooking = () => {
-  // const statuses = {1: "Pending", 2: "Cancelled", 3: "Rented", 4: "Completed"};
-  const statuses = ["All", "Pending", "Cancelled", "Rented", "Complete"];
+const MatchManagement = () => {
+  const statuses = ["All", "Pending", "Rejected", "Accepted"];
   const [status, setStatus] = useState("All");
-  const [bookings, setBookings] = useState({});
+  const [matches, setMatches] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
 
   const searchRef = useRef();
-
-  const calculatePrice = (firstDate, secondDate, rate) => {
-    return Math.round(
-      Math.abs((firstDate - secondDate) / (24 * 60 * 60 * 1000)) * rate
-    );
-  };
 
   const fetchMyBooking = async () => {
     const params = {
@@ -33,7 +26,7 @@ const MyBooking = () => {
         params,
         withCredentials: true,
       });
-      setBookings(res.data);
+      setMatches(res.data);
       setIsLoading(false);
     } catch (error) {
       console.log(error);
@@ -70,7 +63,7 @@ const MyBooking = () => {
   }, [status, setStatus]);
 
   return (
-    <div className="my-booking">
+    <div className="match-container">
       <div className="status-bar">
         {statuses &&
           statuses.map((item, i) => {
@@ -91,15 +84,15 @@ const MyBooking = () => {
             <button type="submit">
               <i className="fa-solid fa-magnifying-glass"></i>
             </button>
-            <input type="text" ref={searchRef} placeholder="search" />
+            <input type="text" ref={searchRef} placeholder="search"/>
           </form>
         </div>
       </div>
       <div className="booking-container">
-        {isLoading || bookings?.count === 0 ? (
+        {isLoading || matches?.count === 0 ? (
           <div className="no-result">No result</div>
         ) : (
-          bookings?.matches.map((match, index) => {
+          matches?.matches.map((match, index) => {
             if (match.car == null) {
               return;
             }
@@ -152,11 +145,7 @@ const MyBooking = () => {
                         ✖ Cancel booking
                       </h3>
                     )}
-                    <h3 className="price">{`${calculatePrice(
-                      pickupDate,
-                      returnDate,
-                      rental_price
-                    )} THB`}</h3>
+                    <h3 className="price">12345</h3>
                   </div>
                 </div>
               </div>
@@ -167,4 +156,4 @@ const MyBooking = () => {
     </div>
   );
 };
-export default MyBooking;
+export default MatchManagement;
