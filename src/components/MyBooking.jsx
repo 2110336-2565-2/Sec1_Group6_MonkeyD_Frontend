@@ -4,7 +4,7 @@ import {useNavigate} from "react-router-dom";
 
 const MyBooking = () => {
   // const statuses = {1: "Pending", 2: "Cancelled", 3: "Rented", 4: "Completed"};
-  const statuses = ["All", "Pending", "Cancelled", "Rented", "Complete"];
+  const statuses = ["All", "Pending", "Cancelled", "Rented", "Completed"];
   const [status, setStatus] = useState("All");
   const [bookings, setBookings] = useState({});
   const [isLoading, setIsLoading] = useState(true);

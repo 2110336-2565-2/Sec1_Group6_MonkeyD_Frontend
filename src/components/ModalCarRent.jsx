@@ -81,6 +81,7 @@ const ModalCarRent = ({
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (validatationCheck()) {
+      let apiError = false;
       // createMatch
       try {
         await axios.post(
@@ -88,8 +89,8 @@ const ModalCarRent = ({
           {
             match: {
               carID: car_id,
-              lessorID: sessionStorage.getItem("user_id"),
-              renterID: owner_id,
+              lessorID: owner_id,
+              renterID: sessionStorage.getItem("user_id"),
               status: "Pending",
               pickupLocation: location,
               pickUpDateTime: new Date(startDateInput.current.value),
@@ -103,6 +104,7 @@ const ModalCarRent = ({
           }
         );
       } catch (error) {
+        apiError = true;
         console.error(error);
       }
 
@@ -123,6 +125,7 @@ const ModalCarRent = ({
           }
         );
       } catch (error) {
+        apiError = true;
         console.error(error);
       }
 
@@ -147,9 +150,10 @@ const ModalCarRent = ({
           }
         );
       } catch (error) {
+        apiError = true;
         console.error(error);
       }
-      window.location.assign("/");
+      if (!apiError) window.location.assign("/");
     }
   };
 
