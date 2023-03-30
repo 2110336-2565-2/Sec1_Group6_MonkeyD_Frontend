@@ -33,6 +33,7 @@ const ModalCarRent = ({
     const today = new Date().setHours(0, 0, 0, 0);
     const period = start - end;
     const presentperiodstart = start - today;
+
     const presentperiodend = end - today;
     const prefixCheck = prefix.current.value === "";
     const firstNameCheck = firstName.current.value === "";
@@ -46,7 +47,6 @@ const ModalCarRent = ({
     const dateFillCheck = period || period >= 0;
     const startpresentCheck = presentperiodstart && presentperiodstart >= 0;
     const endpresentCheck = presentperiodend && presentperiodend >= 0;
-
     if (
       prefixCheck ||
       firstNameCheck ||
@@ -58,6 +58,18 @@ const ModalCarRent = ({
       !startpresentCheck ||
       !endpresentCheck
     ) {
+      // console.log(
+      //   prefixCheck,
+      //   firstNameCheck,
+      //   lastNameCheck,
+      //   mobileNumberCheck,
+      //   drivingLicenseCheck,
+      //   identificationNumberCheck,
+      //   !dateFillCheck,
+      //   !startpresentCheck,
+      //   !endpresentCheck
+      // );
+
       setFormValidate(false);
       return false;
     } else {
@@ -78,7 +90,7 @@ const ModalCarRent = ({
               carID: car_id,
               lessorID: sessionStorage.getItem("user_id"),
               renterID: owner_id,
-              status: "Rented",
+              status: "Pending",
               pickupLocation: location,
               pickUpDateTime: new Date(startDateInput.current.value),
               returnLocation: location,

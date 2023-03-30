@@ -35,6 +35,7 @@ const CarInforTable = ({
           withCredentials: true,
         }
       );
+
       const {
         username,
         email,
@@ -47,7 +48,7 @@ const CarInforTable = ({
         IDCardImage,
         drivingLicenseNumber,
         drivingLicenseImage,
-      } = res.data.user;
+      } = res.data;
       const selectedUserInfo = {
         username,
         email,
