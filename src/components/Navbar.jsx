@@ -103,6 +103,15 @@ const Navbar = () => {
                       </li>
                       <li className="menu-item">
                         <Link
+                          to="/profile?menu=wallet"
+                          className="link"
+                          onClick={toggleDropdown}
+                        >
+                          My wallet
+                        </Link>
+                      </li>
+                      <li className="menu-item">
+                        <Link
                           to="/profile?menu=booking"
                           className="link"
                           onClick={toggleDropdown}
