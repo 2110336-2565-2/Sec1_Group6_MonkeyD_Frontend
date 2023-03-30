@@ -4,7 +4,7 @@ import {useSearchParams} from "react-router-dom";
 import MyBooking from "../components/MyBooking";
 import MyProfile from "../components/MyProfile";
 import MyCars from "../components/MyCars";
-import BalancePage from "./BalancePage";
+import BalancePage from "../pages/BalancePage";
 
 const ProfilePage = () => {
   const menus = {
