@@ -1,0 +1,54 @@
+.balance-page {
+  .wallet-container {
+    margin: 12px;
+    padding: 20px;
+    border: 1x solid transparent;
+    border-radius: 12px;
+    // box-shadow: 0 2px 4px 3px rgba(5, 25, 45, 0.3);
+    background: var(--secondary-color);
+    // background: linear-gradient(
+    //   90deg,
+    //   rgba(2, 0, 36, 1) 0%,
+    //   rgba(74, 96, 161, 1) 50%,
+    //   rgba(0, 212, 255, 1) 100%
+    // );
+    .head-wrap {
+      display: flex;
+      justify-content: space-between;
+      .header {
+        color: var(--contrast-color);
+        font-size: var(--header3-fs2);
+      }
+      i {
+        font-size: var(--header2-fs);
+        color: var(--contrast-color);
+      }
+    }
+    .balance-wrap {
+      display: flex;
+      align-items: flex-end;
+      .balance-value {
+        margin: 12px 12px 0 0;
+        color: var(--contrast-color);
+        font-size: var(--header1-fs);
+        font-weight: 500;
+      }
+      .btn-deposit {
+        cursor: pointer;
+        padding: 4px 8px;
+        margin-bottom: 4px;
+        color: var(--contrast-color);
+        border: 1px solid var(--contrast-color);
+        border-radius: 10px;
+        transition: 0.3s;
+        i {
+          margin-right: 8px;
+        }
+        &:hover {
+          background-color: var(--contrast-color);
+          color: var(--secondary-color);
+        }
+      }
+    }
+  }
+}

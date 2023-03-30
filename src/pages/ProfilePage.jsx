@@ -4,10 +4,12 @@ import {useSearchParams} from "react-router-dom";
 import MyBooking from "../components/MyBooking";
 import MyProfile from "../components/MyProfile";
 import MyCars from "../components/MyCars";
+import BalancePage from "./BalancePage";
 
 const ProfilePage = () => {
   const menus = {
     me: "My profile",
+    wallet: "My wallet",
     // lessor: "Be a lessor",
     booking: "My booking",
     car: "My cars",
@@ -147,6 +149,7 @@ const ProfilePage = () => {
             )}
             {menu === "booking" && <MyBooking />}
             {menu === "car" && <MyCars />}
+            {menu === "wallet" && <BalancePage />}
           </div>
         </div>
       </div>
