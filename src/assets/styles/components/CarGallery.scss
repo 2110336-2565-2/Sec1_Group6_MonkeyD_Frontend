@@ -13,6 +13,7 @@ $gallery-gap: 12px;
       );
 
     .main-view {
+      height: calc(50vw - 100px);
       width: 100%;
       display: flex;
       img {
@@ -25,6 +26,7 @@ $gallery-gap: 12px;
       display: none;
     }
     .other-view {
+      height: 100%;
       overflow: scroll;
       display: grid;
       gap: 12px;

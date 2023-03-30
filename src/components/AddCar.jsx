@@ -208,7 +208,13 @@ const AddCar = () => {
 
     const formData = new FormData();
     for (const [key, value] of Object.entries(form)) {
-      formData.append(key, value);
+      if (key == "energy_types") {
+        for (const e of value) {
+          formData.append(key, e);
+        }
+      } else {
+        formData.append(key, value);
+      }
     }
     formData.append("owner_user_id", sessionStorage.getItem("user_id"));
     formData.append("owner", sessionStorage.getItem("username"));
