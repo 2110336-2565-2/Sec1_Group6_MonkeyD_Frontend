@@ -82,7 +82,27 @@ const ModalCarRent = ({
     event.preventDefault();
     if (validatationCheck()) {
       let apiError = false;
+      let matchStatus = "";
       // createMatch
+      try {
+        const res = await axios.post(
+          "http://localhost:8080/user/info",
+          {
+            id: sessionStorage.getItem("user_id"),
+          },
+          {
+            withCredentials: true,
+          }
+        );
+        if (res.data.status === "Approved") {
+          matchStatus = "Wait for payment";
+        } else {
+          matchStatus = "Unverified renter";
+        }
+      } catch (error) {
+        apiError = true;
+        console.error(error);
+      }
       try {
         await axios.post(
           `http://localhost:8080/match`,
@@ -91,7 +111,7 @@ const ModalCarRent = ({
               carID: car_id,
               lessorID: owner_id,
               renterID: sessionStorage.getItem("user_id"),
-              status: "Pending",
+              status: matchStatus,
               pickupLocation: location,
               pickUpDateTime: new Date(startDateInput.current.value),
               returnLocation: location,
