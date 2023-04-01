@@ -245,14 +245,15 @@
   display: flex;
   gap: 12px;
   flex-direction: column;
-  align-items: flex-end;
+  //align-items: flex-end;
 
   .topic {
     font-weight: bold;
     margin-right: 10px;
   }
   p {
-    display: flex;
+    display: grid;
+    grid-template-columns: 200px auto;
   }
   .value {
     text-transform: uppercase;
@@ -261,15 +262,49 @@
     display: flex;
     gap: 8px;
     margin-top: 8px;
+    width: min-content;
+    align-self: flex-end
     // width: 100%;
     // justify-content: center;
+  }
+  .car-images{
+    width: min-content;
+    img{
+      max-width: 400px;
+      max-height: 300px;
+    }
+    .btn-image{
+      margin-bottom: 3px;
+      border: none;
+      border-radius: 6px;
+      background-color: #4a60a137;
+      &:hover {
+        background-color: #4a60a14f;
+        cursor: pointer;
+      }
+    }
+  }
+  .upload-input{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+  .upload-display{
+    img{
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+    }
   }
 }
 
 .v2 {
-  align-items: center !important;
+  //align-items: center ;
   gap: 18px;
   .btn {
     margin-top: 24px;
+  }
+  .btn-edit{
+    align-self: center;
   }
 }
