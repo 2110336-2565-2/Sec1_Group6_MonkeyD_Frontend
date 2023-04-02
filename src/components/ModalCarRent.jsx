@@ -94,7 +94,7 @@ const ModalCarRent = ({
             withCredentials: true,
           }
         );
-        if (res.data.status === "Approved") {
+        if (res.data.status === "Verified") {
           matchStatus = "Wait for payment";
         } else {
           matchStatus = "Unverified renter";
