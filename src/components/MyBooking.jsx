@@ -122,8 +122,9 @@ const MyBooking = () => {
                 model,
                 license_plate,
                 rental_price,
-                car_images: [pic],
+                //car_images: [pic],
               },
+              car_image,
               _id: match_id,
               pickUpDateTime,
               pickupLocation,
@@ -138,7 +139,7 @@ const MyBooking = () => {
               <div className="booking" key={index}>
                 <img
                   className="car-picture"
-                  src={pic}
+                  src={car_image}
                   alt=""
                   onClick={() => navigate(`/carDetail/${car_id}`)}
                 />
