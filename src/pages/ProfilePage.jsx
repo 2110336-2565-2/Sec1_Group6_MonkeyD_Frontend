@@ -7,6 +7,7 @@ import MyCars from "../components/MyCars";
 import UserApprovalMgmt from "../components/UserApprovalMgmt";
 import MatchManagement from "../components/MatchManagement";
 import CarApprovalMgmt from "../components/CarApprovalMgmt";
+import PaymentHistory from "../components/PaymentHistory";
 
 const ProfilePage = () => {
   const userMenus = {
@@ -14,6 +15,7 @@ const ProfilePage = () => {
     // lessor: "Be a lessor",
     booking: "My booking",
     car: "My cars",
+    payment: "Payment History",
   };
 
   const adminMenus = {
@@ -175,6 +177,7 @@ const ProfilePage = () => {
             )}
             {menu === "booking" && <MyBooking />}
             {menu === "car" && <MyCars />}
+            {menu === "payment" && <PaymentHistory />}
             {menu === "user_approval_management" && <UserApprovalMgmt />}
             {menu === "car_approval_management" && <CarApprovalMgmt />}
             {menu === "match_management" && <MatchManagement />}
