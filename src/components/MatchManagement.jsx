@@ -1,17 +1,36 @@
 import axios from "axios";
 import {useEffect, useRef, useState} from "react";
 import {useNavigate} from "react-router-dom";
+import ProfileStatusTab from "./ProfileStatusTab";
+import ProfileSearchBar from "./ProfileSearchBar";
 
 const MatchManagement = () => {
-  const statuses = ["All", "Pending", "Rejected", "Accepted"];
-  const [status, setStatus] = useState("All");
-  const [matches, setMatches] = useState({});
+  const dummy = [
+    {
+      renterID: "63e36bfd5bbbffc725269039",
+      carID: "63e23b547e35430efa0f0867",
+      status: "Cancelled",
+      pickupLocation: "Siam Paragon",
+      returnLocation: "BTS Siam",
+      isReview: false,
+      lessorID: "63e23a7f7e35430efa0f0857",
+    },
+  ];
+  const statusList = [
+    "Unverified renter",
+    "Wait for payment",
+    "Cancelled",
+    "Rented",
+    "Completed",
+  ];
+  const [status, setStatus] = useState("Unverified renter");
+  const [matches, setMatches] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
 
   const searchRef = useRef();
 
-  const fetchMyBooking = async () => {
+  const fetchMatches = async () => {
     const params = {
       ...(status !== "All" && {
         status: status,
@@ -22,129 +41,110 @@ const MatchManagement = () => {
     try {
       setIsLoading(true);
       const id = sessionStorage.getItem("user_id");
-      const res = await axios.get(`http://localhost:8080/match/me/${id}`, {
+      const res = await axios.get(`http://localhost:8080/match`, {
         params,
         withCredentials: true,
       });
-      setMatches(res.data);
+      console.log(res.data.matches);
+      setMatches(res.data.matches);
       setIsLoading(false);
     } catch (error) {
       console.log(error);
     }
   };
 
-  const cancelBooking = async (car_id, match_id) => {
+  const handleChangeStatus = async (match_id, status) => {
     try {
       await axios.patch(
         `http://localhost:8080/match/cancel-reservation`,
-        {},
         {
-          headers: {
-            car_id: car_id,
-            match_id: match_id,
-          },
+          match_id,
+          status,
+        },
+        {
           withCredentials: true,
         }
       );
     } catch (error) {
       console.log(error);
     }
-    fetchMyBooking();
+    fetchMatches();
   };
 
   const handleSearch = async (event) => {
     event.preventDefault();
-    fetchMyBooking();
+    fetchMatches();
   };
 
   useEffect(() => {
-    fetchMyBooking();
-  }, [status, setStatus]);
+    fetchMatches();
+  }, [status]);
 
   return (
-    <div className="match-container">
-      <div className="status-bar">
-        {statuses &&
-          statuses.map((item, i) => {
-            return (
-              <div
-                key={item}
-                className={item == status ? "status selected" : "status"}
-                onClick={() => setStatus(item)}
-              >
-                {item}
-              </div>
-            );
-          })}
-      </div>
-      <div className="search-bar">
-        <form onSubmit={handleSearch}>
-          <button type="submit">
-            <i className="fa-solid fa-magnifying-glass"></i>
-          </button>
-          <input type="text" ref={searchRef} placeholder="search" />
-        </form>
-      </div>
-      <div className="booking-container">
-        {isLoading || matches?.count === 0 ? (
+    <div className="match-approval-container">
+      <ProfileStatusTab
+        statusList={statusList}
+        status={status}
+        setStatus={setStatus}
+      />
+      <ProfileSearchBar searchRef={searchRef} handleSearch={handleSearch} />
+      <div className="match-approval-list">
+        {isLoading || matches?.length === 0 ? (
           <div className="no-result">No result</div>
         ) : (
-          matches?.matches.map((match, index) => {
-            if (match.car == null) {
-              return;
-            }
-            const {
-              car: {
-                _id: car_id,
-                brand,
-                model,
-                license_plate,
-                rental_price,
-                car_images: [pic],
-              },
-              _id: match_id,
-              pickUpDateTime,
-              pickupLocation,
-              returnDateTime,
-              returnLocation,
+          matches?.map((match, index) => {
+            let {
+              _id,
+              renterID,
+              carID,
               status,
+              pickupLocation,
+              returnLocation,
+              isReview,
+              lessorID,
             } = match;
-            const pickupDate = new Date(pickUpDateTime);
-            const returnDate = new Date(returnDateTime);
             return (
-              <div className="booking" key={index}>
-                <img
-                  className="car-picture"
-                  src={pic}
-                  alt=""
-                  onClick={() => navigate(`/carDetail/${car_id}`)}
-                />
-                <div className="booking-info">
-                  <div className="header">
-                    <h2
-                      onClick={() => navigate(`/carDetail/${car_id}`)}
-                    >{`${brand} ${model}`}</h2>
-                    <h3
-                      className={status === "Cancelled" ? "status-cancel" : ""}
-                    >
-                      {status}
-                    </h3>
-                  </div>
-                  <h3>{`${license_plate}`}</h3>
-                  <p>{`Pickup : ${pickupDate.toLocaleString()} at ${pickupLocation}`}</p>
-                  <p>{`Return : ${returnDate.toLocaleString()} at ${returnLocation}`}</p>
-                  <div className="footer">
-                    {status === "Pending" && (
-                      <h3
-                        className="cancel"
-                        onClick={() => cancelBooking(car_id, match_id)}
-                      >
-                        ✖ Cancel booking
-                      </h3>
-                    )}
-                    <h3 className="price">12345</h3>
-                  </div>
+              <div className="match-approval" key={index}>
+                <div className="header">
+                  <h3>{`Match ID : ${_id}`}</h3>
+                  <h3
+                    className={`status 
+                    ${status === "Rejected" ? "rejected" : ""} 
+                    ${status === "Approved" ? "approved" : ""}`}
+                  >
+                    {status}
+                  </h3>
                 </div>
+                <h3>{`renter : ${renterID}`}</h3>
+                <h3>{`car : ${carID}`}</h3>
+                <h3>{`lessor : ${lessorID}`}</h3>
+                {/* <div className="images">
+                  <div className="card">
+                    <img
+                      className="car-picture"
+                      src={registration_book_url}
+                      alt=""
+                    />
+                    <h3>{`${license_plate}`}</h3>
+                    <h3>{`${registration_book_id}`}</h3>
+                  </div>
+                </div> */}
+                {status === "Pending" && (
+                  <>
+                    <h3
+                      className="action approve"
+                      onClick={() => handleChangeStatus(_id, "Available")}
+                    >
+                      ✔ Approve
+                    </h3>
+                    <h3
+                      className="action reject"
+                      onClick={() => handleChangeStatus(_id, "Rejected")}
+                    >
+                      ✖ Reject&nbsp;&nbsp;
+                    </h3>
+                  </>
+                )}
               </div>
             );
           })
