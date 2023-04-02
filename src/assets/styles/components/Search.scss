@@ -67,21 +67,21 @@
       }
     }
     button {
-      border: 2px solid #94a1c5;
+      border: none;
       height: 42px;
       border-radius: 8px;
       padding: 0 36px;
       // margin-right: 20px;
-      color: #424f73;
+      color: white;
       font-weight: 600;
-      background-color: transparent;
+      background-color: var(--secondary-color);
       font-size: 16px;
       transition: background-color 0.1s ease-in-out, border 0.1s ease-in-out,
         color 0.2s ease-in-out;
       &:hover {
         cursor: pointer;
-        background-color: var(--secondary-color);
-        border: 1px solid transparent;
+        background-color: #304584;
+        border: none;
         color: var(--contrast-color);
       }
     }
