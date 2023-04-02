@@ -4,14 +4,7 @@ import {useNavigate} from "react-router-dom";
 
 const MyBooking = () => {
   // const statuses = {1: "Pending", 2: "Cancelled", 3: "Rented", 4: "Completed"};
-  const statuses = [
-    "All",
-    "Unverified renter",
-    "Wait for payment",
-    "Cancelled",
-    "Rented",
-    "Completed",
-  ];
+  const statuses = ["All", "Pending", "Cancelled", "Rented", "Completed"];
   const [status, setStatus] = useState("All");
   const [bookings, setBookings] = useState({});
   const [isLoading, setIsLoading] = useState(true);
@@ -27,11 +20,18 @@ const MyBooking = () => {
     try {
       setIsLoading(true);
       const id = sessionStorage.getItem("user_id");
+      const statusList = [];
+      if (status === "Pending") {
+        statusList.push("Wait for payment");
+        statusList.push("Unverified renter");
+      } else if (status !== "All") {
+        statusList.push(status);
+      }
       const res = await axios.get(`http://localhost:8080/match/me/${id}`, {
         params: {
           ...(status !== "All"
             ? {
-                status: status,
+                status: encodeURIComponent(JSON.stringify(statusList)),
               }
             : {}),
         },
