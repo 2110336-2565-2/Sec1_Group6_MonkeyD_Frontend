@@ -27,6 +27,10 @@
         font-size: var(--paragraph1-fs);
         margin-right: 12px;
       }
+      #idcardimg,
+      #drivinglicenseimg {
+        padding: 6px 0;
+      }
     }
     .validate-false {
       margin-top: 8px;
@@ -36,7 +40,7 @@
     .submit-btn {
       display: flex;
       justify-content: flex-end;
-      margin-top: 28px;
+      margin-top: 20px;
       button {
         font-size: var(--button1-fs);
         width: 100%;
