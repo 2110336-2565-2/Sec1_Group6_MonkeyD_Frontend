@@ -4,8 +4,9 @@ import {useSearchParams} from "react-router-dom";
 import MyBooking from "../components/MyBooking";
 import MyProfile from "../components/MyProfile";
 import MyCars from "../components/MyCars";
-import ApprovalManagement from "../components/ApprovalManagement";
+import UserApprovalMgmt from "../components/UserApprovalMgmt";
 import MatchManagement from "../components/MatchManagement";
+import CarApprovalMgmt from "../components/CarApprovalMgmt";
 
 const ProfilePage = () => {
   const userMenus = {
@@ -16,7 +17,8 @@ const ProfilePage = () => {
   };
 
   const adminMenus = {
-    approval_management: "Approval management",
+    user_approval_management: "User approval management",
+    car_approval_management: "Car approval management",
     match_management: "Match management",
   };
 
@@ -173,7 +175,8 @@ const ProfilePage = () => {
             )}
             {menu === "booking" && <MyBooking />}
             {menu === "car" && <MyCars />}
-            {menu === "approval_management" && <ApprovalManagement />}
+            {menu === "user_approval_management" && <UserApprovalMgmt />}
+            {menu === "car_approval_management" && <CarApprovalMgmt />}
             {menu === "match_management" && <MatchManagement />}
           </div>
         </div>

@@ -1,13 +1,14 @@
 import axios from "axios";
 import {useEffect, useRef, useState} from "react";
 import {useNavigate} from "react-router-dom";
-import SearchBar from "./ProfileSearchBar";
+import ProfileSearchBar from "./ProfileSearchBar";
 import ProfileStatusTab from "./ProfileStatusTab";
 
 const MyBooking = () => {
   // const statuses = {1: "Pending", 2: "Cancelled", 3: "Rented", 4: "Completed"};
   const statuses = ["All", "Pending", "Cancelled", "Rented", "Completed"];
   const [status, setStatus] = useState("All");
+  // const [sortBy, setSortBy] = useState({sort: "Date", opt: "asd"});
   const [bookings, setBookings] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
@@ -109,7 +110,7 @@ const MyBooking = () => {
   return (
     <div className="my-booking">
       <ProfileStatusTab statusList={statuses} status={status} setStatus={setStatus} />
-      <SearchBar searchRef={searchRef} handleSearch={handleSearch} />
+      <ProfileSearchBar searchRef={searchRef} handleSearch={handleSearch} />
       <div className="booking-container">
         {isLoading || bookings?.count === 0 ? (
           <div className="no-result">No result</div>
