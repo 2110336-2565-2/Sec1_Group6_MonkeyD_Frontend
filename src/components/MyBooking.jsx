@@ -39,9 +39,6 @@ const MyBooking = () => {
         statusList.push(status);
       }
       const res = await axios.get(`http://localhost:8080/match/me/${id}`, {
-<<<<<<< HEAD
-        params,
-=======
         params: {
           ...(status !== "All"
             ? {
@@ -49,7 +46,6 @@ const MyBooking = () => {
               }
             : {}),
         },
->>>>>>> 506e812a0d7e80f6a49e166b07c8b57a19628f4f
         withCredentials: true,
       });
       setBookings(res.data);
