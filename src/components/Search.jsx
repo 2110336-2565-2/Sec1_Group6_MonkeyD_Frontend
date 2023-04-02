@@ -3,9 +3,11 @@ import {provinces} from "../utils/mockData";
 
 const Search = ({
   locationInput,
+  setFilterProvince,
   startDateInput,
   endDateInput,
   handleSearch,
+  isSearch,
 }) => {
   const [showDropdown, setShowDropdown] = useState(false);
   const ref = useRef(null);
@@ -31,6 +33,9 @@ const Search = ({
     }
   };
 
+  const handleFilterChange = (event) => {
+    setFilterProvince(event.target.value);
+  };
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
@@ -40,52 +45,53 @@ const Search = ({
 
   return (
     <div className="search-container">
-      <h1 className="title">Find Cars</h1>
-      <div className="search-wrap">
-        <div className="search-box">
-          <input
-            ref={locationInput}
-            type="text"
-            placeholder={"Fill location"}
-            name="search"
-            onClick={handleClick}
-          />
-        </div>
-        {showDropdown && (
-          <ul className="options" ref={ref}>
-            {provinces.sort().map((option) => (
-              <li
-                key={option.value}
-                onClick={() => handleOptionClick(option.value)}
-              >
-                {option.label}
-              </li>
-            ))}
-          </ul>
-        )}
+      <div className="head-title">
+        <h1 className="title">Find the best car rental deals</h1>
       </div>
-      <div className="filter-box">
-        <div className="time-filter">
-          <label>Start Date:</label>
-          <input
-            defaultValue={new Date().toISOString().substr(0, 10)}
-            ref={startDateInput}
-            type="date"
-          />
+      <div className="box">
+        <div className="filter">
+          <div className="time-filter">
+            <label>Start Date:</label>
+            <input
+              defaultValue={new Date().toISOString().substr(0, 10)}
+              ref={startDateInput}
+              type="date"
+            />
+          </div>
+          <div className="time-filter">
+            <label>Return Date And Time</label>
+            <input
+              defaultValue={new Date(
+                new Date().getTime() + 3 * 24 * 60 * 60 * 1000
+              )
+                .toISOString()
+                .substr(0, 10)}
+              ref={endDateInput}
+              type="date"
+            />
+          </div>
+          <div className="time-filter">
+            <label>Location</label>
+
+            <select onChange={handleFilterChange}>
+              <option value="" disabled selected hidden>
+                choose one
+              </option>
+              {provinces.map((province, index) => (
+                <option key={index} value={province.value}>
+                  {province.value}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
-        <div className="time-filter">
-          <label>Return Date And Time</label>
-          <input
-            defaultValue={new Date(
-              new Date().getTime() + 3 * 24 * 60 * 60 * 1000
-            )
-              .toISOString()
-              .substr(0, 10)}
-            ref={endDateInput}
-            type="date"
-          />
+        <div className="submit">
+          <label>
+            <input type="checkbox" name="option1" value="Option 1" />
+            <p>Driver aged between 25 - 75</p>
+          </label>
+          <button onClick={handleSearch}>Search</button>
         </div>
-        <button onClick={handleSearch}>Search</button>
       </div>
     </div>
   );

@@ -2,93 +2,59 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: calc(38.6vw - 220px);
+  margin-top: calc(38.6vw - 315px);
+  // margin-top: calc(var(--navbar-height) + 28px);
+
   width: 100%;
+  .head-title {
+    width: 50vw;
+    > h1 {
+      font-weight: 600;
+      font-size: 56px;
+      max-width: 75%;
+      word-wrap: break-word;
+      text-align: left;
+      line-height: 1.2;
+    }
+  }
   .title {
     margin-bottom: 20px;
     color: var(--contrast-color);
   }
-  .search-wrap {
-    display: flex;
-    align-items: flex-end;
-    position: relative;
-    flex-direction: column;
-    height: 40px;
-    .search-box {
-      display: flex;
-      align-items: center;
-      background-color: white;
-      border-radius: 8px;
-      input {
-        border: none;
-        background-color: transparent;
-        text-align: center;
-        font-size: var(--searchbox-fs);
-        padding: 12px 72px;
-        &:focus {
-          outline: none;
-          &::placeholder {
-            color: transparent;
-          }
-        }
-        &::-webkit-input-placeholder {
-          text-align: center;
-        }
-        &:-moz-placeholder {
-          text-align: center;
-        }
-      }
-      i {
-        margin: 0 12px;
-      }
-    }
-    .options {
-      position: absolute;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      background-color: rgba(255, 255, 255);
-      border-radius: 8px;
-      box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);
-      margin-block-start: 45px;
-      margin-block-end: 0px;
-      padding: 12px;
-      max-height: 200px;
-      overflow: scroll;
-      li {
-        &:hover {
-          cursor: pointer;
-          background-color: rgba(0, 0, 0, 0.05);
-        }
-        text-align: center;
-        list-style: none;
-        font-size: var(--paragraph2-fs);
-        color: var(--p-color);
-      }
-    }
-  }
-  .filter-box {
-    // background-color: rgba(255, 255, 255, 0.85);
+  .box {
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
     background-color: white;
     border-radius: 8px;
-    padding: 28px 56px;
     margin-top: 20px;
     display: flex;
-    align-items: center;
-    gap: 48px;
+    flex-direction: column;
+    // width: 75vw;
+    .filter {
+      display: grid;
+      align-items: center;
+      gap: 18px;
+      justify-content: center;
+      padding: 36px 56px;
+      padding-bottom: 18px;
+      grid-template-columns: auto auto auto;
+    }
     .time-filter {
+      border-radius: 6px;
       display: flex;
       gap: 12px;
       flex-direction: column;
+
       label {
-        font-size: var(--paragraph2-fs);
+        font-size: 16px;
       }
-      input {
-        padding: 0;
-        font-size: var(--paragraph2-fs);
+      input,
+      select {
+        padding: 14px 14px;
+        font-size: 20px;
         color: var(--placeholder-color);
         background-color: transparent;
-        border: none;
+        border: 2px solid #94a1c5;
+        border-radius: 6px;
         &::placeholder {
           content: "Select a date";
         }
@@ -101,18 +67,34 @@
       }
     }
     button {
-      border: 1px solid var(--primary-color);
-      height: 48px;
+      border: 2px solid #94a1c5;
+      height: 42px;
       border-radius: 8px;
-      padding: 8px 16px !important;
-      color: var(--primary-color);
+      padding: 0 36px;
+      // margin-right: 20px;
+      color: #424f73;
+      font-weight: 600;
       background-color: transparent;
-      font-size: var(--button2-fs);
+      font-size: 16px;
+      transition: background-color 0.1s ease-in-out, border 0.1s ease-in-out,
+        color 0.2s ease-in-out;
       &:hover {
         cursor: pointer;
         background-color: var(--secondary-color);
         border: 1px solid transparent;
         color: var(--contrast-color);
+      }
+    }
+
+    .submit {
+      display: flex;
+      padding: 0 56px;
+      padding-bottom: 20px;
+      justify-content: space-between;
+      label {
+        display: flex;
+        gap: 4px;
+        align-items: flex-start;
       }
     }
   }

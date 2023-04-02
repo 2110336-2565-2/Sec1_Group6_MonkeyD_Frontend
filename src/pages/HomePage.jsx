@@ -8,10 +8,12 @@ import {getCookie, deleteCookie, cookieExists} from "../utils/cookies";
 
 const HomePage = () => {
   const [carList, setCarList] = useState([]);
-  const locationInput = useRef(null);
+  const [isSearch, setSearch] = useState(false);
+  const [filterProvince, setFilterProvince] = useState("");
   const startDateInput = useRef(null);
   const endDateInput = useRef(null);
   const [brandInputList, setBrandInputList] = useState([]);
+  const scrollToRef = useRef();
 
   const formatDate = (inputDate) => {
     if (inputDate) {
@@ -23,17 +25,22 @@ const HomePage = () => {
   };
 
   const handleSearch = async () => {
+    console.log("handleSearch called");
     var encodedBrandList = encodeURIComponent(JSON.stringify(brandInputList));
 
     try {
       const res = await axios.get(
         `http://localhost:8080/car?startdate=${formatDate(
           startDateInput.current.value
-        )}&enddate=${formatDate(endDateInput.current.value)}&province=${
-          locationInput.current.value
-        }&brandlist=${encodedBrandList}`
+        )}&enddate=${formatDate(
+          endDateInput.current.value
+        )}&province=${filterProvince}&brandlist=${encodedBrandList}`
       ); // change path to backend service
-      setCarList(res.data);
+      await setCarList(res.data);
+      await setSearch(true);
+      if (scrollToRef.current) {
+        scrollToRef.current.scrollIntoView({behavior: "smooth"});
+      }
     } catch (error) {
       console.error(error);
     }
@@ -67,18 +74,32 @@ const HomePage = () => {
   return (
     <div className="homepage-container">
       <Search
-        locationInput={locationInput}
+        setFilterProvince={setFilterProvince}
         startDateInput={startDateInput}
         endDateInput={endDateInput}
         handleSearch={handleSearch}
+        isSearch={isSearch}
       />
       <SlideBanner />
-      <SlideFilter
-        brandInputList={brandInputList}
-        setBrandInputList={setBrandInputList}
-        handleSearch={handleSearch}
-      />
-      <SearchResult carList={carList} />
+      {isSearch ? (
+        <>
+          <SlideFilter
+            brandInputList={brandInputList}
+            setBrandInputList={setBrandInputList}
+            handleSearch={handleSearch}
+          />
+          <SearchResult carList={carList} scrollToRef={scrollToRef} />
+        </>
+      ) : (
+        <div className="not-search">
+          <h2>Top #1 Rental car company</h2>
+          <p>
+            "At Monkey D Car, we're committed to providing our customers with
+            trustworthy and reliable car rental services. Rent with confidence
+            and experience the difference with us."
+          </p>
+        </div>
+      )}
     </div>
   );
 };

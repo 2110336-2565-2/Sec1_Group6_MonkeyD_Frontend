@@ -55,16 +55,15 @@ const MyBooking = () => {
         {},
         {
           headers: {
-            car_id: car_id,
             match_id: match_id,
           },
           withCredentials: true,
         }
       );
+      fetchMyBooking();
     } catch (error) {
       console.log(error);
     }
-    fetchMyBooking();
   };
 
   const handleLoadScript = () => {
@@ -81,7 +80,7 @@ const MyBooking = () => {
     setScriptLoaded(true);
   };
 
-  const omiseCardHandler = async (amount) => {
+  const omiseCardHandler = async (amount, match_id) => {
     OmiseCard.open({
       amount: amount,
       onCreateTokenSuccess: (token) => {
@@ -103,7 +102,26 @@ const MyBooking = () => {
             }
           )
           .then((response) => {
-            // change some status of match here
+            axios
+              .patch(
+                `http://localhost:8080/match/status`,
+                {
+                  match_id: match_id,
+                  action: "Paid",
+                },
+                {
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  withCredentials: true,
+                }
+              )
+              .then((response) => {
+                console.log(response);
+              })
+              .catch((error) => {
+                console.error(error);
+              });
             console.log(response);
           })
           .catch((error) => {
@@ -114,10 +132,10 @@ const MyBooking = () => {
     });
   };
 
-  const purchaseBooking = async (e, amount) => {
+  const purchaseBooking = async (e, amount, matchId) => {
     if (scriptLoaded) {
       e.preventDefault();
-      omiseCardHandler(amount * 100);
+      omiseCardHandler(amount * 100, matchId);
     }
   };
 
@@ -214,7 +232,12 @@ const MyBooking = () => {
                         onClick={(e) =>
                           purchaseBooking(
                             e,
-                            calculatePrice(pickupDate, returnDate, rental_price)
+                            calculatePrice(
+                              pickupDate,
+                              returnDate,
+                              rental_price
+                            ),
+                            match_id
                           )
                         }
                       >
