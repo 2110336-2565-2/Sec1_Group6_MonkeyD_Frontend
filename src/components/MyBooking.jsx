@@ -7,19 +7,11 @@ let OmiseCard;
 
 const MyBooking = () => {
   // const statuses = {1: "Pending", 2: "Cancelled", 3: "Rented", 4: "Completed"};
-  const statuses = [
-    "All",
-    "Unverified renter",
-    "Wait for payment",
-    "Cancelled",
-    "Rented",
-    "Completed",
-  ];
-  const [scriptLoaded, setScriptLoaded] = useState(false);
-
+  const statuses = ["All", "Pending", "Cancelled", "Rented", "Completed"];
   const [status, setStatus] = useState("All");
   const [bookings, setBookings] = useState({});
   const [isLoading, setIsLoading] = useState(true);
+  const [scriptLoaded, setScriptLoaded] = useState(false);
   const navigate = useNavigate();
 
   const calculatePrice = (firstDate, secondDate, rate) => {
@@ -32,11 +24,18 @@ const MyBooking = () => {
     try {
       setIsLoading(true);
       const id = sessionStorage.getItem("user_id");
+      const statusList = [];
+      if (status === "Pending") {
+        statusList.push("Wait for payment");
+        statusList.push("Unverified renter");
+      } else if (status !== "All") {
+        statusList.push(status);
+      }
       const res = await axios.get(`http://localhost:8080/match/me/${id}`, {
         params: {
           ...(status !== "All"
             ? {
-                status: status,
+                status: encodeURIComponent(JSON.stringify(statusList)),
               }
             : {}),
         },
@@ -76,8 +75,8 @@ const MyBooking = () => {
       frameLabel: "Monkey Car Rent",
       submitLabel: "Pay Now",
       buttonLabel: "Pay with Omise",
-      defaultPaymentMethod: "credit_card", // Add this line
-      otherPaymentMethods: [], // Add this line
+      defaultPaymentMethod: "credit_card",
+      otherPaymentMethods: [],
     });
     setScriptLoaded(true);
   };
@@ -163,8 +162,9 @@ const MyBooking = () => {
                 model,
                 license_plate,
                 rental_price,
-                car_images: [pic],
+                //car_images: [pic],
               },
+              car_image,
               _id: match_id,
               pickUpDateTime,
               pickupLocation,
@@ -179,7 +179,7 @@ const MyBooking = () => {
               <div className="booking" key={index}>
                 <img
                   className="car-picture"
-                  src={pic}
+                  src={car_image}
                   alt=""
                   onClick={() => navigate(`/carDetail/${car_id}`)}
                 />
