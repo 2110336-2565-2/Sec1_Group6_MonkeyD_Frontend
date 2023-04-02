@@ -44,12 +44,16 @@ const Navbar = () => {
   const handleBeAnAdmin = async () => {
     const user_id = sessionStorage.getItem("user_id");
     try {
-      await axios.patch(`http://localhost:8080/user/update-role-admin`, {
-        headers: {
-          user_id: user_id,
-        },
-        withCredentials: true,
-      });
+      await axios.patch(
+        `http://localhost:8080/user/update-role-admin`,
+        {},
+        {
+          headers: {
+            user_id: user_id,
+          },
+          withCredentials: true,
+        }
+      );
     } catch (error) {
       console.error(error);
     }
@@ -147,11 +151,23 @@ const Navbar = () => {
                       )}
                       {navbarInfo.isAdmin ? (
                         <>
-                          <li className="menu-item" onClick={handleAddCar}>
-                            Approval management
+                          <li className="menu-item">
+                            <Link
+                              to="/profile?menu=approval_management"
+                              className="link"
+                              onClick={toggleDropdown}
+                            >
+                              Approval mgmt
+                            </Link>
                           </li>
-                          <li className="menu-item" onClick={handleAddCar}>
-                            Matches management
+                          <li className="menu-item">
+                            <Link
+                              to="/profile?menu=match_management"
+                              className="link"
+                              onClick={toggleDropdown}
+                            >
+                              Match mgmt
+                            </Link>
                           </li>
                         </>
                       ) : (

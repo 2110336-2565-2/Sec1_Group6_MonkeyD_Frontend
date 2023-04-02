@@ -24,32 +24,31 @@
     padding: 1rem;
     box-sizing: border-box;
     display: flex;
-    .grey-bg {
+
+    form {
       background-color: var(--secondary-background);
       width: 100%;
-      padding: 8px;
-      form {
-        display: grid;
-        align-items: center;
-        grid-template-columns: auto minmax(0, 1fr);
-        button {
-          height: 100%;
-          border: none;
-          &:hover {
-            cursor: pointer;
-          }
-          i {
-            margin: 0 1rem;
-            font-size: 1.25rem;
-          }
+      padding: 0.5rem;
+      display: grid;
+      align-items: center;
+      grid-template-columns: auto minmax(0, 1fr);
+      button {
+        height: 100%;
+        border: none;
+        &:hover {
+          cursor: pointer;
         }
-        input {
-          background-color: transparent;
-          border: none;
-          font-size: 1rem;
-          &:focus {
-            outline: none;
-          }
+        i {
+          margin: 0 1rem;
+          font-size: 1.25rem;
+        }
+      }
+      input {
+        background-color: transparent;
+        border: none;
+        font-size: 1rem;
+        &:focus {
+          outline: none;
         }
       }
     }

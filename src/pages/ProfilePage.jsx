@@ -16,8 +16,8 @@ const ProfilePage = () => {
   };
 
   const adminMenus = {
-    approval: "Approval management",
-    match: "Match management",
+    approval_management: "Approval management",
+    match_management: "Match management",
   };
 
   const [isEdit, setIsEdit] = useState(false);
@@ -104,7 +104,7 @@ const ProfilePage = () => {
       searchParams.get("menu") === null ||
       !(
         searchParams.get("menu") in userMenus ||
-        searchParams.get("menu") in adminMenus
+        (isAdmin && searchParams.get("menu") in adminMenus)
       )
     ) {
       searchParams.set("menu", "me");
@@ -144,7 +144,7 @@ const ProfilePage = () => {
                 </button>
               );
             })}
-            {!isAdmin &&
+            {isAdmin &&
               Object.keys(adminMenus).map((key) => {
                 return (
                   <button
@@ -173,8 +173,8 @@ const ProfilePage = () => {
             )}
             {menu === "booking" && <MyBooking />}
             {menu === "car" && <MyCars />}
-            {menu === "approval" && <ApprovalManagement />}
-            {menu === "match" && <MatchManagement />}
+            {menu === "approval_management" && <ApprovalManagement />}
+            {menu === "match_management" && <MatchManagement />}
           </div>
         </div>
       </div>

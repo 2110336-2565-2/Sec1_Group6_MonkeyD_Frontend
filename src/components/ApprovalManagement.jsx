@@ -59,7 +59,6 @@ const ApprovalManagement = () => {
 
   useEffect(() => {
     fetchMyBooking();
-    // setIsLoading(false);
   }, [status, setStatus]);
 
   return (
@@ -79,14 +78,12 @@ const ApprovalManagement = () => {
           })}
       </div>
       <div className="search-bar">
-        <div className="grey-bg">
-          <form onSubmit={handleSearch}>
-            <button type="submit">
-              <i className="fa-solid fa-magnifying-glass"></i>
-            </button>
-            <input type="text" ref={searchRef} placeholder="search"/>
-          </form>
-        </div>
+        <form onSubmit={handleSearch}>
+          <button type="submit">
+            <i className="fa-solid fa-magnifying-glass"></i>
+          </button>
+          <input type="text" ref={searchRef} placeholder="search" />
+        </form>
       </div>
       <div className="booking-container">
         {isLoading || approvals?.count === 0 ? (

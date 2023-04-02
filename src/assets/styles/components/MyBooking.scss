@@ -1,59 +1,6 @@
 .my-booking {
   display: flex;
   flex-direction: column;
-  .status-bar {
-    display: flex;
-    .status {
-      flex: 1 100%;
-      text-align: center;
-      padding: 1rem;
-      border-bottom: solid 2px var(--secondary-background);
-      &:hover {
-        cursor: pointer;
-        color: var(--secondary-color);
-      }
-    }
-    .status.selected {
-      border-bottom: solid 2px var(--secondary-color);
-      color: var(--secondary-color);
-    }
-  }
-  .search-bar {
-    width: 100%;
-    border-bottom: solid 2px var(--secondary-background);
-    padding: 1rem;
-    box-sizing: border-box;
-    display: flex;
-    .grey-bg {
-      background-color: var(--secondary-background);
-      width: 100%;
-      padding: 8px;
-      form {
-        display: grid;
-        align-items: center;
-        grid-template-columns: auto minmax(0, 1fr);
-        button {
-          height: 100%;
-          border: none;
-          &:hover {
-            cursor: pointer;
-          }
-          i {
-            margin: 0 1rem;
-            font-size: 1.25rem;
-          }
-        }
-        input {
-          background-color: transparent;
-          border: none;
-          font-size: 1rem;
-          &:focus {
-            outline: none;
-          }
-        }
-      }
-    }
-  }
   .booking-container {
     // height: 50vh;
     display: flex;
