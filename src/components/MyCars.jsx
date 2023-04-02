@@ -189,17 +189,20 @@ const MyCars = () => {
                       <div className="detail">
                         <CarDetails handleSave={handleSave} modalCar={car} />
                       </div>
-                      <div className="status-box">
-                        <label className="switch">
-                          <input
-                            type="checkbox"
-                            checked={status !== "Unavailable"}
-                            onChange={toggleSwitch}
-                          />
-                          <span className="slider round"></span>
-                        </label>
-                        <h3>{status}</h3>
-                      </div>
+                      {(car.status === "Unavailable" ||
+                        car.status === "Available") && (
+                        <div className="status-box">
+                          <label className="switch">
+                            <input
+                              type="checkbox"
+                              checked={status !== "Unavailable"}
+                              onChange={toggleSwitch}
+                            />
+                            <span className="slider round"></span>
+                          </label>
+                          <h3>{status}</h3>
+                        </div>
+                      )}
                     </div>
                   )}
                 </div>

@@ -8,6 +8,7 @@ const AddCar = () => {
     year: "",
     gear_type: "",
     passenger: "",
+    available_location: "",
     energy_types: [],
     province: "",
     description: "",
@@ -22,6 +23,7 @@ const AddCar = () => {
     year: "",
     gear_type: "",
     passenger: "",
+    available_location: "",
     energy_types: "",
     province: "",
     description: "",
@@ -53,7 +55,8 @@ const AddCar = () => {
   const [brands, setBrands] = useState([]);
   const [new_car_images, setNewCarImages] = useState([]);
   const [car_images, setCarImages] = useState([]);
-
+  const [diesel, setDiesel] = useState(0);
+  const [gasoline, setGasoline] = useState(0);
   const onImageChange = (e) => {
     setNewCarImages([...e.target.files]);
   };
@@ -109,11 +112,29 @@ const AddCar = () => {
       added = form.energy_types;
       if (checked) {
         added.push(value);
+        if (value === "DieselB7" || value === "DieselB10")
+          setDiesel(diesel + 1);
+        if (
+          value === "Gasohol95" ||
+          value === "Gasohol91" ||
+          value === "E20" ||
+          value === "E85"
+        )
+          setGasoline(gasoline + 1);
       } else {
         const index = added.indexOf(value);
         if (index > -1) {
           added.splice(index, 1);
         }
+        if (value === "DieselB7" || value === "DieselB10")
+          setDiesel(diesel - 1);
+        if (
+          value === "Gasohol95" ||
+          value === "Gasohol91" ||
+          value === "E20" ||
+          value === "E85"
+        )
+          setGasoline(gasoline - 1);
       }
     } else if (name === "passenger" || name === "rental_price") {
       added = numberValidator(value);
@@ -163,6 +184,11 @@ const AddCar = () => {
           }
           break;
 
+        case "available_location":
+          if (!value) {
+            stateObj[name] = "Please enter available location.";
+          }
+          break;
         case "province":
           if (!value) {
             stateObj[name] = "Please select province.";
@@ -176,7 +202,7 @@ const AddCar = () => {
 
         case "license_plate":
           if (!value) {
-            stateObj[name] = "Please select at least one energy type";
+            stateObj[name] = "Please enter license_plate";
           }
           break;
 
@@ -208,7 +234,13 @@ const AddCar = () => {
 
     const formData = new FormData();
     for (const [key, value] of Object.entries(form)) {
-      formData.append(key, value);
+      if (key == "energy_types") {
+        for (const e of value) {
+          formData.append(key, e);
+        }
+      } else {
+        formData.append(key, value);
+      }
     }
     formData.append("owner_user_id", sessionStorage.getItem("user_id"));
     formData.append("owner", sessionStorage.getItem("username"));
@@ -344,20 +376,26 @@ const AddCar = () => {
           </div>
           {error.gear_type && <span className="error">{error.gear_type}</span>}
           <label>Energy Types</label>
-          {energy_types.map((type) => {
-            return (
-              <div key={type}>
-                <input
-                  type="checkbox"
-                  id={type}
-                  name="energy_types"
-                  value={type}
-                  onChange={handleChange}
-                  onBlur={validateForm}
-                />
-                <label htmlFor={type}>{type}</label>
-              </div>
-            );
+          {energy_types.map((type, index) => {
+            if (
+              (index <= 1 && gasoline === 0) ||
+              (index >= 2 && index <= 5 && diesel === 0) ||
+              index > 5
+            ) {
+              return (
+                <div key={type}>
+                  <input
+                    type="checkbox"
+                    id={type}
+                    name="energy_types"
+                    value={type}
+                    onChange={handleChange}
+                    onBlur={validateForm}
+                  />
+                  <label htmlFor={type}>{type}</label>
+                </div>
+              );
+            }
           })}
           {error.energy_types && (
             <span className="error">{error.energy_types}</span>
@@ -373,6 +411,16 @@ const AddCar = () => {
           ></input>
           {error.passenger && <span className="error">{error.passenger}</span>}
 
+          <label>Available Location</label>
+          <input
+            name="available_location"
+            onChange={handleChange}
+            onBlur={validateForm}
+            value={form.available_location}
+          ></input>
+          {error.available_location && (
+            <span className="error">{error.available_location}</span>
+          )}
           <label>Description</label>
           <textarea
             name="description"

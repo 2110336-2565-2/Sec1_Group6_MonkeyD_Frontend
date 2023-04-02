@@ -33,6 +33,7 @@ const ModalCarRent = ({
     const today = new Date().setHours(0, 0, 0, 0);
     const period = start - end;
     const presentperiodstart = start - today;
+
     const presentperiodend = end - today;
     const prefixCheck = prefix.current.value === "";
     const firstNameCheck = firstName.current.value === "";
@@ -46,7 +47,6 @@ const ModalCarRent = ({
     const dateFillCheck = period || period >= 0;
     const startpresentCheck = presentperiodstart && presentperiodstart >= 0;
     const endpresentCheck = presentperiodend && presentperiodend >= 0;
-
     if (
       prefixCheck ||
       firstNameCheck ||
@@ -58,6 +58,18 @@ const ModalCarRent = ({
       !startpresentCheck ||
       !endpresentCheck
     ) {
+      // console.log(
+      //   prefixCheck,
+      //   firstNameCheck,
+      //   lastNameCheck,
+      //   mobileNumberCheck,
+      //   drivingLicenseCheck,
+      //   identificationNumberCheck,
+      //   !dateFillCheck,
+      //   !startpresentCheck,
+      //   !endpresentCheck
+      // );
+
       setFormValidate(false);
       return false;
     } else {
@@ -69,16 +81,37 @@ const ModalCarRent = ({
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (validatationCheck()) {
+      let apiError = false;
+      let matchStatus = "";
       // createMatch
+      try {
+        const res = await axios.post(
+          "http://localhost:8080/user/info",
+          {
+            id: sessionStorage.getItem("user_id"),
+          },
+          {
+            withCredentials: true,
+          }
+        );
+        if (res.data.status === "Approved") {
+          matchStatus = "Wait for payment";
+        } else {
+          matchStatus = "Unverified renter";
+        }
+      } catch (error) {
+        apiError = true;
+        console.error(error);
+      }
       try {
         await axios.post(
           `http://localhost:8080/match`,
           {
             match: {
               carID: car_id,
-              lessorID: sessionStorage.getItem("user_id"),
-              renterID: owner_id,
-              status: "Rented",
+              lessorID: owner_id,
+              renterID: sessionStorage.getItem("user_id"),
+              status: matchStatus,
               pickupLocation: location,
               pickUpDateTime: new Date(startDateInput.current.value),
               returnLocation: location,
@@ -91,6 +124,7 @@ const ModalCarRent = ({
           }
         );
       } catch (error) {
+        apiError = true;
         console.error(error);
       }
 
@@ -111,6 +145,7 @@ const ModalCarRent = ({
           }
         );
       } catch (error) {
+        apiError = true;
         console.error(error);
       }
 
@@ -135,9 +170,10 @@ const ModalCarRent = ({
           }
         );
       } catch (error) {
+        apiError = true;
         console.error(error);
       }
-      window.location.assign("/");
+      if (!apiError) window.location.assign("/");
     }
   };
 

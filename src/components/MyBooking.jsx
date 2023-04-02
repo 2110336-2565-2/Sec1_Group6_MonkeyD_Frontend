@@ -6,7 +6,7 @@ import ProfileStatusTab from "./ProfileStatusTab";
 
 const MyBooking = () => {
   // const statuses = {1: "Pending", 2: "Cancelled", 3: "Rented", 4: "Completed"};
-  const statuses = ["All", "Pending", "Cancelled", "Rented", "Complete"];
+  const statuses = ["All", "Pending", "Cancelled", "Rented", "Completed"];
   const [status, setStatus] = useState("All");
   const [bookings, setBookings] = useState({});
   const [isLoading, setIsLoading] = useState(true);
@@ -31,8 +31,25 @@ const MyBooking = () => {
     try {
       setIsLoading(true);
       const id = sessionStorage.getItem("user_id");
+      const statusList = [];
+      if (status === "Pending") {
+        statusList.push("Wait for payment");
+        statusList.push("Unverified renter");
+      } else if (status !== "All") {
+        statusList.push(status);
+      }
       const res = await axios.get(`http://localhost:8080/match/me/${id}`, {
+<<<<<<< HEAD
         params,
+=======
+        params: {
+          ...(status !== "All"
+            ? {
+                status: encodeURIComponent(JSON.stringify(statusList)),
+              }
+            : {}),
+        },
+>>>>>>> 506e812a0d7e80f6a49e166b07c8b57a19628f4f
         withCredentials: true,
       });
       setBookings(res.data);
@@ -66,6 +83,29 @@ const MyBooking = () => {
     fetchMyBooking();
   };
 
+  const purchaseBooking = async (car_id, match_id) => {
+    try {
+      // await axios.patch(
+      //   `http://localhost:8080/match/cancel-reservation`,
+      //   {},
+      //   {
+      //     headers: {
+      //       car_id: car_id,
+      //       match_id: match_id,
+      //     },
+      //     withCredentials: true,
+      //   }
+      // );
+    } catch (error) {
+      console.log(error);
+    }
+    fetchMyBooking();
+  };
+
+  const rateBooking = async (car_id, match_id) => {
+    window.location.assign(`/addReview/?matchID=${match_id}`);
+  };
+
   useEffect(() => {
     fetchMyBooking();
   }, [status]);
@@ -89,14 +129,16 @@ const MyBooking = () => {
                 model,
                 license_plate,
                 rental_price,
-                car_images: [pic],
+                //car_images: [pic],
               },
+              car_image,
               _id: match_id,
               pickUpDateTime,
               pickupLocation,
               returnDateTime,
               returnLocation,
               status,
+              isReview,
             } = match;
             const pickupDate = new Date(pickUpDateTime);
             const returnDate = new Date(returnDateTime);
@@ -104,7 +146,7 @@ const MyBooking = () => {
               <div className="booking" key={index}>
                 <img
                   className="car-picture"
-                  src={pic}
+                  src={car_image}
                   alt=""
                   onClick={() => navigate(`/carDetail/${car_id}`)}
                 />
@@ -123,12 +165,30 @@ const MyBooking = () => {
                   <p>{`Pickup : ${pickupDate.toLocaleString()} at ${pickupLocation}`}</p>
                   <p>{`Return : ${returnDate.toLocaleString()} at ${returnLocation}`}</p>
                   <div className="footer">
-                    {status === "Pending" && (
+                    {(status === "Unverified renter" ||
+                      status === "Wait for payment") && (
                       <h3
-                        className="cancel"
+                        className="cancel btn"
                         onClick={() => cancelBooking(car_id, match_id)}
                       >
                         ✖ Cancel booking
+                      </h3>
+                    )}
+                    {status === "Wait for payment" && (
+                      <h3
+                        className="pay btn"
+                        onClick={() => purchaseBooking(car_id, match_id)}
+                      >
+                        ✓ Pay now
+                      </h3>
+                    )}
+                    {isReview}
+                    {status === "Completed" && isReview == false && (
+                      <h3
+                        className="rate btn"
+                        onClick={() => rateBooking(car_id, match_id)}
+                      >
+                        <i class="fa-regular fa-comment"></i> Rate booking
                       </h3>
                     )}
                     <h3 className="price">{`${calculatePrice(

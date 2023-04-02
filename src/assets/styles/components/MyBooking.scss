@@ -55,12 +55,20 @@
           justify-content: space-between;
           align-items: flex-end;
           margin-top: auto;
-          .cancel {
-            color: var(--caution-color);
+          .btn{
             align-items: center;
             &:hover {
               cursor: pointer;
             }
+          }
+          .cancel {
+            color: var(--caution-color);
+          }
+          .pay {
+            color: green;
+          }
+          .rate {
+            color: var(--secondary-color)
           }
           .price {
             color: var(--secondary-color);
