@@ -54,52 +54,52 @@ const ProfilePage = () => {
     }
   };
 
+  const fetchUserInfo = async () => {
+    try {
+      const id = sessionStorage.getItem("user_id");
+      const res = await axios.post(
+        `http://localhost:8080/user/info`,
+        {
+          id: id,
+        },
+        {
+          withCredentials: true,
+        }
+      );
+
+      const {
+        username,
+        email,
+        prefix,
+        firstName,
+        lastName,
+        phoneNumber,
+        image,
+        IDCardNumber,
+        drivingLicenseNumber,
+        isAdmin,
+      } = res.data;
+
+      const selectedUserInfo = {
+        username,
+        email,
+        prefix,
+        firstName,
+        lastName,
+        phoneNumber,
+        image,
+        IDCardNumber,
+        drivingLicenseNumber,
+      };
+
+      setIsAdmin(isAdmin);
+      setUserInfo(selectedUserInfo);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
-    const fetchUserInfo = async () => {
-      try {
-        const id = sessionStorage.getItem("user_id");
-        const res = await axios.post(
-          `http://localhost:8080/user/info`,
-          {
-            id: id,
-          },
-          {
-            withCredentials: true,
-          }
-        );
-
-        const {
-          username,
-          email,
-          prefix,
-          firstName,
-          lastName,
-          phoneNumber,
-          image,
-          IDCardNumber,
-          drivingLicenseNumber,
-          isAdmin,
-        } = res.data;
-
-        const selectedUserInfo = {
-          username,
-          email,
-          prefix,
-          firstName,
-          lastName,
-          phoneNumber,
-          image,
-          IDCardNumber,
-          drivingLicenseNumber,
-        };
-
-        setIsAdmin(isAdmin);
-        setUserInfo(selectedUserInfo);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
     fetchUserInfo();
   }, []);
 
@@ -173,6 +173,7 @@ const ProfilePage = () => {
                 userInfo={userInfo}
                 setUserInfo={setUserInfo}
                 imageFile={imageFile}
+                fetchUserInfo={fetchUserInfo}
               />
             )}
             {menu === "booking" && <MyBooking />}

@@ -22,12 +22,12 @@ const PaymentHistory = () => {
 
     try {
       setIsLoading(true);
-      const res = await axios.get(`http://localhost:8080/payment`, {
-        params,
+      const res = await axios.get(`http://localhost:8080/payment/transaction/${id}`, {
+        // params,
         withCredentials: true,
       });
-      // console.log(res.data.payments);
-      setTrans(res.data.payments);
+      console.log(res.data);
+      setTrans(res.data);
       setIsLoading(false);
     } catch (error) {
       console.log(error);
