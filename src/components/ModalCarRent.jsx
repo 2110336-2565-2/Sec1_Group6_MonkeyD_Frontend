@@ -437,7 +437,8 @@ const ModalCarRent = ({
             <input
               type="date"
               name="startDate"
-              defaultValue={new Date()}
+              disabled
+              value={sessionStorage.getItem("startDate")}
               ref={startDateInput}
             />
           </div>
@@ -446,9 +447,8 @@ const ModalCarRent = ({
             <input
               type="date"
               name="returnDate"
-              defaultValue={
-                new Date(new Date().getTime() + 3 * 24 * 60 * 60 * 1000)
-              }
+              disabled
+              value={sessionStorage.getItem("endDate")}
               ref={endDateInput}
             />
           </div>

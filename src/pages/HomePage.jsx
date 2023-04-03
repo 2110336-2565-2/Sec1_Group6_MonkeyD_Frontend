@@ -50,6 +50,12 @@ const HomePage = () => {
     }
   };
 
+  const handleChooseCar = (event) => {
+    event.preventDefault();
+    sessionStorage.setItem("startDate", startDateInput.current.value);
+    sessionStorage.setItem("endDate", endDateInput.current.value);
+  };
+
   const handleCookiesAuth = () => {
     // handle cookie auth from google
     if (cookieExists("userID") && cookieExists("username")) {
@@ -140,7 +146,11 @@ const HomePage = () => {
         </div>
       )}
       <div ref={scrollToRef}>
-        {isSearch ? <SearchResult carList={carList} /> : <></>}
+        {isSearch ? (
+          <SearchResult carList={carList} handleChooseCar={handleChooseCar} />
+        ) : (
+          <></>
+        )}
       </div>
     </div>
   );
