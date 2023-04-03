@@ -11,6 +11,7 @@ const HomePage = () => {
   const [carList, setCarList] = useState([]);
   const [isSearch, setSearch] = useState(false);
   const [filterProvince, setFilterProvince] = useState("");
+
   const startDateInput = useRef(null);
   const endDateInput = useRef(null);
   const [brandInputList, setBrandInputList] = useState([]);
@@ -27,12 +28,11 @@ const HomePage = () => {
     return "";
   };
 
-  const handleSearch = async () => {
-    console.log("handleSearch called");
+  const handleSearch = async (newFilterProvince) => {
     const searchParams = {
       startdate: formatDate(startDateInput.current.value),
       enddate: formatDate(endDateInput.current.value),
-      province: filterProvince,
+      province: newFilterProvince,
       brandlist: JSON.stringify(brandInputList),
     };
 
@@ -69,24 +69,33 @@ const HomePage = () => {
   }, []);
 
   useEffect(() => {
-    // setSearch(false);
-    const params = new URLSearchParams(location.search);
-    const startDate = params.get("startdate");
-    startDateInput.current.value = startDate ? startDate : "";
-    const endDate = params.get("enddate");
-    endDateInput.current.value = endDate ? endDate : "";
-    const province = params.get("province");
-    setFilterProvince(province ? province : "");
-    const brands = params.get("brandlist");
-    setBrandInputList(brands ? JSON.parse(brands) : []);
+    const getParam = async () => {
+      const params = new URLSearchParams(location.search);
+      const startDate = params.get("startdate");
+      startDateInput.current.value = startDate
+        ? new Date(startDate).toISOString().substr(0, 10)
+        : new Date().toISOString().substr(0, 10);
+      const endDate = params.get("enddate");
+      endDateInput.current.value = endDate
+        ? new Date(endDate).toISOString().substr(0, 10)
+        : new Date(new Date().getTime() + 3 * 24 * 60 * 60 * 1000)
+            .toISOString()
+            .substr(0, 10);
+      const province = params.get("province");
+      const newFilterProvince = province || "";
+      setFilterProvince(newFilterProvince);
 
-    // Fetch search results
-    console.log(params.toString());
-    if (params.toString() !== "") {
-      handleSearch();
-    } else {
-      setSearch(false);
-    }
+      const brands = params.get("brandlist");
+      setBrandInputList(brands ? JSON.parse(brands) : []);
+
+      // Fetch search results
+      if (params.toString() !== "") {
+        handleSearch(newFilterProvince);
+      } else {
+        setSearch(false);
+      }
+    };
+    getParam();
   }, [location]);
 
   const handleSearchSubmit = (event) => {
@@ -104,6 +113,7 @@ const HomePage = () => {
   return (
     <div className="homepage-container">
       <Search
+        filterProvince={filterProvince}
         setFilterProvince={setFilterProvince}
         startDateInput={startDateInput}
         endDateInput={endDateInput}

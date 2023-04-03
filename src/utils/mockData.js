@@ -77,3 +77,8 @@ export const provinces = [
   {value: "Yala", label: "Yala"},
   {value: "Yasothon", label: "Yasothon"},
 ];
+
+export const option_provinces = [
+  {value: "", label: "choose one"},
+  ...provinces,
+];

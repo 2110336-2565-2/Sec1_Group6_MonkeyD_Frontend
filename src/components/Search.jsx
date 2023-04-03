@@ -1,7 +1,8 @@
 import React, {useState, useRef, useEffect} from "react";
-import {provinces} from "../utils/mockData";
+import {option_provinces} from "../utils/mockData";
 
 const Search = ({
+  filterProvince,
   locationInput,
   setFilterProvince,
   startDateInput,
@@ -23,33 +24,22 @@ const Search = ({
           <div className="time-filter">
             <label>Start Date:</label>
             <input
-              defaultValue={new Date().toISOString().substr(0, 10)}
+              defaultValue={startDateInput}
               ref={startDateInput}
               type="date"
             />
           </div>
           <div className="time-filter">
             <label>Return Date And Time</label>
-            <input
-              defaultValue={new Date(
-                new Date().getTime() + 3 * 24 * 60 * 60 * 1000
-              )
-                .toISOString()
-                .substr(0, 10)}
-              ref={endDateInput}
-              type="date"
-            />
+            <input defaultValue={endDateInput} ref={endDateInput} type="date" />
           </div>
           <div className="time-filter">
             <label>Location</label>
 
-            <select onChange={handleFilterChange}>
-              <option value="" disabled selected hidden>
-                choose one
-              </option>
-              {provinces.map((province, index) => (
+            <select value={filterProvince} onChange={handleFilterChange}>
+              {option_provinces.map((province, index) => (
                 <option key={index} value={province.value}>
-                  {province.value}
+                  {province.label}
                 </option>
               ))}
             </select>
