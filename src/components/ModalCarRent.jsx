@@ -16,6 +16,12 @@ const errorForm = {
   returnLocation: "",
 };
 
+const formatName = (nameInput) => {
+  if (!nameInput) return nameInput;
+  const name = nameInput.replace(/[^a-zA-Z ]/g, "");
+  return name;
+};
+
 const ModalCarRent = ({
   user_info,
   set_show_modal,
@@ -27,15 +33,25 @@ const ModalCarRent = ({
   const [formValidate, setFormValidate] = useState(true);
   const [error, setError] = useState(errorForm);
   const prefix = useRef(user_info.prefix);
-  const firstName = useRef(user_info.firstName);
-  const lastName = useRef(user_info.lastName);
-  const mobileNumber = useRef(user_info.phoneNumber);
-  const drivingLicense = useRef(user_info.drivingLicenseNumber);
-  const identificationNumber = useRef(user_info.IDCardNumber);
+  // const firstName = useRef(user_info.firstName);
+  // const lastName = useRef(user_info.lastName);
+  const [firstName, setFirstName] = useState(user_info.firstName);
+  const [lastName, setLastName] = useState(user_info.lastName);
+  //const mobileNumber = useRef(user_info.phoneNumber);
+  const [mobileNumber, setMobileNumber] = useState(user_info.mobileNumber);
+  // const drivingLicense = useRef(user_info.drivingLicenseNumber);
+  // const identificationNumber = useRef(user_info.IDCardNumber);
+  const [drivingLicense, setDrivingLicense] = useState(
+    user_info.drivingLicenseNumber
+  );
+  const [identificationNumber, setIdentificationNumber] = useState(
+    user_info.IDCardNumber
+  );
   const startDateInput = useRef(null);
   const endDateInput = useRef(null);
   const [IDCardImg, setIDCardImg] = useState();
   const [drivingLicenseImg, setDrivingLicenseImg] = useState();
+  const [errorText, setErrorText] = useState("");
 
   const calPrice = () => {
     const amountDayRent =
@@ -82,6 +98,29 @@ const ModalCarRent = ({
 
       return stateObj;
     });
+  };
+
+  const handleChange = (event) => {
+    const {name, value} = event.target;
+    if (name === "firstName") {
+      setFirstName(formatName(value));
+    }
+    if (name === "lastName") {
+      setLastName(formatName(value));
+    }
+    if (name === "mobileNumber") {
+      const limit = 10;
+      setMobileNumber(value.slice(0, limit));
+    }
+    if (name === "drivingLicense") {
+      const limit = 8;
+      setDrivingLicense(value.slice(0, limit));
+    }
+    if (name === "IDCardNumber") {
+      const limit = 13;
+      setIdentificationNumber(value.slice(0, limit));
+    }
+    validateForm(event);
   };
 
   const validateForm = (event) => {
@@ -168,48 +207,79 @@ const ModalCarRent = ({
 
     const presentperiodend = end - today;
     const prefixCheck = prefix.current.value === "";
-    const firstNameCheck = firstName.current.value === "";
-    const lastNameCheck = lastName.current.value === "";
-    const mobileNumberCheck =
-      mobileNumber.current.value.toString().length !== 10;
-    const drivingLicenseCheck =
-      drivingLicense.current.value.toString().length !== 8;
+    const firstNameCheck = firstName === "";
+    const lastNameCheck = lastName === "";
+    const mobileNumberCheck = mobileNumber.toString().length !== 10;
+    const drivingLicenseCheck = drivingLicense.toString().length !== 8;
     const identificationNumberCheck =
-      identificationNumber.current.value.toString().length !== 13;
+      identificationNumber.toString().length !== 13;
     const dateFillCheck = period || period >= 0;
     const startpresentCheck = presentperiodstart && presentperiodstart >= 0;
     const endpresentCheck = presentperiodend && presentperiodend >= 0;
-    if (
-      prefixCheck ||
-      firstNameCheck ||
-      lastNameCheck ||
-      mobileNumberCheck ||
-      drivingLicenseCheck ||
-      identificationNumberCheck ||
-      !dateFillCheck ||
-      !startpresentCheck ||
-      !endpresentCheck ||
-      !idCardImg ||
-      !drivingLicenseImg
-    ) {
-      // console.log(
-      //   prefixCheck,
-      //   firstNameCheck,
-      //   lastNameCheck,
-      //   mobileNumberCheck,
-      //   drivingLicenseCheck,
-      //   identificationNumberCheck,
-      //   !dateFillCheck,
-      //   !startpresentCheck,
-      //   !endpresentCheck
-      // );
+    let errorList = [];
 
+    if (prefixCheck) {
+      errorList.push("Please select prefix");
+    }
+    if (firstNameCheck) {
+      errorList.push("Please enter your first name");
+    }
+    if (lastNameCheck) {
+      errorList.push("Please enter your last name");
+    }
+    if (mobileNumberCheck) {
+      errorList.push("Please correct your mobile number");
+    }
+    if (drivingLicenseCheck) {
+      errorList.push("Please correct the number of driving license");
+    }
+    if (identificationNumberCheck) {
+      errorList.push("Please correct your identification number");
+    }
+    if (errorList.length !== 0) {
+      let errorMessage = "";
+      for (let i = 0; i < errorList.length; i++) {
+        if (i === errorList.length - 1) {
+          errorMessage += `and ${errorList[i]}.`;
+          break;
+        }
+        errorMessage += `${errorList[i]}, `;
+      }
+      setErrorText(errorMessage);
       setFormValidate(false);
       return false;
-    } else {
-      setFormValidate(true);
-      return true;
     }
+
+    // if (
+    //   prefixCheck ||
+    //   firstNameCheck ||
+    //   lastNameCheck ||
+    //   mobileNumberCheck ||
+    //   drivingLicenseCheck ||
+    //   identificationNumberCheck ||
+    //   !dateFillCheck ||
+    //   !startpresentCheck ||
+    //   !endpresentCheck ||
+    //   !idCardImg ||
+    //   !drivingLicenseImg
+    // ) {
+    //   // console.log(
+    //   //   prefixCheck,
+    //   //   firstNameCheck,
+    //   //   lastNameCheck,
+    //   //   mobileNumberCheck,
+    //   //   drivingLicenseCheck,
+    //   //   identificationNumberCheck,
+    //   //   !dateFillCheck,
+    //   //   !startpresentCheck,
+    //   //   !endpresentCheck
+    //   // );
+
+    //   setFormValidate(false);
+    //   return false;
+    // }
+    setFormValidate(true);
+    return true;
   };
 
   const handleSubmit = async (event) => {
@@ -288,14 +358,11 @@ const ModalCarRent = ({
 
       const formData = new FormData();
       formData.append("prefix", prefix.current.value);
-      formData.append("first_name", firstName.current.value);
-      formData.append("last_name", lastName.current.value);
-      formData.append("phone_number", mobileNumber.current.value);
-      formData.append("driving_license", drivingLicense.current.value);
-      formData.append(
-        "identification_number",
-        identificationNumber.current.value
-      );
+      formData.append("first_name", firstName);
+      formData.append("last_name", lastName);
+      formData.append("phone_number", mobileNumber);
+      formData.append("driving_license", drivingLicense);
+      formData.append("identification_number", identificationNumber);
 
       const drivingLicenseImage =
         document.querySelector("#drivinglicenseimg").files[0];
@@ -352,8 +419,10 @@ const ModalCarRent = ({
           <input
             type="text"
             name="firstName"
-            ref={firstName}
-            defaultValue={user_info.firstName}
+            //ref={firstName}
+            //defaultValue={user_info.firstName}
+            onChange={handleChange}
+            value={firstName}
             placeholder="Somchai"
             required
             disabled={emptyCheck(user_info.firstName)}
@@ -364,8 +433,10 @@ const ModalCarRent = ({
           <input
             type="text"
             name="lastName"
-            ref={lastName}
-            defaultValue={user_info.lastName}
+            // ref={lastName}
+            // defaultValue={user_info.lastName}
+            onChange={handleChange}
+            value={lastName}
             placeholder="Jaiyen"
             required
             disabled={emptyCheck(user_info.lastName)}
@@ -376,9 +447,11 @@ const ModalCarRent = ({
           <input
             type="number"
             name="mobileNumber"
-            ref={mobileNumber}
+            // ref={mobileNumber}
+            onChange={handleChange}
+            value={mobileNumber}
             placeholder="1234567890"
-            defaultValue={user_info.phoneNumber}
+            // defaultValue={user_info.phoneNumber}
             pattern="[0-9]{10}"
             required
           />
@@ -388,9 +461,11 @@ const ModalCarRent = ({
           <input
             type="number"
             name="drivingLicense"
-            ref={drivingLicense}
+            // ref={drivingLicense}
+            onChange={handleChange}
+            value={drivingLicense}
             placeholder="87654321"
-            defaultValue={user_info.drivingLicenseNumber}
+            // defaultValue={user_info.drivingLicenseNumber}
             pattern="[0-9]{8}"
             required
             disabled={emptyCheck(user_info.drivingLicenseNumber)}
@@ -401,9 +476,11 @@ const ModalCarRent = ({
           <input
             type="number"
             name="IDCardNumber"
-            ref={identificationNumber}
+            // ref={identificationNumber}
+            onChange={handleChange}
+            value={identificationNumber}
             placeholder="3210123456789"
-            defaultValue={user_info.IDCardNumber}
+            // defaultValue={user_info.IDCardNumber}
             pattern="[0-9]{13}"
             required
             disabled={emptyCheck(user_info.IDCardNumber)}
@@ -418,6 +495,7 @@ const ModalCarRent = ({
             onBlur={validateImage}
             onChange={handleImage}
             accept="image/png, image/gif, image/jpeg"
+            required
           />
         </div>
         <div className="row-input">
@@ -429,6 +507,7 @@ const ModalCarRent = ({
             onBlur={validateImage}
             onChange={handleImage}
             accept="image/png, image/gif, image/jpeg"
+            required
           />
         </div>
         <div className="two-in-one">
@@ -473,13 +552,7 @@ const ModalCarRent = ({
             />
           </div>
         </div>
-        {formValidate ? (
-          ""
-        ) : (
-          <div className="validate-false">
-            Please correct the fields or put the date and date not in the past.
-          </div>
-        )}
+        {formValidate ? "" : <div className="validate-false">{errorText}</div>}
         <div className="submit-btn">
           <button type="submit">
             <i className="fa-sharp fa-solid fa-hand-holding-hand" />
