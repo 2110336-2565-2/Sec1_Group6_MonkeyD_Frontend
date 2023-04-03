@@ -77,6 +77,7 @@ const Navbar = () => {
     } catch (error) {
       console.error(error);
     }
+    window.location.reload(false);
   };
 
   useEffect(() => {
