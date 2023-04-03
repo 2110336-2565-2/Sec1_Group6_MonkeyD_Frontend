@@ -1,20 +1,17 @@
 import axios from "axios";
 import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
+import Script from "react-load-script";
+import Config from "../assets/configs/configs.json";
+let OmiseCard;
 
 const MyBooking = () => {
   // const statuses = {1: "Pending", 2: "Cancelled", 3: "Rented", 4: "Completed"};
-  const statuses = [
-    "All",
-    "Unverified renter",
-    "Wait for payment",
-    "Cancelled",
-    "Rented",
-    "Completed",
-  ];
+  const statuses = ["All", "Pending", "Cancelled", "Rented", "Completed"];
   const [status, setStatus] = useState("All");
   const [bookings, setBookings] = useState({});
   const [isLoading, setIsLoading] = useState(true);
+  const [scriptLoaded, setScriptLoaded] = useState(false);
   const navigate = useNavigate();
 
   const calculatePrice = (firstDate, secondDate, rate) => {
@@ -27,11 +24,18 @@ const MyBooking = () => {
     try {
       setIsLoading(true);
       const id = sessionStorage.getItem("user_id");
+      const statusList = [];
+      if (status === "Pending") {
+        statusList.push("Wait for payment");
+        statusList.push("Unverified renter");
+      } else if (status !== "All") {
+        statusList.push(status);
+      }
       const res = await axios.get(`http://localhost:8080/match/me/${id}`, {
         params: {
           ...(status !== "All"
             ? {
-                status: status,
+                status: encodeURIComponent(JSON.stringify(statusList)),
               }
             : {}),
         },
@@ -51,35 +55,88 @@ const MyBooking = () => {
         {},
         {
           headers: {
-            car_id: car_id,
             match_id: match_id,
           },
           withCredentials: true,
         }
       );
+      fetchMyBooking();
     } catch (error) {
       console.log(error);
     }
-    fetchMyBooking();
   };
 
-  const purchaseBooking = async (car_id, match_id) => {
-    try {
-      // await axios.patch(
-      //   `http://localhost:8080/match/cancel-reservation`,
-      //   {},
-      //   {
-      //     headers: {
-      //       car_id: car_id,
-      //       match_id: match_id,
-      //     },
-      //     withCredentials: true,
-      //   }
-      // );
-    } catch (error) {
-      console.log(error);
+  const handleLoadScript = () => {
+    OmiseCard = window.OmiseCard;
+    OmiseCard.configure({
+      publicKey: Config.OMISE_PUBLIC_KEY,
+      currency: "THB",
+      frameLabel: "Monkey Car Rent",
+      submitLabel: "Pay Now",
+      buttonLabel: "Pay with Omise",
+      defaultPaymentMethod: "credit_card",
+      otherPaymentMethods: [],
+    });
+    setScriptLoaded(true);
+  };
+
+  const omiseCardHandler = async (amount, match_id) => {
+    OmiseCard.open({
+      amount: amount,
+      onCreateTokenSuccess: (token) => {
+        const id = sessionStorage.getItem("user_id");
+        const username = sessionStorage.getItem("username");
+        axios
+          .post(
+            `http://localhost:8080/payment/charge/${id}`,
+            {
+              description: username,
+              amount: amount,
+              cardToken: token,
+            },
+            {
+              headers: {
+                "Content-Type": "application/json",
+              },
+              withCredentials: true,
+            }
+          )
+          .then((response) => {
+            axios
+              .patch(
+                `http://localhost:8080/match/status`,
+                {
+                  match_id: match_id,
+                  action: "Paid",
+                },
+                {
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  withCredentials: true,
+                }
+              )
+              .then((response) => {
+                console.log(response);
+              })
+              .catch((error) => {
+                console.error(error);
+              });
+            console.log(response);
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      },
+      onFormClosed: () => {},
+    });
+  };
+
+  const purchaseBooking = async (e, amount, matchId) => {
+    if (scriptLoaded) {
+      e.preventDefault();
+      omiseCardHandler(amount * 100, matchId);
     }
-    fetchMyBooking();
   };
 
   const rateBooking = async (car_id, match_id) => {
@@ -93,6 +150,7 @@ const MyBooking = () => {
 
   return (
     <div className="my-booking">
+      <Script url="https://cdn.omise.co/omise.js" onLoad={handleLoadScript} />
       <div className="status-bar">
         {statuses &&
           statuses.map((item, i) => {
@@ -113,7 +171,7 @@ const MyBooking = () => {
         ) : (
           bookings?.matches.map((match, index) => {
             if (match.car == null) {
-              return;
+              return <></>;
             }
             const {
               car: {
@@ -122,8 +180,9 @@ const MyBooking = () => {
                 model,
                 license_plate,
                 rental_price,
-                car_images: [pic],
+                //car_images: [pic],
               },
+              car_image,
               _id: match_id,
               pickUpDateTime,
               pickupLocation,
@@ -138,7 +197,7 @@ const MyBooking = () => {
               <div className="booking" key={index}>
                 <img
                   className="car-picture"
-                  src={pic}
+                  src={car_image}
                   alt=""
                   onClick={() => navigate(`/carDetail/${car_id}`)}
                 />
@@ -166,10 +225,21 @@ const MyBooking = () => {
                         ✖ Cancel booking
                       </h3>
                     )}
+
                     {status === "Wait for payment" && (
                       <h3
                         className="pay btn"
-                        onClick={() => purchaseBooking(car_id, match_id)}
+                        onClick={(e) =>
+                          purchaseBooking(
+                            e,
+                            calculatePrice(
+                              pickupDate,
+                              returnDate,
+                              rental_price
+                            ),
+                            match_id
+                          )
+                        }
                       >
                         ✓ Pay now
                       </h3>

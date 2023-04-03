@@ -2,14 +2,25 @@ import React, {useState, useEffect, useRef} from "react";
 import axios from "axios";
 import UnavailableDatesMap from "./DatesMap";
 import CarDetails from "./ModalCarDetail";
+import {provinces} from "../utils/mockData";
+
 const MyCars = () => {
   const modalRef = useRef();
   const [selectedCarIndex, setSelectedCarIndex] = useState(-1);
   const [isChecked, setIsChecked] = useState(false);
   const [showCalendar, setShowCalendar] = useState(false);
   const [status, setStatus] = useState();
-
   const [cars, setCars] = useState([]);
+  const [filterProvince, setFilterProvince] = useState(null);
+  const [sortOption, setSortOption] = useState(null);
+
+  const handleFilterChange = (event) => {
+    setFilterProvince(event.target.value);
+  };
+
+  const handleSortChange = (event) => {
+    setSortOption(event.target.value);
+  };
 
   const toggleSwitch = () => {
     setIsChecked(!isChecked);
@@ -66,11 +77,13 @@ const MyCars = () => {
   };
 
   useEffect(() => {
+    console.log("fetch");
     const fetchCars = async () => {
       const username = sessionStorage.getItem("username");
       try {
-        const res = await axios.get(
+        const res = await axios.post(
           `http://localhost:8080/car/me/${username}`,
+          {province: filterProvince, sortBy: sortOption},
           {withCredentials: true}
         );
         res.data.map((each) => {
@@ -102,7 +115,7 @@ const MyCars = () => {
     return () => {
       window.removeEventListener("click", handleClickOutsideModal);
     };
-  }, []);
+  }, [filterProvince, sortOption]);
 
   return (
     <div className="mycars">
@@ -110,27 +123,30 @@ const MyCars = () => {
         <div className="filter">
           <p>Filter : </p>
           <div className="group">
-            {generateSelectBox("By status", [
-              "Option 1",
-              "Option 2",
-              "Option 3",
-            ])}
-            {generateSelectBox("By location", [
-              "Option 1",
-              "Option 2",
-              "Option 3",
-            ])}
+            <select onChange={handleFilterChange}>
+              <option value="" disabled selected hidden>
+                choose one
+              </option>
+              {provinces.map((province, index) => (
+                <option key={index} value={province.value}>
+                  {province.value}
+                </option>
+              ))}
+            </select>
           </div>
         </div>
         <div className="sort">
           <p>Sort : </p>
           <div className="group">
-            {generateSelectBox("By date", ["Option 1", "Option 2", "Option 3"])}
-            {generateSelectBox("By price", [
-              "Option 1",
-              "Option 2",
-              "Option 3",
-            ])}
+            <select onChange={handleSortChange}>
+              <option value="" disabled selected hidden>
+                choose one
+              </option>
+              <option value="highest rating">highest rating</option>
+              <option value="lowest rating">lowest rating</option>
+              <option value="highest price">highest price</option>
+              <option value="lowest price">lowest price</option>
+            </select>
           </div>
         </div>
       </div>

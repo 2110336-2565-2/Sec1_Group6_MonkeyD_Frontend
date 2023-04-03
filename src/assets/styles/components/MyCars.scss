@@ -27,8 +27,6 @@
         text-align: center;
         margin: 48px 0;
       }
-      > .detail {
-      }
       > .status-box {
         display: flex;
         align-items: center;
@@ -111,7 +109,10 @@
       display: flex;
       align-items: center;
       gap: 12px;
+      width: 235px;
       select {
+        width: 235px;
+        text-align: center;
         border-radius: 4px;
         border-color: var(--secondary-color);
         appearance: none;

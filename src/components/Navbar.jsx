@@ -23,7 +23,7 @@ const Navbar = () => {
 
   const handleLogout = async () => {
     sessionStorage.clear();
-    const res = await axios.post(
+    await axios.post(
       `http://localhost:8080/user/logout`,
       {
         cookie_name: "auth",
@@ -43,9 +43,6 @@ const Navbar = () => {
 
   const handleAddCar = () => {
     window.location.assign("/addCar");
-  };
-  const handleMyBooking = () => {
-    window.location.assign("/mybooking");
   };
 
   useEffect(() => {
