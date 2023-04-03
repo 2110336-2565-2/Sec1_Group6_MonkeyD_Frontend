@@ -3,16 +3,39 @@ import axios from "axios";
 import {Link} from "react-router-dom";
 import {checkLogin} from "../utils/auth";
 import useOutsideClick from "../hooks/useOutsideClick";
+import Notification from "../components/Notification";
 
 const Navbar = () => {
   const [navbarInfo, setNavbarInfo] = useState(null);
   const [openDropdown, setOpenDropdown] = useState(false);
+  const [openNotification, setOpenNotification] = useState(false);
+  const [notificationList, setNotificationList] = useState([]);
+  const [allNotificationsRead, setAllNotificationsRead] = useState(true);
 
   const toggleDropdown = () => {
     setOpenDropdown(!openDropdown);
   };
 
+  const toggleOpenNotification = async () => {
+    setOpenNotification(!openNotification);
+    if (openNotification) {
+      const id = sessionStorage.getItem("user_id");
+      try {
+        // readNotifications
+        await axios.patch(`http://localhost:8080/notification/?userID=${id}`, {
+          withCredentials: true,
+        });
+      } catch (error) {
+        console.error(error);
+      }
+
+      setAllNotificationsRead(true);
+      console.log("settrue");
+    }
+  };
+
   const ref = useOutsideClick(() => setOpenDropdown(false));
+  const notioutsideClick = useOutsideClick(() => setOpenNotification(false));
 
   const handleLogout = async () => {
     sessionStorage.clear();
@@ -75,6 +98,35 @@ const Navbar = () => {
     };
     fetchNavbar();
   }, []);
+
+  useEffect(() => {
+    // getNotifications;
+    const getNotifications = async () => {
+      try {
+        const id = sessionStorage.getItem("user_id");
+        const res = await axios.get(
+          `http://localhost:8080/notification/?userID=${id}&date=2023-04-02T10:52:47.185`,
+          {
+            withCredentials: true,
+          }
+        );
+        setNotificationList(res.data.notifications);
+
+        console.log(notificationList);
+        for (const notification of res.data.notifications) {
+          const isRead = notification.isRead;
+          console.log(isRead);
+          if (!isRead) {
+            setAllNotificationsRead(false);
+            break;
+          }
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    getNotifications();
+  }, [allNotificationsRead]);
 
   return (
     <div className="navbar-container">
@@ -191,7 +243,22 @@ const Navbar = () => {
             </>
           )}
         </nav>
-        <i className="fa-regular fa-bell"></i>
+        <div
+          className={openNotification ? "bell-noti open" : "bell-noti"}
+          ref={notioutsideClick}
+        >
+          <i
+            className={
+              allNotificationsRead
+                ? "fa-solid fa-bell"
+                : "fa-solid fa-bell fa-shake"
+            }
+            onClick={toggleOpenNotification}
+          />
+          {openNotification && (
+            <Notification notifications={notificationList} />
+          )}
+        </div>
       </div>
     </div>
   );
