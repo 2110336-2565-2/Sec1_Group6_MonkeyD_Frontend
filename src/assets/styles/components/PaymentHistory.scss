@@ -1,0 +1,38 @@
+.trans-approval-container {
+  display: flex;
+  flex-direction: column;
+  .trans-approval-list {
+    // height: 50vh;
+    display: flex;
+    flex-direction: column;
+    .no-result {
+      text-align: center;
+      padding: 6rem 0;
+    }
+    .trans-approval {
+      min-height: 13rem;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      border-bottom: solid 2px var(--secondary-background);
+      .header {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+      }
+      h3 {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        &.amount {
+          margin-top: auto;
+          margin-left: auto;
+          color: var(--secondary-color);
+        }
+      }
+    }
+    .trans-approval:last-child {
+      border-bottom: none;
+    }
+  }
+}

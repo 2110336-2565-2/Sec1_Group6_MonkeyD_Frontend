@@ -27,8 +27,6 @@
         text-align: center;
         margin: 48px 0;
       }
-      > .detail {
-      }
       > .status-box {
         display: flex;
         align-items: center;
@@ -92,11 +90,29 @@
     width: 100%;
     height: 100%;
   }
+  .no-background {
+    text-align: center;
+    padding: 96px;
+  }
   .filter-box {
     display: flex;
     justify-content: space-evenly;
     width: 100%;
     margin: 24px 0;
+    > button {
+      border: none;
+      padding: 0 12px;
+      margin: 4px 0;
+      border-radius: 4px;
+      margin-left: 12px;
+      transition: background-color 0.1s ease-in-out, border 0.1s ease-in-out,
+        color 0.2s ease-in-out;
+      &:hover {
+        cursor: pointer;
+        background-color: var(--caution-color);
+        color: white;
+      }
+    }
     .filter {
       display: flex;
       align-items: center;
@@ -111,7 +127,10 @@
       display: flex;
       align-items: center;
       gap: 12px;
+      width: 235px;
       select {
+        width: 235px;
+        text-align: center;
         border-radius: 4px;
         border-color: var(--secondary-color);
         appearance: none;

@@ -16,7 +16,7 @@ const Navbar = () => {
 
   const handleLogout = async () => {
     sessionStorage.clear();
-    const res = await axios.post(
+    await axios.post(
       `http://localhost:8080/user/logout`,
       {
         cookie_name: "auth",
@@ -37,8 +37,23 @@ const Navbar = () => {
   const handleAddCar = () => {
     window.location.assign("/addCar");
   };
-  const handleMyBooking = () => {
-    window.location.assign("/mybooking");
+
+  const handleBeAnAdmin = async () => {
+    const user_id = sessionStorage.getItem("user_id");
+    try {
+      await axios.patch(
+        `http://localhost:8080/user/update-role-admin`,
+        {},
+        {
+          headers: {
+            user_id: user_id,
+          },
+          withCredentials: true,
+        }
+      );
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   useEffect(() => {
@@ -129,6 +144,32 @@ const Navbar = () => {
                           onClick={handleRegisterLessor}
                         >
                           Be a lessor
+                        </li>
+                      )}
+                      {navbarInfo.isAdmin ? (
+                        <>
+                          <li className="menu-item">
+                            <Link
+                              to="/profile?menu=approval_management"
+                              className="link"
+                              onClick={toggleDropdown}
+                            >
+                              Approval mgmt
+                            </Link>
+                          </li>
+                          <li className="menu-item">
+                            <Link
+                              to="/profile?menu=match_management"
+                              className="link"
+                              onClick={toggleDropdown}
+                            >
+                              Match mgmt
+                            </Link>
+                          </li>
+                        </>
+                      ) : (
+                        <li className="menu-item" onClick={handleBeAnAdmin}>
+                          Be an admin
                         </li>
                       )}
                       <li className="menu-item" onClick={handleLogout}>

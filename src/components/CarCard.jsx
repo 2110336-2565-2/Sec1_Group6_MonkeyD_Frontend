@@ -1,4 +1,5 @@
 import React from "react";
+import {useNavigate} from "react-router-dom";
 
 const CarCard = ({
   car_id,
@@ -11,13 +12,15 @@ const CarCard = ({
   passenger,
   gear_type,
   rating,
+  reviewCount,
 }) => {
-  const handleClick = () => {
-    window.location.assign(`/carDetail/${car_id}`);
-  };
+  const navigate = useNavigate();
 
   return (
-    <div onClick={handleClick} className="card-container">
+    <div
+      onClick={() => navigate(`/carDetail/${car_id}`)}
+      className="card-container"
+    >
       <div className="header">
         <img src={car_image} alt="car" />
       </div>
@@ -36,7 +39,7 @@ const CarCard = ({
         </div>
         <div className="info">
           <i className="fa-solid fa-star"></i>
-          <p>{rating}</p>
+          <p>{reviewCount ? rating.toFixed(2) : "No review"}</p>
         </div>
         <div className="avatar">
           <img src={user_image} alt="car" />
