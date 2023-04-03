@@ -4,6 +4,10 @@ const CarDetails = ({modalCar, handleSave}) => {
   const [editMode, setEditMode] = useState(false);
   const [updatedCar, setUpdatedCar] = useState(modalCar);
   const [car, setCar] = useState(modalCar);
+  const [new_car_images, setNewCarImages] = useState([]);
+  const [uploaded_car_images, setUploadedCarImages] = useState([]);
+  const [deleted_car_image_urls, setDeletedCarImageUrls] = useState([]);
+
   const handleInputChange = (e) => {
     const {name, value} = e.target;
     setUpdatedCar({...updatedCar, [name]: value});
@@ -13,16 +17,54 @@ const CarDetails = ({modalCar, handleSave}) => {
     setEditMode(true);
   };
 
-  const handleSaveButtonClick = () => {
-    handleSave(updatedCar);
+  const handleSaveButtonClick = async () => {
+    // console.log(updatedCar);
+    // console.log(uploaded_car_images.length);
+    // console.log(deleted_car_image_urls);
+    const formData = new FormData();
+    formData.append("available_location", updatedCar.available_location);
+    formData.append("rental_price", updatedCar.rental_price);
+    for (const url of deleted_car_image_urls) {
+      formData.append("delete_image", url);
+    }
+    // for (const file of uploaded_car_images) {
+    //   formData.append("car_images", file);
+    // }
+    const carImages = document.querySelector("#carimages").files;
+    for (let i = 0; i < carImages.length; i++) {
+      formData.append("car_images", carImages[i]);
+    }
+    await handleSave(formData, updatedCar._id);
     setEditMode(false);
-    setCar(updatedCar);
+    //setCar(updatedCar);
+
+    window.location.reload(false);
+    window.scrollTo(0, 0);
   };
 
   const handleCancelButtonClick = () => {
     setUpdatedCar(car);
     setEditMode(false);
+    setNewCarImages([]);
+    setUploadedCarImages([]);
+    setDeletedCarImageUrls([]);
   };
+
+  const handleDeleteImage = (e) => {
+    //console.log(e.target.name);
+    setDeletedCarImageUrls([...deleted_car_image_urls, e.target.name]);
+  };
+
+  const handleImage = async (event) => {
+    const {name, files} = event.target;
+    setNewCarImages([...files]);
+  };
+  useEffect(() => {
+    if (new_car_images.length < 1) return;
+    const URLs = [];
+    new_car_images.forEach((image) => URLs.push(URL.createObjectURL(image)));
+    setUploadedCarImages(uploaded_car_images.concat(URLs));
+  }, [new_car_images]);
 
   return (
     <div className={editMode ? "modal-car-detail" : "modal-car-detail v2"}>
@@ -165,6 +207,60 @@ const CarDetails = ({modalCar, handleSave}) => {
           />
         ) : (
           <span className="value">{car.passenger}</span>
+        )}
+      </p>
+
+      <p>
+        <span className="topic">Images : </span>
+        {editMode ? (
+          <div className="car-images">
+            {car.show_images.map((value) => {
+              if (!deleted_car_image_urls.includes(value)) {
+                return (
+                  <div>
+                    {car.show_images.length -
+                      deleted_car_image_urls.length +
+                      uploaded_car_images.length >
+                      5 && (
+                      <button
+                        className="btn btn-image"
+                        id="inModal"
+                        name={value}
+                        onClick={handleDeleteImage}
+                      >
+                        Delete
+                      </button>
+                    )}
+                    <img src={value} alt="car image" />
+                  </div>
+                );
+              }
+            })}
+            <div className="upload-input">
+              <p>Upload new image</p>
+              <input
+                type="file"
+                id="carimages"
+                name="car_images"
+                multiple
+                onChange={handleImage}
+                //onBlur={validateImage}
+                accept="image/png, image/gif, image/jpeg"
+                style={{width: "95px"}}
+              />
+            </div>
+            <div className="upload-display">
+              {uploaded_car_images.map((value) => {
+                return <img src={value} alt="car image" />;
+              })}
+            </div>
+          </div>
+        ) : (
+          <div className="car-images">
+            {car.show_images.map((value) => {
+              return <img src={value} alt="car image" />;
+            })}
+          </div>
         )}
       </p>
 
