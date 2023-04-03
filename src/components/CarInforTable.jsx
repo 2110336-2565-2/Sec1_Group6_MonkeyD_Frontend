@@ -15,6 +15,7 @@ const CarInforTable = ({
   rented_out,
   set_user_info,
   set_show_modal,
+  reviewCount,
 }) => {
   const handleClick = async () => {
     const isLogin = await checkLogin();
@@ -147,7 +148,7 @@ const CarInforTable = ({
           <p>Car Rating</p>
           <div className="value">
             <i className="fa-solid fa-star" />
-            {rating.toFixed(2)}
+            {reviewCount ? rating.toFixed(2) : "No review"}
           </div>
         </div>
         <div className="car-row">

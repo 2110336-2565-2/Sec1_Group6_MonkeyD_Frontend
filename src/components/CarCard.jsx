@@ -12,6 +12,7 @@ const CarCard = ({
   passenger,
   gear_type,
   rating,
+  reviewCount,
 }) => {
   const navigate = useNavigate();
 
@@ -38,7 +39,7 @@ const CarCard = ({
         </div>
         <div className="info">
           <i className="fa-solid fa-star"></i>
-          <p>{rating}</p>
+          <p>{reviewCount ? rating.toFixed(2) : "No review"}</p>
         </div>
         <div className="avatar">
           <img src={user_image} alt="car" />

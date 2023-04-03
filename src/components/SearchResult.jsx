@@ -27,6 +27,7 @@ const SearchResult = ({carList}) => {
               passenger={car.passenger}
               gear_type={car.gear_type}
               rating={car.rating}
+              reviewCount={car.reviewCount}
             />
           );
         })}
