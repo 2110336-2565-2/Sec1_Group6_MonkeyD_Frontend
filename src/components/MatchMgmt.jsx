@@ -4,18 +4,7 @@ import {useNavigate} from "react-router-dom";
 import ProfileStatusTab from "./ProfileStatusTab";
 import ProfileSearchBar from "./ProfileSearchBar";
 
-const MatchManagement = () => {
-  const dummy = [
-    {
-      renterID: "63e36bfd5bbbffc725269039",
-      carID: "63e23b547e35430efa0f0867",
-      status: "Cancelled",
-      pickupLocation: "Siam Paragon",
-      returnLocation: "BTS Siam",
-      isReview: false,
-      lessorID: "63e23a7f7e35430efa0f0857",
-    },
-  ];
+const MatchMgmt = () => {
   const statusList = [
     "Unverified renter",
     "Wait for payment",
@@ -32,16 +21,14 @@ const MatchManagement = () => {
 
   const fetchMatches = async () => {
     const params = {
-      ...(status !== "All" && {
-        status: status,
-      }),
+      status: status,
       search: searchRef.current.value,
     };
 
     try {
       setIsLoading(true);
       const id = sessionStorage.getItem("user_id");
-      const res = await axios.get(`http://localhost:8080/match`, {
+      const res = await axios.get(`http://localhost:8080/match/admin`, {
         params,
         withCredentials: true,
       });
@@ -53,13 +40,13 @@ const MatchManagement = () => {
     }
   };
 
-  const handleChangeStatus = async (match_id, status) => {
+  const handleChangeStatus = async (match_id, action) => {
     try {
       await axios.patch(
-        `http://localhost:8080/match/cancel-reservation`,
+        `http://localhost:8080/match/status`,
         {
           match_id,
-          status,
+          action,
         },
         {
           withCredentials: true,
@@ -95,13 +82,10 @@ const MatchManagement = () => {
           matches?.map((match, index) => {
             let {
               _id,
-              renterID,
-              carID,
+              renterID: {username: renterUsername},
+              lessorID: {username: lessorUsername},
+              carID: {license_plate},
               status,
-              pickupLocation,
-              returnLocation,
-              isReview,
-              lessorID,
             } = match;
             return (
               <div className="match-approval" key={index}>
@@ -109,27 +93,16 @@ const MatchManagement = () => {
                   <h3>{`Match ID : ${_id}`}</h3>
                   <h3
                     className={`status 
-                    ${status === "Rejected" ? "rejected" : ""} 
-                    ${status === "Approved" ? "approved" : ""}`}
+                    ${status === "Cancelled" ? "rejected" : ""} 
+                    ${status === "Completed" ? "approved" : ""}`}
                   >
                     {status}
                   </h3>
                 </div>
-                <h3>{`renter : ${renterID}`}</h3>
-                <h3>{`car : ${carID}`}</h3>
-                <h3>{`lessor : ${lessorID}`}</h3>
-                {/* <div className="images">
-                  <div className="card">
-                    <img
-                      className="car-picture"
-                      src={registration_book_url}
-                      alt=""
-                    />
-                    <h3>{`${license_plate}`}</h3>
-                    <h3>{`${registration_book_id}`}</h3>
-                  </div>
-                </div> */}
-                {status === "Pending" && (
+                <h3>{`renter : ${renterUsername}`}</h3>
+                <h3>{`lessor : ${lessorUsername}`}</h3>
+                <h3>{`car : ${license_plate}`}</h3>
+                {/* {status === "Pending" && (
                   <>
                     <h3
                       className="action approve"
@@ -144,7 +117,7 @@ const MatchManagement = () => {
                       ✖ Reject&nbsp;&nbsp;
                     </h3>
                   </>
-                )}
+                )} */}
               </div>
             );
           })
@@ -153,4 +126,4 @@ const MatchManagement = () => {
     </div>
   );
 };
-export default MatchManagement;
+export default MatchMgmt;

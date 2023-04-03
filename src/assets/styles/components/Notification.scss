@@ -1,0 +1,57 @@
+.notification-container {
+  position: absolute;
+  top: 56px;
+  right: -10px;
+  min-width: 450px;
+  border-radius: 8px;
+  color: var(--primary-color);
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+  // overflow-wrap: break-word;
+  background-color: var(--contrast-color);
+  padding: 16px;
+  .header {
+    padding-bottom: 8px;
+    font-size: var(--header2-fs);
+    font-weight: 500;
+  }
+  .noti-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    .noti-box {
+      display: flex;
+      align-items: center;
+      padding: 8px;
+      border-radius: 8px;
+      // border-bottom: 1px solid var(--placeholder-color);
+      // background-color: var(--secondary-background);
+      .each-notification {
+        cursor: pointer;
+        font-weight: 450;
+      }
+      .show-date {
+        margin-top: 4px;
+        color: var(--placeholder-color);
+      }
+      .no {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-right: 16px;
+        width: 18px;
+        height: 18px;
+        padding: 4px;
+        font-weight: 500;
+        border-radius: 50%;
+        background-color: var(--secondary-color);
+        color: var(--contrast-color);
+      }
+      &:hover {
+        background-color: rgb(74, 96, 161, 0.1);
+      }
+    }
+    .unread {
+      background-color: rgb(74, 96, 161, 0.1);
+    }
+  }
+}

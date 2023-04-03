@@ -2,6 +2,7 @@ import React from "react";
 import {useNavigate} from "react-router-dom";
 
 const CarCard = ({
+  handleChooseCar,
   car_id,
   user_image,
   car_image,
@@ -15,12 +16,12 @@ const CarCard = ({
   reviewCount,
 }) => {
   const navigate = useNavigate();
-
+  const handleClick = async (event) => {
+    await handleChooseCar(event);
+    navigate(`/carDetail/${car_id}`);
+  };
   return (
-    <div
-      onClick={() => navigate(`/carDetail/${car_id}`)}
-      className="card-container"
-    >
+    <div onClick={handleClick} className="card-container">
       <div className="header">
         <img src={car_image} alt="car" />
       </div>
