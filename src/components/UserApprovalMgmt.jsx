@@ -7,110 +7,39 @@ import ProfileSearchBar from "./ProfileSearchBar";
 const UserApprovalMgmt = () => {
   const dummypic =
     "https://lifestyle.campus-star.com/app/uploads/2017/03/id-cover.jpg";
-  const dummy = {
-    users: [
-      {
-        _id: "1234567",
-        username: "stam",
-        email: "stam@gmail.com",
-        image: dummypic,
-        prefix: "Mr",
-        phoneNumber: "086-666-6666",
-        firstName: "Chayakron",
-        lastName: "Kongniwatsiri",
-        IDCardNumber: "1203648274917",
-        IDCardImage: dummypic,
-        drivingLicenseNumber: "1394948294848",
-        drivingLicenseImage: dummypic,
-        status: "Pending",
-      },
-      {
-        _id: "1234567",
-        username:
-          "stamaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-        email:
-          "stamaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa@gmail.com",
-        image: dummypic,
-        prefix: "Mr",
-        phoneNumber: "086-666-6666",
-        firstName:
-          "Chayaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaakron",
-        lastName:
-          "Kongniwaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaatsiri",
-        IDCardNumber: "1203648274917",
-        IDCardImage: dummypic,
-        drivingLicenseNumber: "1394948294848",
-        drivingLicenseImage: dummypic,
-        status: "Pending",
-      },
-      {
-        _id: "1234567",
-        username: "stam",
-        email: "stam@gmail.com",
-        image: dummypic,
-        prefix: "Mr",
-        phoneNumber: "086-666-6666",
-        firstName: "Chayakron",
-        lastName: "Kongniwatsiri",
-        IDCardNumber: "1203648274917",
-        IDCardImage: dummypic,
-        drivingLicenseNumber: "1394948294848",
-        drivingLicenseImage: dummypic,
-        status: "Rejected",
-      },
-      {
-        _id: "1234567",
-        username: "stam",
-        email: "stam@gmail.com",
-        image: dummypic,
-        prefix: "Mr",
-        phoneNumber: "086-666-6666",
-        firstName: "Chayakron",
-        lastName: "Kongniwatsiri",
-        IDCardNumber: "1203648274917",
-        IDCardImage: dummypic,
-        drivingLicenseNumber: "1394948294848",
-        drivingLicenseImage: dummypic,
-        status: "Approved",
-      },
-    ],
-    count: 3,
-  };
   const statusList = ["Pending", "Rejected", "Approved"];
   const [status, setStatus] = useState("Pending");
-  const [approvals, setApprovals] = useState(dummy);
+  const [users, setUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   const searchRef = useRef();
 
   const fetchUsers = async () => {
-    // const params = {
-    //   ...(status !== "All" && {
-    //     status: status,
-    //   }),
-    //   search: searchRef.current.value,
-    // };
-    // try {
-    //   setIsLoading(true);
-    //   const res = await axios.get(`http://localhost:8080/match/me/`, {
-    //     params,
-    //     withCredentials: true,
-    //   });
-    //   setApprovals(res.data);
-    //   setIsLoading(false);
-    // } catch (error) {
-    //   console.log(error);
-    // }
+    const params = {
+      status: status,
+      search: searchRef.current.value,
+    };
+    try {
+      setIsLoading(true);
+      const res = await axios.get(`http://localhost:8080/user/admin`, {
+        params,
+        withCredentials: true,
+      });
+      setUsers(res.data.users);
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleChangeStatus = async (user_id, status) => {
     try {
       await axios.patch(
-        `http://localhost:8080/match/cancel-reservation`,
+        `http://localhost:8080/user/status`,
         {
           user_id,
-          status,
+          action,
         },
         {
           withCredentials: true,
@@ -127,6 +56,11 @@ const UserApprovalMgmt = () => {
     fetchUsers();
   };
 
+  const handleImageError = ({currentTarget}) => {
+    currentTarget.onerror = null; // prevents looping
+    currentTarget.src = dummypic;
+  }
+
   useEffect(() => {
     fetchUsers();
   }, [status]);
@@ -140,10 +74,10 @@ const UserApprovalMgmt = () => {
       />
       <ProfileSearchBar searchRef={searchRef} handleSearch={handleSearch} />
       <div className="user-approval-list">
-        {isLoading || approvals?.count === 0 ? (
+        {isLoading || users.count === 0 ? (
           <div className="no-result">No result</div>
         ) : (
-          approvals?.users.map((user, index) => {
+          users.map((user, index) => {
             const {
               _id,
               username,
@@ -176,8 +110,13 @@ const UserApprovalMgmt = () => {
                 <p>{`phone number : ${phoneNumber}`}</p>
                 <div className="images">
                   <div className="card">
-                    <img className="car-picture" src={IDCardImage} alt="" />
-                    <h3>{`${prefix}. ${firstName} ${lastName}`}</h3>
+                    <img
+                      className="car-picture"
+                      src={IDCardImage}
+                      alt=""
+                      onError={handleImageError}
+                    />
+                    <h3>{`${prefix} ${firstName} ${lastName}`}</h3>
                     <h3>{`${IDCardNumber.substring(
                       0,
                       1
@@ -193,6 +132,7 @@ const UserApprovalMgmt = () => {
                     <img
                       className="car-picture"
                       src={drivingLicenseImage}
+                      onError={handleImageError}
                       alt=""
                     />
                     <h3>{`${prefix}. ${firstName} ${lastName}`}</h3>
@@ -203,13 +143,13 @@ const UserApprovalMgmt = () => {
                   <>
                     <h3
                       className="action approve"
-                      onClick={() => handleChangeStatus(_id, "Approved")}
+                      onClick={() => handleChangeStatus(_id, "Approve")}
                     >
                       ✔ Approve
                     </h3>
                     <h3
                       className="action reject"
-                      onClick={() => handleChangeStatus(_id, "Rejected")}
+                      onClick={() => handleChangeStatus(_id, "Reject")}
                     >
                       ✖ Reject&nbsp;&nbsp;
                     </h3>
