@@ -7,7 +7,7 @@ import ProfileSearchBar from "./ProfileSearchBar";
 const UserApprovalMgmt = () => {
   const dummypic =
     "https://lifestyle.campus-star.com/app/uploads/2017/03/id-cover.jpg";
-  const statusList = ["Pending", "Rejected", "Approved"];
+  const statusList = ["Unverified", "Rejected", "Verified"];
   const [status, setStatus] = useState("Pending");
   const [users, setUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -26,6 +26,7 @@ const UserApprovalMgmt = () => {
         params,
         withCredentials: true,
       });
+      console.log(res.data.users);
       setUsers(res.data.users);
       setIsLoading(false);
     } catch (error) {
@@ -74,7 +75,7 @@ const UserApprovalMgmt = () => {
       />
       <ProfileSearchBar searchRef={searchRef} handleSearch={handleSearch} />
       <div className="user-approval-list">
-        {isLoading || users.count === 0 ? (
+        {isLoading || users.length === 0 ? (
           <div className="no-result">No result</div>
         ) : (
           users.map((user, index) => {
@@ -135,11 +136,11 @@ const UserApprovalMgmt = () => {
                       onError={handleImageError}
                       alt=""
                     />
-                    <h3>{`${prefix}. ${firstName} ${lastName}`}</h3>
+                    <h3>{`${prefix} ${firstName} ${lastName}`}</h3>
                     <h3>{drivingLicenseNumber}</h3>
                   </div>
                 </div>
-                {status === "Pending" && (
+                {status === "Unverified" && (
                   <>
                     <h3
                       className="action approve"
