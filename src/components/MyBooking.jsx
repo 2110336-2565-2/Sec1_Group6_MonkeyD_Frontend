@@ -3,6 +3,9 @@ import {useEffect, useRef, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import ProfileSearchBar from "./ProfileSearchBar";
 import ProfileStatusTab from "./ProfileStatusTab";
+import Script from "react-load-script";
+import Config from "../assets/configs/configs.json";
+let OmiseCard;
 
 const MyBooking = () => {
   // const statuses = {1: "Pending", 2: "Cancelled", 3: "Rented", 4: "Completed"};
@@ -11,6 +14,7 @@ const MyBooking = () => {
   // const [sortBy, setSortBy] = useState({sort: "Date", opt: "asd"});
   const [bookings, setBookings] = useState({});
   const [isLoading, setIsLoading] = useState(true);
+  const [scriptLoaded, setScriptLoaded] = useState(false);
   const navigate = useNavigate();
 
   const searchRef = useRef();
@@ -63,16 +67,15 @@ const MyBooking = () => {
         {},
         {
           headers: {
-            car_id: car_id,
             match_id: match_id,
           },
           withCredentials: true,
         }
       );
+      fetchMyBooking();
     } catch (error) {
       console.log(error);
     }
-    fetchMyBooking();
   };
 
   const handleSearch = async (event) => {
@@ -80,23 +83,77 @@ const MyBooking = () => {
     fetchMyBooking();
   };
 
-  const purchaseBooking = async (car_id, match_id) => {
-    try {
-      // await axios.patch(
-      //   `http://localhost:8080/match/cancel-reservation`,
-      //   {},
-      //   {
-      //     headers: {
-      //       car_id: car_id,
-      //       match_id: match_id,
-      //     },
-      //     withCredentials: true,
-      //   }
-      // );
-    } catch (error) {
-      console.log(error);
+  const handleLoadScript = () => {
+    OmiseCard = window.OmiseCard;
+    OmiseCard.configure({
+      publicKey: Config.OMISE_PUBLIC_KEY,
+      currency: "THB",
+      frameLabel: "Monkey Car Rent",
+      submitLabel: "Pay Now",
+      buttonLabel: "Pay with Omise",
+      defaultPaymentMethod: "credit_card",
+      otherPaymentMethods: [],
+    });
+    setScriptLoaded(true);
+  };
+
+  const omiseCardHandler = async (amount, match_id) => {
+    OmiseCard.open({
+      amount: amount,
+      onCreateTokenSuccess: (token) => {
+        const id = sessionStorage.getItem("user_id");
+        const username = sessionStorage.getItem("username");
+        axios
+          .post(
+            `http://localhost:8080/payment/charge/${id}`,
+            {
+              description: username,
+              amount: amount,
+              cardToken: token,
+            },
+            {
+              headers: {
+                "Content-Type": "application/json",
+              },
+              withCredentials: true,
+            }
+          )
+          .then((response) => {
+            axios
+              .patch(
+                `http://localhost:8080/match/status`,
+                {
+                  match_id: match_id,
+                  action: "Paid",
+                },
+                {
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  withCredentials: true,
+                }
+              )
+              .then((response) => {
+                console.log(response);
+              })
+              .catch((error) => {
+                console.error(error);
+              });
+            console.log(response);
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      },
+      onFormClosed: () => {},
+    });
+  };
+
+  const purchaseBooking = async (e, amount, matchId) => {
+    if (scriptLoaded) {
+      e.preventDefault();
+      omiseCardHandler(amount * 100, matchId);
     }
-    fetchMyBooking();
   };
 
   const rateBooking = async (car_id, match_id) => {
@@ -109,6 +166,7 @@ const MyBooking = () => {
 
   return (
     <div className="my-booking">
+      <Script url="https://cdn.omise.co/omise.js" onLoad={handleLoadScript} />
       <ProfileStatusTab statusList={statuses} status={status} setStatus={setStatus} />
       <ProfileSearchBar searchRef={searchRef} handleSearch={handleSearch} />
       <div className="booking-container">
@@ -117,7 +175,7 @@ const MyBooking = () => {
         ) : (
           bookings?.matches.map((match, index) => {
             if (match.car == null) {
-              return;
+              return <></>;
             }
             const {
               car: {
@@ -171,10 +229,21 @@ const MyBooking = () => {
                         ✖ Cancel booking
                       </h3>
                     )}
+
                     {status === "Wait for payment" && (
                       <h3
                         className="pay btn"
-                        onClick={() => purchaseBooking(car_id, match_id)}
+                        onClick={(e) =>
+                          purchaseBooking(
+                            e,
+                            calculatePrice(
+                              pickupDate,
+                              returnDate,
+                              rental_price
+                            ),
+                            match_id
+                          )
+                        }
                       >
                         ✓ Pay now
                       </h3>

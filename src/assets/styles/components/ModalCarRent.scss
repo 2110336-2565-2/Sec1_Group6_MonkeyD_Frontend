@@ -15,7 +15,6 @@
     transform: translate(-50%, -50%);
     z-index: 10;
     background-color: var(--contrast-color);
-    margin: 24px 0;
     padding: 32px;
     box-shadow: 0 2px 4px -1px rgba(5, 25, 45, 0.3);
     .head-title {
@@ -26,12 +25,16 @@
     }
     .row-input {
       display: grid;
-      grid-template-columns: 50% 50%;
+      grid-template-columns: calc(50% - 4px) calc(50% - 4px);
       align-items: center;
       padding: 4px 0;
       label {
         font-size: var(--paragraph1-fs);
         margin-right: 8px;
+      }
+      #idcardimg,
+      #drivinglicenseimg {
+        padding: 6px 0;
       }
     }
     .two-in-one {

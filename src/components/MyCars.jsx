@@ -2,14 +2,29 @@ import React, {useState, useEffect, useRef} from "react";
 import axios from "axios";
 import UnavailableDatesMap from "./DatesMap";
 import CarDetails from "./ModalCarDetail";
+import {provinces} from "../utils/mockData";
+
 const MyCars = () => {
   const modalRef = useRef();
   const [selectedCarIndex, setSelectedCarIndex] = useState(-1);
   const [isChecked, setIsChecked] = useState(false);
   const [showCalendar, setShowCalendar] = useState(false);
   const [status, setStatus] = useState();
-
   const [cars, setCars] = useState([]);
+  const [filterProvince, setFilterProvince] = useState(null);
+  const [sortOption, setSortOption] = useState(null);
+
+  const handleClear = () => {
+    setFilterProvince(null);
+    setSortOption(null);
+  };
+  const handleFilterChange = (event) => {
+    setFilterProvince(event.target.value);
+  };
+
+  const handleSortChange = (event) => {
+    setSortOption(event.target.value);
+  };
 
   const toggleSwitch = () => {
     setIsChecked(!isChecked);
@@ -66,11 +81,13 @@ const MyCars = () => {
   };
 
   useEffect(() => {
+    console.log("fetch");
     const fetchCars = async () => {
       const username = sessionStorage.getItem("username");
       try {
-        const res = await axios.get(
+        const res = await axios.post(
           `http://localhost:8080/car/me/${username}`,
+          {province: filterProvince, sortBy: sortOption},
           {withCredentials: true}
         );
         res.data.map((each) => {
@@ -102,7 +119,7 @@ const MyCars = () => {
     return () => {
       window.removeEventListener("click", handleClickOutsideModal);
     };
-  }, []);
+  }, [filterProvince, sortOption]);
 
   return (
     <div className="mycars">
@@ -110,107 +127,116 @@ const MyCars = () => {
         <div className="filter">
           <p>Filter : </p>
           <div className="group">
-            {generateSelectBox("By status", [
-              "Option 1",
-              "Option 2",
-              "Option 3",
-            ])}
-            {generateSelectBox("By location", [
-              "Option 1",
-              "Option 2",
-              "Option 3",
-            ])}
+            <select onChange={handleFilterChange}>
+              <option value="" disabled selected hidden>
+                choose one
+              </option>
+              {provinces.map((province, index) => (
+                <option key={index} value={province.value}>
+                  {province.value}
+                </option>
+              ))}
+            </select>
           </div>
         </div>
         <div className="sort">
           <p>Sort : </p>
           <div className="group">
-            {generateSelectBox("By date", ["Option 1", "Option 2", "Option 3"])}
-            {generateSelectBox("By price", [
-              "Option 1",
-              "Option 2",
-              "Option 3",
-            ])}
+            <select onChange={handleSortChange}>
+              <option value="" disabled selected hidden>
+                choose one
+              </option>
+              <option value="highest rating">highest rating</option>
+              <option value="lowest rating">lowest rating</option>
+              <option value="highest price">highest price</option>
+              <option value="lowest price">lowest price</option>
+            </select>
           </div>
         </div>
+        <button onClick={handleClear}>clear</button>
       </div>
       <hr />
       {selectedCarIndex !== -1 ? <div className="background"></div> : <></>}
-      <div className="mycars-container" ref={modalRef}>
-        {cars.map((car, index) => {
-          return (
-            <div key={index}>
-              <div className="car" onClick={() => handleCarClick(index)}>
-                <div className="img-section">
-                  <img src={car.car_image} alt="" />
+      {cars.length ? (
+        <div className="mycars-container" ref={modalRef}>
+          {cars.map((car, index) => {
+            return (
+              <div key={index}>
+                <div className="car" onClick={() => handleCarClick(index)}>
+                  <div className="img-section">
+                    <img src={car.car_image} alt="" />
+                  </div>
+                  <div className="detail-section">
+                    <h3>
+                      {car.brand} {car.model}
+                    </h3>
+                    <p>
+                      rating : <span>{car.rating}</span>
+                    </p>
+                    <p>
+                      location : <span>{car.available_location}</span>
+                    </p>
+                    <p>
+                      ongoing rented :{" "}
+                      <span>{car.unavailable_times.length}</span>
+                    </p>
+                    <p>
+                      rentedOutCount : <span>{car.rentedOutCount}</span>
+                    </p>
+                    <p>
+                      price : <span>฿ {car.rental_price}</span>
+                    </p>
+                  </div>
+                  <div className="status-section">
+                    <h3>{car.status}</h3>
+                  </div>
                 </div>
-                <div className="detail-section">
-                  <h3>
-                    {car.brand} {car.model}
-                  </h3>
-                  <p>
-                    rating : <span>{car.rating}</span>
-                  </p>
-                  <p>
-                    location : <span>{car.available_location}</span>
-                  </p>
-                  <p>
-                    ongoing rented : <span>{car.unavailable_times.length}</span>
-                  </p>
-                  <p>
-                    rentedOutCount : <span>{car.rentedOutCount}</span>
-                  </p>
-                  <p>
-                    price : <span>฿ {car.rental_price}</span>
-                  </p>
-                </div>
-                <div className="status-section">
-                  <h3>{car.status}</h3>
-                </div>
-              </div>
-              {selectedCarIndex === index && (
-                <div className="car-modal">
-                  <button
-                    className="calendar-btn"
-                    onClick={() => setShowCalendar(!showCalendar)}
-                  >
-                    {showCalendar ? "Hide Calendar" : "Show Calendar"}{" "}
-                    <i class="fa-regular fa-calendar"></i>
-                  </button>
-                  {showCalendar ? (
-                    <UnavailableDatesMap
-                      unavailableTimes={car.unavailable_times}
-                    />
-                  ) : (
-                    <div className="modal-detail">
-                      <h2>
-                        {car.brand} {car.model}
-                      </h2>
-                      <div className="detail">
-                        <CarDetails handleSave={handleSave} modalCar={car} />
-                      </div>
-                      {(car.status === "Unavailable" ||
-                        car.status === "Available") && (
-                        <div className="status-box">
-                          <label className="switch">
-                            <input
-                              type="checkbox"
-                              checked={status !== "Unavailable"}
-                              onChange={toggleSwitch}
-                            />
-                            <span className="slider round"></span>
-                          </label>
-                          <h3>{status}</h3>
+                {selectedCarIndex === index && (
+                  <div className="car-modal">
+                    <button
+                      className="calendar-btn"
+                      onClick={() => setShowCalendar(!showCalendar)}
+                    >
+                      {showCalendar ? "Hide Calendar" : "Show Calendar"}{" "}
+                      <i class="fa-regular fa-calendar"></i>
+                    </button>
+                    {showCalendar ? (
+                      <UnavailableDatesMap
+                        unavailableTimes={car.unavailable_times}
+                      />
+                    ) : (
+                      <div className="modal-detail">
+                        <h2>
+                          {car.brand} {car.model}
+                        </h2>
+                        <div className="detail">
+                          <CarDetails handleSave={handleSave} modalCar={car} />
                         </div>
-                      )}
-                    </div>
-                  )}
-                </div>
-              )}
-            </div>
-          );
-        })}
-      </div>
+                        {(car.status === "Unavailable" ||
+                          car.status === "Available") && (
+                          <div className="status-box">
+                            <label className="switch">
+                              <input
+                                type="checkbox"
+                                checked={status !== "Unavailable"}
+                                onChange={toggleSwitch}
+                              />
+                              <span className="slider round"></span>
+                            </label>
+                            <h3>{status}</h3>
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      ) : (
+        <div className="no-background">No result</div>
+      )}
     </div>
   );
 };
