@@ -1,7 +1,7 @@
 import axios from "axios";
 import {useState} from "react";
 
-const MyProfile = ({isEdit, setIsEdit, userInfo, setUserInfo, imageFile}) => {
+const MyProfile = ({isEdit, setIsEdit, userInfo, setUserInfo, imageFile, fetchUserInfo}) => {
   const toggleIsEdit = () => {
     setIsEdit(!isEdit);
   };
@@ -34,6 +34,7 @@ const MyProfile = ({isEdit, setIsEdit, userInfo, setUserInfo, imageFile}) => {
         },
       });
       toggleIsEdit();
+      fetchUserInfo();
     } catch (error) {
       console.log(error);
     }
