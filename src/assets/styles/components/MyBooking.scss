@@ -1,21 +1,6 @@
 .my-booking {
-  .status-bar {
-    display: flex;
-    .status {
-      flex: 1 100%;
-      text-align: center;
-      padding: 1rem;
-      border-bottom: solid 2px var(--secondary-background);
-      &:hover {
-        cursor: pointer;
-        color: var(--secondary-color);
-      }
-    }
-    .status.selected {
-      border-bottom: solid 2px var(--secondary-color);
-      color: var(--secondary-color);
-    }
-  }
+  display: flex;
+  flex-direction: column;
   .booking-container {
     // height: 50vh;
     display: flex;

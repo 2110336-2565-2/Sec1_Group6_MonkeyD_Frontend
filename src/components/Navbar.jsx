@@ -38,6 +38,24 @@ const Navbar = () => {
     window.location.assign("/addCar");
   };
 
+  const handleBeAnAdmin = async () => {
+    const user_id = sessionStorage.getItem("user_id");
+    try {
+      await axios.patch(
+        `http://localhost:8080/user/update-role-admin`,
+        {},
+        {
+          headers: {
+            user_id: user_id,
+          },
+          withCredentials: true,
+        }
+      );
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
     const fetchNavbar = async () => {
       const result = await checkLogin();
@@ -126,6 +144,32 @@ const Navbar = () => {
                           onClick={handleRegisterLessor}
                         >
                           Be a lessor
+                        </li>
+                      )}
+                      {navbarInfo.isAdmin ? (
+                        <>
+                          <li className="menu-item">
+                            <Link
+                              to="/profile?menu=approval_management"
+                              className="link"
+                              onClick={toggleDropdown}
+                            >
+                              Approval mgmt
+                            </Link>
+                          </li>
+                          <li className="menu-item">
+                            <Link
+                              to="/profile?menu=match_management"
+                              className="link"
+                              onClick={toggleDropdown}
+                            >
+                              Match mgmt
+                            </Link>
+                          </li>
+                        </>
+                      ) : (
+                        <li className="menu-item" onClick={handleBeAnAdmin}>
+                          Be an admin
                         </li>
                       )}
                       <li className="menu-item" onClick={handleLogout}>
