@@ -5,8 +5,8 @@ import MyBooking from "../components/MyBooking";
 import MyProfile from "../components/MyProfile";
 import MyCars from "../components/MyCars";
 import UserApprovalMgmt from "../components/UserApprovalMgmt";
-import MatchManagement from "../components/MatchManagement";
 import CarApprovalMgmt from "../components/CarApprovalMgmt";
+import MatchMgmt from "../components/MatchMgmt";
 import PaymentHistory from "../components/PaymentHistory";
 
 const ProfilePage = () => {
@@ -180,7 +180,7 @@ const ProfilePage = () => {
             {menu === "payment" && <PaymentHistory />}
             {menu === "user_approval_management" && <UserApprovalMgmt />}
             {menu === "car_approval_management" && <CarApprovalMgmt />}
-            {menu === "match_management" && <MatchManagement />}
+            {menu === "match_management" && <MatchMgmt />}
           </div>
         </div>
       </div>
