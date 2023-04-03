@@ -22,10 +22,13 @@ const PaymentHistory = () => {
 
     try {
       setIsLoading(true);
-      const res = await axios.get(`http://localhost:8080/payment/transaction/${id}`, {
-        // params,
-        withCredentials: true,
-      });
+      const res = await axios.get(
+        `http://localhost:8080/payment/transaction/${id}`,
+        {
+          // params,
+          withCredentials: true,
+        }
+      );
       console.log(res.data);
       setTrans(res.data);
       setIsLoading(false);
@@ -74,7 +77,9 @@ const PaymentHistory = () => {
                 <h3>{`customer : ${customer}`}</h3>
                 <h3>{`payment method : ${object} ${bank} ${brand}`}</h3>
                 <h3>{`created at : ${created_at}`}</h3>
-                <h3 className="amount">{`amount : ${amount} ${currency}`}</h3>
+                <h3 className="amount">{`amount : ${
+                  amount / 100
+                } ${currency}`}</h3>
               </div>
             );
           })
