@@ -17,22 +17,41 @@ const CarDetails = ({modalCar, handleSave}) => {
     setEditMode(true);
   };
 
-  const handleSaveButtonClick = () => {
-    //handleSave(updatedCar);
-    console.log(updatedCar);
+  const handleSaveButtonClick = async () => {
+    // console.log(updatedCar);
+    // console.log(uploaded_car_images.length);
+    // console.log(deleted_car_image_urls);
+    const formData = new FormData();
+    formData.append("available_location", updatedCar.available_location);
+    formData.append("rental_price", updatedCar.rental_price);
+    for (const url of deleted_car_image_urls) {
+      formData.append("delete_image", url);
+    }
+    // for (const file of uploaded_car_images) {
+    //   formData.append("car_images", file);
+    // }
+    const carImages = document.querySelector("#carimages").files;
+    for (let i = 0; i < carImages.length; i++) {
+      formData.append("car_images", carImages[i]);
+    }
+    await handleSave(formData, updatedCar._id);
     setEditMode(false);
-    setCar(updatedCar);
+    //setCar(updatedCar);
+
+    window.location.reload(false);
+    window.scrollTo(0, 0);
   };
 
   const handleCancelButtonClick = () => {
     setUpdatedCar(car);
     setEditMode(false);
+    setNewCarImages([]);
     setUploadedCarImages([]);
     setDeletedCarImageUrls([]);
   };
 
   const handleDeleteImage = (e) => {
-    console.log(e.target.name);
+    //console.log(e.target.name);
     setDeletedCarImageUrls([...deleted_car_image_urls, e.target.name]);
   };
 

@@ -31,7 +31,7 @@ const MyCars = () => {
     setStatus(status === "Unavailable" ? "Available" : "Unavailable");
     var newCar = cars[selectedCarIndex];
     newCar.status = status === "Unavailable" ? "Available" : "Unavailable";
-    handleSave(newCar);
+    handleSave(newCar, newCar._id);
   };
 
   const generateSelectBox = (labelText, optionsText) => {
@@ -49,14 +49,17 @@ const MyCars = () => {
     );
   };
 
-  const handleSave = async (car) => {
+  const handleSave = async (car, car_id) => {
     try {
       await axios.patch(`http://localhost:8080/car/change-car-info`, car, {
         headers: {
-          car_id: car._id,
+          "Content-Type": "multipart/form-data",
+          car_id: car_id,
+          user_id: sessionStorage.getItem("user_id"),
         },
         withCredentials: true,
       });
+      fetchCars();
     } catch (error) {
       console.log(error);
     }
@@ -79,39 +82,39 @@ const MyCars = () => {
       setSelectedCarIndex(-1);
     }
   };
+  const fetchCars = async () => {
+    console.log("hi");
+    const username = sessionStorage.getItem("username");
+    try {
+      const res = await axios.post(
+        `http://localhost:8080/car/me/${username}`,
+        {province: filterProvince, sortBy: sortOption},
+        {withCredentials: true}
+      );
+      res.data.map((each) => {
+        if (!each.unavailable_times) {
+          each.unavailable_times = [
+            {
+              start: "2023-08-22T17:00:00.000Z",
+              end: "2023-08-24T17:00:00.000Z",
+              username: "perm",
+            },
+            {
+              start: "2023-08-25T17:00:00.000Z",
+              end: "2023-08-26T17:00:00.000Z",
+              username: "perm",
+            },
+          ];
+        }
+      });
 
+      setCars(res.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
   useEffect(() => {
     console.log("fetch");
-    const fetchCars = async () => {
-      const username = sessionStorage.getItem("username");
-      try {
-        const res = await axios.post(
-          `http://localhost:8080/car/me/${username}`,
-          {province: filterProvince, sortBy: sortOption},
-          {withCredentials: true}
-        );
-        res.data.map((each) => {
-          if (!each.unavailable_times) {
-            each.unavailable_times = [
-              {
-                start: "2023-08-22T17:00:00.000Z",
-                end: "2023-08-24T17:00:00.000Z",
-                username: "perm",
-              },
-              {
-                start: "2023-08-25T17:00:00.000Z",
-                end: "2023-08-26T17:00:00.000Z",
-                username: "perm",
-              },
-            ];
-          }
-        });
-
-        setCars(res.data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
 
     fetchCars();
 
