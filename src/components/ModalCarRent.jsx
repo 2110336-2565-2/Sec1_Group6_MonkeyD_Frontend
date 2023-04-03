@@ -309,10 +309,10 @@ const ModalCarRent = ({
         console.error(error);
       }
 
-      // create match
+      // car reserved
       try {
-        await axios.post(
-          `http://localhost:8080/match`,
+        await axios.patch(
+          `http://localhost:8080/car/reserve`,
           {
             match: {
               carID: car_id,
@@ -334,28 +334,6 @@ const ModalCarRent = ({
         apiError = true;
         console.error(error);
       }
-
-      // toggleRented
-      try {
-        await axios.patch(
-          `http://localhost:8080/car`,
-          {
-            pickUpDateTime: new Date(startDateInput.current.value),
-            returnDateTime: new Date(endDateInput.current.value),
-          },
-          {
-            headers: {
-              car_id: car_id,
-              renter_id: sessionStorage.getItem("user_id"),
-            },
-            withCredentials: true,
-          }
-        );
-      } catch (error) {
-        apiError = true;
-        console.error(error);
-      }
-
       const formData = new FormData();
       formData.append("prefix", prefix.current.value);
       formData.append("first_name", firstName);
