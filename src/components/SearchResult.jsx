@@ -1,7 +1,7 @@
 import React from "react";
 import CarCard from "./CarCard";
 
-const SearchResult = ({carList}) => {
+const SearchResult = ({carList, handleChooseCar}) => {
   return (
     <div className="result-container">
       <h2>Search Results</h2>
@@ -10,6 +10,7 @@ const SearchResult = ({carList}) => {
         {carList.map((car) => {
           return (
             <CarCard
+              handleChooseCar={handleChooseCar}
               key={car._id}
               car_id={car._id}
               user_image={
@@ -27,6 +28,7 @@ const SearchResult = ({carList}) => {
               passenger={car.passenger}
               gear_type={car.gear_type}
               rating={car.rating}
+              reviewCount={car.reviewCount}
             />
           );
         })}

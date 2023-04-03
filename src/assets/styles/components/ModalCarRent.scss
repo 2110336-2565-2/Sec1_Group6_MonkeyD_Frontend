@@ -32,6 +32,9 @@
         font-size: var(--paragraph1-fs);
         margin-right: 8px;
       }
+      input[type="date"] {
+        padding-inline-end: 0px;
+      }
       #idcardimg,
       #drivinglicenseimg {
         padding: 6px 0;

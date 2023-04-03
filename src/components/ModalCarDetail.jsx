@@ -85,13 +85,15 @@ const CarDetails = ({modalCar, handleSave}) => {
         {editMode ? (
           <input
             disabled
-            type="number"
+            //type="number"
             name="rating"
-            value={updatedCar.rating}
+            value={car.reviewCount ? car.rating.toFixed(2) : "No review"}
             onChange={handleInputChange}
           />
         ) : (
-          <span className="value">{car.rating}</span>
+          <span className="value">
+            {car.reviewCount ? car.rating.toFixed(2) : "No review"}
+          </span>
         )}
       </p>
       <p>

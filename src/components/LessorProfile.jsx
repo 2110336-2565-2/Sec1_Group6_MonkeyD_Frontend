@@ -15,10 +15,10 @@ const LessorProfile = ({
         <h3>{owner}</h3>
       </div>
       <div className="more-info">
-        <div>
+        {/* <div>
           <i className="fa-solid fa-star" />
           <p>{user_rating}</p>
-        </div>
+        </div> */}
         <button className="view-review-btn">View Lessor Reviews</button>
         <button className="chat-btn">
           <i className="fa-solid fa-comments" />

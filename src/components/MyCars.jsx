@@ -171,7 +171,10 @@ const MyCars = () => {
                       {car.brand} {car.model}
                     </h3>
                     <p>
-                      rating : <span>{car.rating}</span>
+                      rating :{" "}
+                      <span>
+                        {car.reviewCount ? car.rating.toFixed(2) : "no review"}
+                      </span>
                     </p>
                     <p>
                       location : <span>{car.available_location}</span>

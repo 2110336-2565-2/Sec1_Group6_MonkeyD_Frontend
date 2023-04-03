@@ -104,8 +104,29 @@
         }
       }
     }
-    .fa-bell {
-      margin-left: 64px;
+    .bell-noti {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      margin-left: 52px;
+      transition-duration: 0.3s;
+      .fa-bell {
+        font-size: var(--header3-fs);
+        // margin-left: 52px;
+        cursor: pointer;
+        padding: 8px;
+      }
+      &:hover {
+        border-radius: 50%;
+        color: var(--secondary-color);
+        background-color: rgb(74, 96, 161, 0.1);
+      }
+    }
+    .open {
+      border-radius: 50%;
+      color: var(--secondary-color);
+      background-color: rgb(74, 96, 161, 0.1);
     }
   }
 }

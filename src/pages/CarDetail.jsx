@@ -57,7 +57,7 @@ const CarDetail = () => {
             <LessorProfile
               user_image={carDetail.user_image}
               owner={carDetail.owner}
-              user_rating={carDetail.user_rating}
+              // user_rating={carDetail.user_rating}
               description={carDetail.description}
               brand={carDetail.brand}
               model={carDetail.model}
@@ -73,11 +73,12 @@ const CarDetail = () => {
               rating={carDetail.rating}
               passenger={carDetail.passenger}
               rented_out={carDetail.rentedOutCount}
+              reviewCount={carDetail.reviewCount}
               set_user_info={setUserInfoHandler}
               set_show_modal={setShowModalHandler}
             />
           </div>
-          {carReview.length && (
+          {carReview.length > 0 && (
             <CommentBox
               reviews={carReview}
               carRating={carDetail.rating}
