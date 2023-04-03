@@ -367,6 +367,25 @@ const ModalCarRent = ({
         apiError = true;
         console.error(error);
       }
+
+      try {
+        await axios.post(
+          `http://localhost:8080/notification`,
+          {
+            notification: {
+              text: `${sessionStorage.getItem("username")} rented your car`,
+              userID: owner_id,
+            },
+          },
+          {
+            withCredentials: true,
+          }
+        );
+      } catch (error) {
+        apiError = true;
+        console.error(error);
+      }
+
       if (!apiError) window.location.assign("/");
     }
   };

@@ -41,15 +41,36 @@ const ProfilePage = () => {
 
     const reader = new FileReader();
 
-    reader.onloadend = () => {
-      setUserInfo({
-        ...userInfo,
-        image: reader.result,
-      });
+    reader.onload = (event) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        const MAX_WIDTH = 800; // set the maximum width of the image
+        let width = img.width;
+        let height = img.height;
+
+        if (width > MAX_WIDTH) {
+          height *= MAX_WIDTH / width;
+          width = MAX_WIDTH;
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0, width, height);
+
+        const dataUrl = canvas.toDataURL(file.type);
+        setUserInfo({
+          ...userInfo,
+          image: dataUrl,
+        });
+      };
+      img.src = event.target.result;
     };
 
     if (file) {
-      setImageFile(file); // Store the file object
+      setImageFile(file);
       reader.readAsDataURL(file);
     }
   };

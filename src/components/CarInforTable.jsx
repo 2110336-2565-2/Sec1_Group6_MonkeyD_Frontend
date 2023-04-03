@@ -166,7 +166,14 @@ const CarInforTable = ({
           </div>
         </div>
       </div>
-      <button onClick={handleClick} className="rent-btn">
+      <button
+        style={{
+          display:
+            owner_id === sessionStorage.getItem("user_id") ? "none" : "block",
+        }}
+        onClick={handleClick}
+        className="rent-btn"
+      >
         <i className="fa-sharp fa-solid fa-hand-holding-hand" />
         Rent
       </button>
