@@ -14,6 +14,10 @@ const MyCars = () => {
   const [filterProvince, setFilterProvince] = useState(null);
   const [sortOption, setSortOption] = useState(null);
 
+  const handleClear = () => {
+    setFilterProvince(null);
+    setSortOption(null);
+  };
   const handleFilterChange = (event) => {
     setFilterProvince(event.target.value);
   };
@@ -149,84 +153,90 @@ const MyCars = () => {
             </select>
           </div>
         </div>
+        <button onClick={handleClear}>clear</button>
       </div>
       <hr />
       {selectedCarIndex !== -1 ? <div className="background"></div> : <></>}
-      <div className="mycars-container" ref={modalRef}>
-        {cars.map((car, index) => {
-          return (
-            <div key={index}>
-              <div className="car" onClick={() => handleCarClick(index)}>
-                <div className="img-section">
-                  <img src={car.car_image} alt="" />
+      {cars.length ? (
+        <div className="mycars-container" ref={modalRef}>
+          {cars.map((car, index) => {
+            return (
+              <div key={index}>
+                <div className="car" onClick={() => handleCarClick(index)}>
+                  <div className="img-section">
+                    <img src={car.car_image} alt="" />
+                  </div>
+                  <div className="detail-section">
+                    <h3>
+                      {car.brand} {car.model}
+                    </h3>
+                    <p>
+                      rating : <span>{car.rating}</span>
+                    </p>
+                    <p>
+                      location : <span>{car.available_location}</span>
+                    </p>
+                    <p>
+                      ongoing rented :{" "}
+                      <span>{car.unavailable_times.length}</span>
+                    </p>
+                    <p>
+                      rentedOutCount : <span>{car.rentedOutCount}</span>
+                    </p>
+                    <p>
+                      price : <span>฿ {car.rental_price}</span>
+                    </p>
+                  </div>
+                  <div className="status-section">
+                    <h3>{car.status}</h3>
+                  </div>
                 </div>
-                <div className="detail-section">
-                  <h3>
-                    {car.brand} {car.model}
-                  </h3>
-                  <p>
-                    rating : <span>{car.rating}</span>
-                  </p>
-                  <p>
-                    location : <span>{car.available_location}</span>
-                  </p>
-                  <p>
-                    ongoing rented : <span>{car.unavailable_times.length}</span>
-                  </p>
-                  <p>
-                    rentedOutCount : <span>{car.rentedOutCount}</span>
-                  </p>
-                  <p>
-                    price : <span>฿ {car.rental_price}</span>
-                  </p>
-                </div>
-                <div className="status-section">
-                  <h3>{car.status}</h3>
-                </div>
-              </div>
-              {selectedCarIndex === index && (
-                <div className="car-modal">
-                  <button
-                    className="calendar-btn"
-                    onClick={() => setShowCalendar(!showCalendar)}
-                  >
-                    {showCalendar ? "Hide Calendar" : "Show Calendar"}{" "}
-                    <i class="fa-regular fa-calendar"></i>
-                  </button>
-                  {showCalendar ? (
-                    <UnavailableDatesMap
-                      unavailableTimes={car.unavailable_times}
-                    />
-                  ) : (
-                    <div className="modal-detail">
-                      <h2>
-                        {car.brand} {car.model}
-                      </h2>
-                      <div className="detail">
-                        <CarDetails handleSave={handleSave} modalCar={car} />
-                      </div>
-                      {(car.status === "Unavailable" ||
-                        car.status === "Available") && (
-                        <div className="status-box">
-                          <label className="switch">
-                            <input
-                              type="checkbox"
-                              checked={status !== "Unavailable"}
-                              onChange={toggleSwitch}
-                            />
-                            <span className="slider round"></span>
-                          </label>
-                          <h3>{status}</h3>
+                {selectedCarIndex === index && (
+                  <div className="car-modal">
+                    <button
+                      className="calendar-btn"
+                      onClick={() => setShowCalendar(!showCalendar)}
+                    >
+                      {showCalendar ? "Hide Calendar" : "Show Calendar"}{" "}
+                      <i class="fa-regular fa-calendar"></i>
+                    </button>
+                    {showCalendar ? (
+                      <UnavailableDatesMap
+                        unavailableTimes={car.unavailable_times}
+                      />
+                    ) : (
+                      <div className="modal-detail">
+                        <h2>
+                          {car.brand} {car.model}
+                        </h2>
+                        <div className="detail">
+                          <CarDetails handleSave={handleSave} modalCar={car} />
                         </div>
-                      )}
-                    </div>
-                  )}
-                </div>
-              )}
-            </div>
-          );
-        })}
-      </div>
+                        {(car.status === "Unavailable" ||
+                          car.status === "Available") && (
+                          <div className="status-box">
+                            <label className="switch">
+                              <input
+                                type="checkbox"
+                                checked={status !== "Unavailable"}
+                                onChange={toggleSwitch}
+                              />
+                              <span className="slider round"></span>
+                            </label>
+                            <h3>{status}</h3>
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      ) : (
+        <div className="no-background">No result</div>
+      )}
     </div>
   );
 };

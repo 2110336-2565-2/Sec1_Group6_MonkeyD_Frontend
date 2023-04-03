@@ -9,39 +9,9 @@ const Search = ({
   handleSearch,
   isSearch,
 }) => {
-  const [showDropdown, setShowDropdown] = useState(false);
-  const ref = useRef(null);
-
-  // // Get the current date in the format expected by the input element
-  // const currentDate = new Date().toISOString().substr(0, 10);
-
-  // // Set the default value of the input element to the current date
-  // startDateInput.current.defaultValue = currentDate;
-
-  const handleOptionClick = (value) => {
-    locationInput.current.value = value;
-    setShowDropdown(false);
-  };
-
-  const handleClick = () => {
-    setShowDropdown(!showDropdown);
-  };
-
-  const handleClickOutside = (event) => {
-    if (ref.current && !ref.current.contains(event.target)) {
-      setShowDropdown(false);
-    }
-  };
-
   const handleFilterChange = (event) => {
     setFilterProvince(event.target.value);
   };
-  useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  });
 
   return (
     <div className="search-container">

@@ -4,6 +4,7 @@ import Search from "../components/Search";
 import SlideFilter from "../components/SlideFilter";
 import SlideBanner from "../components/SlideBanner";
 import SearchResult from "../components/SearchResult";
+import {useLocation, useNavigate} from "react-router-dom";
 import {getCookie, deleteCookie, cookieExists} from "../utils/cookies";
 
 const HomePage = () => {
@@ -14,6 +15,8 @@ const HomePage = () => {
   const endDateInput = useRef(null);
   const [brandInputList, setBrandInputList] = useState([]);
   const scrollToRef = useRef();
+  const navigate = useNavigate();
+  let location = useLocation();
 
   const formatDate = (inputDate) => {
     if (inputDate) {
@@ -26,18 +29,19 @@ const HomePage = () => {
 
   const handleSearch = async () => {
     console.log("handleSearch called");
-    var encodedBrandList = encodeURIComponent(JSON.stringify(brandInputList));
+    const searchParams = {
+      startdate: formatDate(startDateInput.current.value),
+      enddate: formatDate(endDateInput.current.value),
+      province: filterProvince,
+      brandlist: JSON.stringify(brandInputList),
+    };
 
     try {
-      const res = await axios.get(
-        `http://localhost:8080/car?startdate=${formatDate(
-          startDateInput.current.value
-        )}&enddate=${formatDate(
-          endDateInput.current.value
-        )}&province=${filterProvince}&brandlist=${encodedBrandList}`
-      ); // change path to backend service
-      await setCarList(res.data);
+      const res = await axios.get("http://localhost:8080/car", {
+        params: searchParams,
+      }); // change path to backend service
       await setSearch(true);
+      await setCarList(res.data);
       if (scrollToRef.current) {
         scrollToRef.current.scrollIntoView({behavior: "smooth"});
       }
@@ -59,16 +63,51 @@ const HomePage = () => {
       return;
     }
   };
+
   useEffect(() => {
     handleCookiesAuth();
   }, []);
+
+  useEffect(() => {
+    // setSearch(false);
+    const params = new URLSearchParams(location.search);
+    const startDate = params.get("startdate");
+    startDateInput.current.value = startDate ? startDate : "";
+    const endDate = params.get("enddate");
+    endDateInput.current.value = endDate ? endDate : "";
+    const province = params.get("province");
+    setFilterProvince(province ? province : "");
+    const brands = params.get("brandlist");
+    setBrandInputList(brands ? JSON.parse(brands) : []);
+
+    // Fetch search results
+    console.log(params.toString());
+    if (params.toString() !== "") {
+      handleSearch();
+    } else {
+      setSearch(false);
+    }
+  }, [location]);
+
+  const handleSearchSubmit = (event) => {
+    event.preventDefault();
+    const searchParams = new URLSearchParams({
+      startdate: formatDate(startDateInput.current.value),
+      enddate: formatDate(endDateInput.current.value),
+      province: filterProvince,
+      brandlist: JSON.stringify(brandInputList),
+    });
+    const path = `${window.location.pathname}?${searchParams.toString()}`;
+    navigate(path);
+  };
+
   return (
     <div className="homepage-container">
       <Search
         setFilterProvince={setFilterProvince}
         startDateInput={startDateInput}
         endDateInput={endDateInput}
-        handleSearch={handleSearch}
+        handleSearch={handleSearchSubmit}
         isSearch={isSearch}
       />
       <SlideBanner />
@@ -79,7 +118,6 @@ const HomePage = () => {
             setBrandInputList={setBrandInputList}
             handleSearch={handleSearch}
           />
-          <SearchResult carList={carList} scrollToRef={scrollToRef} />
         </>
       ) : (
         <div className="not-search">
@@ -91,6 +129,9 @@ const HomePage = () => {
           </p>
         </div>
       )}
+      <div ref={scrollToRef}>
+        {isSearch ? <SearchResult carList={carList} /> : <></>}
+      </div>
     </div>
   );
 };

@@ -1,10 +1,10 @@
 import React from "react";
 import CarCard from "./CarCard";
 
-const SearchResult = ({carList, scrollToRef}) => {
+const SearchResult = ({carList}) => {
   return (
     <div className="result-container">
-      <h2 ref={scrollToRef}>Search Results</h2>
+      <h2>Search Results</h2>
       <p>found {carList.length} cars</p>
       <div className="result-wrapper">
         {carList.map((car) => {

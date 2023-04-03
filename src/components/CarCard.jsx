@@ -1,4 +1,5 @@
 import React from "react";
+import {useNavigate} from "react-router-dom";
 
 const CarCard = ({
   car_id,
@@ -12,12 +13,13 @@ const CarCard = ({
   gear_type,
   rating,
 }) => {
-  const handleClick = () => {
-    window.location.assign(`/carDetail/${car_id}`);
-  };
+  const navigate = useNavigate();
 
   return (
-    <div onClick={handleClick} className="card-container">
+    <div
+      onClick={() => navigate(`/carDetail/${car_id}`)}
+      className="card-container"
+    >
       <div className="header">
         <img src={car_image} alt="car" />
       </div>
