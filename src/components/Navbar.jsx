@@ -3,13 +3,20 @@ import axios from "axios";
 import {Link} from "react-router-dom";
 import {checkLogin} from "../utils/auth";
 import useOutsideClick from "../hooks/useOutsideClick";
+import Notification from "../components/Notification";
 
 const Navbar = () => {
   const [navbarInfo, setNavbarInfo] = useState(null);
   const [openDropdown, setOpenDropdown] = useState(false);
+  const [openNotification, setOpenNotification] = useState(false);
+  const [notificationList, setNotificationList] = useState([]);
 
   const toggleDropdown = () => {
     setOpenDropdown(!openDropdown);
+  };
+
+  const toggleOpenNotification = () => {
+    setOpenNotification(!openNotification);
   };
 
   const ref = useOutsideClick(() => setOpenDropdown(false));
@@ -59,6 +66,23 @@ const Navbar = () => {
       }
     };
     fetchNavbar();
+
+    // getNotifications;
+    const getNotifications = async () => {
+      try {
+        const id = sessionStorage.getItem("user_id");
+        const res = await axios.get(
+          `http://localhost:8080/notification/?userID=${id}&date=2023-04-02T10:52:47.185`,
+          {
+            withCredentials: true,
+          }
+        );
+        setNotificationList(res.data.notifications);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    getNotifications();
   }, []);
 
   return (
@@ -150,7 +174,12 @@ const Navbar = () => {
             </>
           )}
         </nav>
-        <i className="fa-regular fa-bell"></i>
+        <div className={openNotification ? "bell-noti open" : "bell-noti"}>
+          <i class="fa-solid fa-bell" onClick={toggleOpenNotification} />
+          {openNotification && (
+            <Notification notifications={notificationList} />
+          )}
+        </div>
       </div>
     </div>
   );
