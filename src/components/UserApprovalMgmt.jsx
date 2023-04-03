@@ -33,7 +33,7 @@ const UserApprovalMgmt = () => {
     }
   };
 
-  const handleChangeStatus = async (user_id, status) => {
+  const handleChangeStatus = async (user_id, action) => {
     try {
       await axios.patch(
         `http://localhost:8080/user/status`,
