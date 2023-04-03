@@ -8,7 +8,7 @@ const UserApprovalMgmt = () => {
   const dummypic =
     "https://lifestyle.campus-star.com/app/uploads/2017/03/id-cover.jpg";
   const statusList = ["Unverified", "Rejected", "Verified"];
-  const [status, setStatus] = useState("Pending");
+  const [status, setStatus] = useState("Unverified");
   const [users, setUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
