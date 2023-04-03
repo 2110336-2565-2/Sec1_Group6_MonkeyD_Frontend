@@ -10,16 +10,32 @@ const Navbar = () => {
   const [openDropdown, setOpenDropdown] = useState(false);
   const [openNotification, setOpenNotification] = useState(false);
   const [notificationList, setNotificationList] = useState([]);
+  const [allNotificationsRead, setAllNotificationsRead] = useState(true);
 
   const toggleDropdown = () => {
     setOpenDropdown(!openDropdown);
   };
 
-  const toggleOpenNotification = () => {
+  const toggleOpenNotification = async () => {
     setOpenNotification(!openNotification);
+    if (openNotification) {
+      const id = sessionStorage.getItem("user_id");
+      try {
+        // readNotifications
+        await axios.patch(`http://localhost:8080/notification/?userID=${id}`, {
+          withCredentials: true,
+        });
+      } catch (error) {
+        console.error(error);
+      }
+
+      setAllNotificationsRead(true);
+      console.log("settrue");
+    }
   };
 
   const ref = useOutsideClick(() => setOpenDropdown(false));
+  const notioutsideClick = useOutsideClick(() => setOpenNotification(false));
 
   const handleLogout = async () => {
     sessionStorage.clear();
@@ -63,7 +79,9 @@ const Navbar = () => {
       }
     };
     fetchNavbar();
+  }, []);
 
+  useEffect(() => {
     // getNotifications;
     const getNotifications = async () => {
       try {
@@ -75,12 +93,22 @@ const Navbar = () => {
           }
         );
         setNotificationList(res.data.notifications);
+
+        console.log(notificationList);
+        for (const notification of res.data.notifications) {
+          const isRead = notification.isRead;
+          console.log(isRead);
+          if (!isRead) {
+            setAllNotificationsRead(false);
+            break;
+          }
+        }
       } catch (error) {
         console.error(error);
       }
     };
     getNotifications();
-  }, []);
+  }, [allNotificationsRead]);
 
   return (
     <div className="navbar-container">
@@ -171,8 +199,18 @@ const Navbar = () => {
             </>
           )}
         </nav>
-        <div className={openNotification ? "bell-noti open" : "bell-noti"}>
-          <i class="fa-solid fa-bell" onClick={toggleOpenNotification} />
+        <div
+          className={openNotification ? "bell-noti open" : "bell-noti"}
+          ref={notioutsideClick}
+        >
+          <i
+            className={
+              allNotificationsRead
+                ? "fa-solid fa-bell"
+                : "fa-solid fa-bell fa-shake"
+            }
+            onClick={toggleOpenNotification}
+          />
           {openNotification && (
             <Notification notifications={notificationList} />
           )}
