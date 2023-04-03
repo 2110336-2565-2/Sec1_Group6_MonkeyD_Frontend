@@ -60,16 +60,7 @@ const HomePage = () => {
     }
   };
   useEffect(() => {
-    const fetchCars = async () => {
-      try {
-        const res = await axios.get(`http://localhost:8080/car`); // change path to backend service
-        setCarList(res.data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
     handleCookiesAuth();
-    fetchCars();
   }, []);
   return (
     <div className="homepage-container">
