@@ -238,12 +238,16 @@ const ModalCarRent = ({
     }
     if (errorList.length !== 0) {
       let errorMessage = "";
-      for (let i = 0; i < errorList.length; i++) {
-        if (i === errorList.length - 1) {
-          errorMessage += `and ${errorList[i]}.`;
-          break;
+      if (errorList.length === 1) {
+        errorMessage = `${errorList[0]}.`;
+      } else {
+        for (let i = 0; i < errorList.length; i++) {
+          if (i === errorList.length - 1) {
+            errorMessage += `and ${errorList[i]}.`;
+            break;
+          }
+          errorMessage += `${errorList[i]}, `;
         }
-        errorMessage += `${errorList[i]}, `;
       }
       setErrorText(errorMessage);
       setFormValidate(false);
