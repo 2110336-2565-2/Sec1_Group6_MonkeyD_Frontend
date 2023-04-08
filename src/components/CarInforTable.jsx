@@ -68,38 +68,6 @@ const CarInforTable = ({
     } catch (error) {
       console.error(error);
     }
-
-    // try {
-    //   await axios.patch(
-    //     `http://localhost:8080/car`,
-    //     {},
-    //     {
-    //       headers: {
-    //         car_id: car_id,
-    //         renter_id: sessionStorage.getItem("user_id"),
-    //       },
-    //       withCredentials: true,
-    //     }
-    //   );
-    //   // window.location.assign("/");
-    // } catch (error) {
-    //   console.error(error);
-    // }
-    // try {
-    //   await axios.patch(
-    //     `http://localhost:8080/user`,
-    //     {},
-    //     {
-    //       headers: {
-    //         lessor_id: owner_id,
-    //         renter_id: sessionStorage.getItem("user_id"),
-    //       },
-    //       withCredentials: true,
-    //     }
-    //   );
-    // } catch (error) {
-    //   console.error(error);
-    // }
   };
   return (
     <div className="car-spec">

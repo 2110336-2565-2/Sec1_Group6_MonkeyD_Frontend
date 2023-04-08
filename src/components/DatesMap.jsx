@@ -7,6 +7,7 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 const localizer = momentLocalizer(moment);
 
 const UnavailableDatesMap = ({unavailableTimes = [], onSlotSelect}) => {
+  console.log(unavailableTimes);
   const events = unavailableTimes.map((unavailableTime) => ({
     start: new Date(unavailableTime.start),
     end: new Date(unavailableTime.end),
@@ -14,10 +15,13 @@ const UnavailableDatesMap = ({unavailableTimes = [], onSlotSelect}) => {
   }));
 
   const handleSlotSelect = (slotInfo) => {
-    // console.log("Selected slot:", slotInfo);
+    console.log("Selected slot:", slotInfo);
     // onSlotSelect(slotInfo);
   };
-
+  const handleEventClick = ({start, end}) => {
+    console.log("Event clicked:", start, end);
+    // You can perform any action you want when the event is clicked
+  };
   return (
     <div className="calendar" style={{height: "500px"}}>
       {unavailableTimes.length > 0 ? (
@@ -35,6 +39,9 @@ const UnavailableDatesMap = ({unavailableTimes = [], onSlotSelect}) => {
               color: "white",
               fontWeight: "bold",
               fontSize: "12px",
+            },
+            onClick: () => {
+              handleEventClick(event);
             },
           })}
           selectable={true}

@@ -1,0 +1,14 @@
+.chatpage-container {
+  margin-top: var(--navbar-height);
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  .chatbox-container {
+  }
+  .chatlist-container {
+    .list {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+}

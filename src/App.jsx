@@ -15,6 +15,7 @@ import AddCarPage from "./pages/AddCarPage";
 import AddReviewPage from "./pages/AddReviewPage";
 import LessorRegisterationPage from "./pages/LessorRegisterationPage";
 import PaymentPage from "./pages/PaymentPage";
+import ChatPage from "./pages/ChatPage";
 
 const App = () => {
   return (
@@ -34,6 +35,7 @@ const App = () => {
           <Route path="/lessorRegister" element={<LessorRegisterationPage />} />
           <Route path="/addReview" element={<AddReviewPage />} />
           <Route path="/payment" element={<PaymentPage />} />
+          <Route path="/chat" element={<ChatPage />} />
           <Route path="*" element={<NoPage />} />
         </Routes>
         <Footer />
