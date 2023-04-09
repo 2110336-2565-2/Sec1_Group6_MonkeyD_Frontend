@@ -32,10 +32,16 @@ const ChatBox = ({chatId, user, userId, chatWith}) => {
         ]);
       });
     }
-    return () => {
-      newSocket.disconnect();
-    };
   }, [chatId]);
+
+  useEffect(() => {
+    return () => {
+      if (socket) {
+        console.log("====================================");
+        socket.disconnect();
+      }
+    };
+  }, []); // Pass an empty dependency array, so this useEffect only runs on component unmount.
 
   const handleSubmit = (event) => {
     event.preventDefault();
