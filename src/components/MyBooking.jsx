@@ -8,10 +8,8 @@ import Config from "../assets/configs/configs.json";
 let OmiseCard;
 
 const MyBooking = () => {
-  // const statuses = {1: "Pending", 2: "Cancelled", 3: "Rented", 4: "Completed"};
   const statuses = ["All", "Pending", "Cancelled", "Rented", "Completed"];
   const [status, setStatus] = useState("All");
-  // const [sortBy, setSortBy] = useState({sort: "Date", opt: "asd"});
   const [bookings, setBookings] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [scriptLoaded, setScriptLoaded] = useState(false);
@@ -97,14 +95,14 @@ const MyBooking = () => {
     setScriptLoaded(true);
   };
 
-  const omiseCardHandler = async (amount, match_id) => {
+  const omiseCardHandler = async (amount, match_id, lessorID) => {
     OmiseCard.open({
       amount: amount,
-      onCreateTokenSuccess: (token) => {
-        const id = sessionStorage.getItem("user_id");
-        const username = sessionStorage.getItem("username");
-        axios
-          .post(
+      onCreateTokenSuccess: async (token) => {
+        try {
+          const id = sessionStorage.getItem("user_id");
+          const username = sessionStorage.getItem("username");
+          await axios.post(
             `http://localhost:8080/payment/charge/${id}`,
             {
               description: username,
@@ -117,42 +115,44 @@ const MyBooking = () => {
               },
               withCredentials: true,
             }
-          )
-          .then((response) => {
-            axios
-              .patch(
-                `http://localhost:8080/match/status`,
-                {
-                  match_id: match_id,
-                  action: "Paid",
-                },
-                {
-                  headers: {
-                    "Content-Type": "application/json",
-                  },
-                  withCredentials: true,
-                }
-              )
-              .then((response) => {
-                console.log(response);
-              })
-              .catch((error) => {
-                console.error(error);
-              });
-            console.log(response);
-          })
-          .catch((error) => {
-            console.error(error);
-          });
+          );
+
+          await axios.patch(
+            `http://localhost:8080/match/status`,
+            {
+              match_id: match_id,
+              action: "Paid",
+            },
+            {
+              headers: {
+                "Content-Type": "application/json",
+              },
+              withCredentials: true,
+            }
+          );
+
+          await axios.post(
+            `http://localhost:8080/chat`,
+            {
+              allowedUsers: [id, lessorID],
+              matchID: match_id,
+            },
+            {
+              withCredentials: true,
+            }
+          );
+        } catch (error) {
+          console.error(error);
+        }
       },
       onFormClosed: () => {},
     });
   };
 
-  const purchaseBooking = async (e, amount, matchId) => {
+  const purchaseBooking = async (e, amount, matchId, lessorID) => {
     if (scriptLoaded) {
       e.preventDefault();
-      omiseCardHandler(amount * 100, matchId);
+      omiseCardHandler(amount * 100, matchId, lessorID);
     }
   };
 
@@ -163,11 +163,17 @@ const MyBooking = () => {
   useEffect(() => {
     fetchMyBooking();
   }, [status]);
-
+  console.log("====================================");
+  console.log(bookings);
+  console.log("====================================");
   return (
     <div className="my-booking">
       <Script url="https://cdn.omise.co/omise.js" onLoad={handleLoadScript} />
-      <ProfileStatusTab statusList={statuses} status={status} setStatus={setStatus} />
+      <ProfileStatusTab
+        statusList={statuses}
+        status={status}
+        setStatus={setStatus}
+      />
       <ProfileSearchBar searchRef={searchRef} handleSearch={handleSearch} />
       <div className="booking-container">
         {isLoading || bookings?.count === 0 ? (
@@ -194,6 +200,7 @@ const MyBooking = () => {
               returnLocation,
               status,
               isReview,
+              lessorID,
             } = match;
             const pickupDate = new Date(pickUpDateTime);
             const returnDate = new Date(returnDateTime);
@@ -241,7 +248,8 @@ const MyBooking = () => {
                               returnDate,
                               rental_price
                             ),
-                            match_id
+                            match_id,
+                            lessorID
                           )
                         }
                       >
