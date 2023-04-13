@@ -50,25 +50,36 @@
         cursor: pointer;
       }
     }
-    .calendar-btn {
-      padding: 12px;
+    .header-btn {
       display: flex;
-      align-items: center;
-      gap: 10px;
-      background-color: transparent;
-      border: none;
-      border-radius: 6px;
       position: absolute;
       top: 0;
       right: 0;
+      gap: 8px;
       margin-top: 12px;
       margin-right: 12px;
-      &:hover {
-        cursor: pointer;
-        background-color: #4a60a14f;
-      }
-      i {
-        font-size: 20px;
+      .calendar-btn,
+      .match-btn {
+        padding: 12px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        background-color: var(--secondary-background);
+        border: none;
+        border-radius: 6px;
+        transition: background-color 0.2s;
+        // position: absolute;
+        // top: 0;
+        // right: 0;
+        // margin-top: 12px;
+        // margin-right: 12px;
+        &:hover {
+          cursor: pointer;
+          background-color: #4a60a14f;
+        }
+        i {
+          font-size: 20px;
+        }
       }
     }
     .modal-content {
@@ -282,17 +293,17 @@
     gap: 8px;
     margin-top: 8px;
     width: min-content;
-    align-self: flex-end
+    align-self: flex-end;
     // width: 100%;
     // justify-content: center;
   }
-  .car-images{
+  .car-images {
     width: min-content;
-    img{
+    img {
       max-width: 400px;
       max-height: 300px;
     }
-    .btn-image{
+    .btn-image {
       margin-bottom: 3px;
       border: none;
       border-radius: 6px;
@@ -303,13 +314,13 @@
       }
     }
   }
-  .upload-input{
+  .upload-input {
     display: flex;
     flex-direction: row;
     align-items: center;
   }
-  .upload-display{
-    img{
+  .upload-display {
+    img {
       width: 100px;
       height: 100px;
       object-fit: cover;
@@ -323,7 +334,7 @@
   .btn {
     margin-top: 24px;
   }
-  .btn-edit{
+  .btn-edit {
     align-self: center;
   }
 }

@@ -2,6 +2,7 @@ import React, {useState, useEffect, useRef} from "react";
 import axios from "axios";
 import UnavailableDatesMap from "./DatesMap";
 import CarDetails from "./ModalCarDetail";
+import MatchCar from "./MatchCar";
 import {provinces} from "../utils/mockData";
 
 const MyCars = () => {
@@ -13,6 +14,7 @@ const MyCars = () => {
   const [cars, setCars] = useState([]);
   const [filterProvince, setFilterProvince] = useState(null);
   const [sortOption, setSortOption] = useState(null);
+  const [showMatch, setShowMatch] = useState(false);
 
   const handleClear = () => {
     setFilterProvince(null);
@@ -80,8 +82,22 @@ const MyCars = () => {
       event.target.id !== "inModal"
     ) {
       setSelectedCarIndex(-1);
+      setShowCalendar(false);
+      setShowMatch(false);
     }
   };
+
+  const toggleShowCalendar = () => {
+    setShowCalendar(!showCalendar);
+    setShowMatch(false);
+  };
+
+  const toggleShowMatch = () => {
+    console.log("showMatch ", showMatch);
+    setShowMatch(!showMatch);
+    setShowCalendar(false);
+  };
+
   const fetchCars = async () => {
     console.log("hi");
     const username = sessionStorage.getItem("username");
@@ -113,6 +129,7 @@ const MyCars = () => {
       console.error(error);
     }
   };
+
   useEffect(() => {
     console.log("fetch");
 
@@ -164,7 +181,7 @@ const MyCars = () => {
         <div className="mycars-container" ref={modalRef}>
           {cars.map((car, index) => {
             return (
-              <div key={index}>
+              <div key={car._id}>
                 <div className="car" onClick={() => handleCarClick(index)}>
                   <div className="img-section">
                     <img src={car.car_image} alt="" />
@@ -199,18 +216,32 @@ const MyCars = () => {
                 </div>
                 {selectedCarIndex === index && (
                   <div className="car-modal">
-                    <button
-                      className="calendar-btn"
-                      onClick={() => setShowCalendar(!showCalendar)}
-                    >
-                      {showCalendar ? "Hide Calendar" : "Show Calendar"}{" "}
-                      <i class="fa-regular fa-calendar"></i>
-                    </button>
-                    {showCalendar ? (
+                    <div className="header-btn">
+                      <button className="match-btn" onClick={toggleShowMatch}>
+                        {showMatch ? "Hide Match" : "Show Match"}
+                      </button>
+                      <button
+                        className="calendar-btn"
+                        onClick={toggleShowCalendar}
+                      >
+                        {showCalendar ? "Hide Calendar" : "Show Calendar"}{" "}
+                        <i className="fa-regular fa-calendar"></i>
+                      </button>
+                    </div>
+                    {showCalendar && (
                       <UnavailableDatesMap
                         unavailableTimes={car.unavailable_times}
                       />
-                    ) : (
+                    )}{" "}
+                    {showMatch && (
+                      <MatchCar
+                        carId={car._id}
+                        brand={car.brand}
+                        model={car.model}
+                        price={car.rental_price}
+                      />
+                    )}
+                    {!showCalendar && !showMatch && (
                       <div className="modal-detail">
                         <h2>
                           {car.brand} {car.model}
