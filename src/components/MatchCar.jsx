@@ -35,7 +35,6 @@ const MatchCar = ({carId, brand, model, price}) => {
             withCredentials: true,
           }
         );
-        console.log(res.data);
         setCarMatch(res.data.matches);
       } catch (error) {
         console.log(error);

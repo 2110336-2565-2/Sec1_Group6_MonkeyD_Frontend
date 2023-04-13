@@ -93,7 +93,6 @@ const MyCars = () => {
   };
 
   const toggleShowMatch = () => {
-    console.log("showMatch ", showMatch);
     setShowMatch(!showMatch);
     setShowCalendar(false);
   };
