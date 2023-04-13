@@ -141,6 +141,21 @@ const MyBooking = () => {
               withCredentials: true,
             }
           );
+
+          await axios.post(
+            `http://localhost:8080/notification`,
+            {
+              notification: {
+                text: `Payment success! You can chat with your rental now.`,
+                userID: sessionStorage.getItem("user_id"),
+              },
+            },
+            {
+              withCredentials: true,
+            }
+          );
+
+          navigate(`../chat`);
         } catch (error) {
           console.error(error);
         }
@@ -163,9 +178,7 @@ const MyBooking = () => {
   useEffect(() => {
     fetchMyBooking();
   }, [status]);
-  console.log("====================================");
-  console.log(bookings);
-  console.log("====================================");
+
   return (
     <div className="my-booking">
       <Script url="https://cdn.omise.co/omise.js" onLoad={handleLoadScript} />
