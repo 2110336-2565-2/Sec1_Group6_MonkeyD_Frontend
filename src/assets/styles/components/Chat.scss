@@ -11,18 +11,51 @@
   }
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+  grid-template-rows: minmax(0, 1fr);
   .chatlist-container {
+    display: flex;
+    flex-direction: column;
     background-color: var(--contrast-color);
     border-radius: 16px 0 0 16px;
+    border-right: solid 2px var(--secondary-background);
     .header {
-        font-weight: 600;
-        margin-left: 32px;
+      font-weight: 600;
+      margin-left: 32px;
     }
-    .list {
+    .chatlist {
+      border-top: solid 2px var(--secondary-background);
+      flex: auto;
       display: flex;
       flex-direction: column;
+      padding: 8px;
+      overflow: hidden;
+      overflow-y: scroll;
+      .chat {
+        display: flex;
+        align-items: center;
+        height: 32px;
+        padding: 16px;
+        border-radius: 8px;
+        &.selected {
+          background-color: rgba(var(--secondary-color-rgb), 0.1) !important;
+        }
+        &:hover {
+          cursor: pointer;
+          background-color: var(--secondary-background);
+        }
+      }
+      .no-chat {
+        flex: auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
     }
   }
   .chatbox-container {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--contrast-color);
+    border-radius: 0 16px 16px 0;
   }
 }

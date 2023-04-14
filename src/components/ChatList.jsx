@@ -4,10 +4,12 @@ import Cookies from "js-cookie";
 
 const ChatList = ({userId, setChatId, setChatWith}) => {
   const [chatList, setChatList] = useState([]);
+  const [chatSelected, setChatSelected] = useState(0);
 
-  const handleChoose = (chatId, chatWith) => {
+  const handleChoose = (chatId, chatWith, index) => {
     setChatWith(chatWith);
     setChatId(chatId);
+    setChatSelected(index);
   };
 
   useEffect(() => {
@@ -32,6 +34,7 @@ const ChatList = ({userId, setChatId, setChatWith}) => {
           }
         );
         setChatList(res.data.chats);
+        console.log(res.data.chats);
       } catch (error) {
         console.error(error);
       }
@@ -44,21 +47,25 @@ const ChatList = ({userId, setChatId, setChatWith}) => {
   return (
     <div className="chatlist-container">
       <h2 className="header">Chats</h2>
-      {chatList && chatList !== [] ? (
-        <>
-          <div className="list">
-            {chatList.map((chat) => {
+      <div className="chatlist">
+        {chatList && chatList !== [] ? (
+          <>
+            {chatList.map((chat, index) => {
               return (
-                <button onClick={() => handleChoose(chat._id, chat.name)}>
-                  chat with {chat.name}
-                </button>
+                <div
+                  className={`chat ${index === chatSelected ? "selected" : ""}`}
+                  key={chat._id}
+                  onClick={() => handleChoose(chat._id, chat.name, index)}
+                >
+                  {chat.name}
+                </div>
               );
             })}
-          </div>
-        </>
-      ) : (
-        "no chat"
-      )}
+          </>
+        ) : (
+          <div className="no-chat">No Chat</div>
+        )}
+      </div>
     </div>
   );
 };
