@@ -1,5 +1,7 @@
 import React, {useEffect, useState} from "react";
 import axios from "axios";
+import Cookies from "js-cookie";
+
 const ChatList = ({userId, setChatId, setChatWith}) => {
   const [chatList, setChatList] = useState([]);
 
@@ -9,10 +11,22 @@ const ChatList = ({userId, setChatId, setChatWith}) => {
   };
 
   useEffect(() => {
+    const fetchCsrfToken = async () => {
+      try {
+        const response = await axios.get("http://localhost:8080/csrf-token", {
+          withCredentials: true,
+        });
+        Cookies.set("csrf-token", response.data.token);
+      } catch (error) {
+        console.error("Failed to fetch CSRF token", error);
+      }
+    };
+
     const fetchChatList = async () => {
+      await fetchCsrfToken();
       try {
         const res = await axios.get(
-          `http://localhost:8080/user/chatRooms/${userId}`,
+          `http://localhost:8080/api/user/chatRooms/${userId}`,
           {
             withCredentials: true,
           }
@@ -22,9 +36,11 @@ const ChatList = ({userId, setChatId, setChatWith}) => {
         console.error(error);
       }
     };
+
     fetchChatList();
     return;
   }, []);
+
   return (
     <div className="chatlist-container">
       <h2 className="header">Chats</h2>

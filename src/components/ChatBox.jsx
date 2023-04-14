@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from "react";
 import io from "socket.io-client";
+import {encryptMessage, decryptMessage} from "../utils/message.js";
 
 const ChatBox = ({chatId, user, userId, chatWith}) => {
   const [messages, setMessages] = useState([]);
@@ -18,11 +19,24 @@ const ChatBox = ({chatId, user, userId, chatWith}) => {
         newSocket.emit("join", {chatId, user});
       });
       newSocket.on("messages", (oldMessages) => {
-        setMessages(oldMessages);
+        const decryptedOldMessages = oldMessages.map((message) => {
+          if (message.systemMessage) {
+            return message;
+          }
+          return {
+            ...message,
+            text: decryptMessage(message.text),
+          };
+        });
+        setMessages(decryptedOldMessages);
       });
       newSocket.on("message", (newMessage) => {
-        console.log(`Message received: ${newMessage.text}`);
-        setMessages((messages) => [...messages, newMessage]);
+        console.log(`Encrypted message received: ${newMessage.text}`);
+        const decryptedMessage = decryptMessage(newMessage.text);
+        setMessages((messages) => [
+          ...messages,
+          {...newMessage, text: decryptedMessage},
+        ]);
       });
       newSocket.on("user_joined", ({user}) => {
         console.log(`${user} joined the room`);
@@ -32,15 +46,22 @@ const ChatBox = ({chatId, user, userId, chatWith}) => {
         ]);
       });
     }
-    return () => {
-      newSocket.disconnect();
-    };
   }, [chatId]);
+
+  useEffect(() => {
+    return () => {
+      if (socket) {
+        console.log("====================================");
+        socket.disconnect();
+      }
+    };
+  }, []); // Pass an empty dependency array, so this useEffect only runs on component unmount.
 
   const handleSubmit = (event) => {
     event.preventDefault();
     if (socket && message) {
-      socket.emit("message", {chatId, user, text: message});
+      const encryptedMessage = encryptMessage(message);
+      socket.emit("message", {chatId, user, text: encryptedMessage});
       setMessage("");
     }
   };
