@@ -1,14 +1,7 @@
 .chatpage-container {
+  width: 100%;
+  height: calc(100vh - var(--navbar-height));
+  box-sizing: border-box;
   margin-top: var(--navbar-height);
-  display: flex;
-  align-items: center;
-  justify-content: space-evenly;
-  .chatbox-container {
-  }
-  .chatlist-container {
-    .list {
-      display: flex;
-      flex-direction: column;
-    }
-  }
+  background-color: var(--secondary-background);
 }

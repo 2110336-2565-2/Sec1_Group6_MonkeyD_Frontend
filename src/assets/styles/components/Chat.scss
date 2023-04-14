@@ -1,0 +1,28 @@
+.chat-container {
+  height: 100%;
+  padding: 1rem;
+  box-sizing: border-box;
+  margin: 0 auto;
+  @media (min-width: 1080px) {
+    width: calc(1080px - 1rem);
+  }
+  @media (max-width: 1080px) {
+    width: 100%;
+  }
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+  .chatlist-container {
+    background-color: var(--contrast-color);
+    border-radius: 16px 0 0 16px;
+    .header {
+        font-weight: 600;
+        margin-left: 32px;
+    }
+    .list {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+  .chatbox-container {
+  }
+}

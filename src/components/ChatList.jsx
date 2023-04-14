@@ -27,9 +27,9 @@ const ChatList = ({userId, setChatId, setChatWith}) => {
   }, []);
   return (
     <div className="chatlist-container">
+      <h2 className="header">Chats</h2>
       {chatList && chatList !== [] ? (
         <>
-          <h2>Chat list</h2>
           <div className="list">
             {chatList.map((chat) => {
               return (
