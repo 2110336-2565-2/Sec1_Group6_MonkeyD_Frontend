@@ -187,7 +187,7 @@ const Navbar = () => {
                           My cars
                         </Link>
                       </li>
-                      {navbarInfo.isLessor ? (
+                      {navbarInfo.role === "lessor" ? (
                         <li className="menu-item" onClick={handleAddCar}>
                           Add your car
                         </li>
@@ -199,7 +199,7 @@ const Navbar = () => {
                           Be a lessor
                         </li>
                       )}
-                      {navbarInfo.isAdmin ? (
+                      {navbarInfo.role === "admin" ? (
                         <>
                           <li className="menu-item">
                             <Link

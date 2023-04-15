@@ -98,7 +98,7 @@ const ProfilePage = () => {
         image,
         IDCardNumber,
         drivingLicenseNumber,
-        isAdmin,
+        role,
       } = res.data;
 
       const selectedUserInfo = {
@@ -113,7 +113,7 @@ const ProfilePage = () => {
         drivingLicenseNumber,
       };
 
-      setIsAdmin(isAdmin);
+      setIsAdmin(role === "admin" ? true : false);
       setUserInfo(selectedUserInfo);
     } catch (error) {
       console.log(error);
