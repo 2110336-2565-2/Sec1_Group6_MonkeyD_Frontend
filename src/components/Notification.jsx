@@ -8,7 +8,11 @@ const Notification = ({notifications}) => {
     const day = date.getDate();
     const hour = date.getHours();
     const minute = date.getMinutes();
-    const formattedDate = `${day}/${month}/${year} ${hour}:${minute}`;
+    const formattedDate = `${day >= 10 ? day : "0" + day}/${
+      month >= 10 ? month : "0" + month
+    }/${year} ${hour >= 10 ? hour : "0" + hour}:${
+      minute >= 10 ? minute : "0" + minute
+    }`;
     return formattedDate;
   };
 
