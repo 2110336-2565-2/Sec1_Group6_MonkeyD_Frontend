@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import io from "socket.io-client";
 import {encryptMessage, decryptMessage} from "../utils/message.js";
 
@@ -68,28 +68,46 @@ const ChatBox = ({chatId, user, userId, chatWith}) => {
 
   return (
     <div className="chatbox-container">
-      <h1>Chat Room: {chatWith}</h1>
-      <ul>
-        {messages.map((message, index) => (
-          <li key={index}>
-            {message.systemMessage ? (
-              <em>{message.text}</em>
-            ) : (
-              <>
-                <strong>{message.user}:</strong> {message.text}
-              </>
-            )}
-          </li>
-        ))}
-      </ul>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          value={message}
-          onChange={(event) => setMessage(event.target.value)}
-        />
-        <button type="submit">Send</button>
-      </form>
+      {!!chatId && (
+        <>
+          <div className="header">
+            <h2>{chatWith}</h2>
+          </div>
+          <div className="message-container">
+            {messages.reverse().map((message, index) => {
+              const prevMsg = messages.reverse()[index + 1];
+              const isSameUser = prevMsg && prevMsg.user === message.user;
+              return message.systemMessage ? (
+                <div
+                  className="system"
+                  key={index}
+                >{`- ${message.text} -`}</div>
+              ) : (
+                <div
+                  className={`message ${
+                    message.user !== user ? "left" : "right"
+                  }`}
+                  key={index}
+                >
+                  {message.user !== user && !isSameUser && (
+                    <div className="username">{message.user}</div>
+                  )}
+                  <div className="text">{message.text}</div>
+                </div>
+              );
+            })}
+          </div>
+          <form onSubmit={handleSubmit}>
+            <input
+              type="text"
+              value={message}
+              placeholder="Message..."
+              onChange={(event) => setMessage(event.target.value)}
+            />
+            <button type="submit">Send</button>
+          </form>
+        </>
+      )}
     </div>
   );
 };

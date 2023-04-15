@@ -4,7 +4,7 @@ import Cookies from "js-cookie";
 
 const ChatList = ({userId, setChatId, setChatWith}) => {
   const [chatList, setChatList] = useState([]);
-  const [chatSelected, setChatSelected] = useState(0);
+  const [chatSelected, setChatSelected] = useState(-1);
 
   const handleChoose = (chatId, chatWith, index) => {
     setChatWith(chatWith);
@@ -57,7 +57,7 @@ const ChatList = ({userId, setChatId, setChatWith}) => {
                   key={chat._id}
                   onClick={() => handleChoose(chat._id, chat.name, index)}
                 >
-                  {chat.name}
+                  <span>{chat.name}</span>
                 </div>
               );
             })}
