@@ -14,7 +14,7 @@ const AddCarPage = () => {
             withCredentials: true,
           }
         );
-        if (res.data.status !== "Verified" || res.data.isLessor === false) {
+        if (res.data.status !== "Verified" || res.data.role === "renter") {
           window.location.assign("/404");
         }
       } catch (error) {

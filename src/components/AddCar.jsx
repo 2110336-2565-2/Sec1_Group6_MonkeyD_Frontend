@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from "react";
 import axios from "axios";
-import {provinces} from "../utils/mockData";
+import {provinces, carBrands} from "../utils/mockData";
+
 const AddCar = () => {
   const resetForm = {
     brand: "",
@@ -281,28 +282,6 @@ const AddCar = () => {
     setCarImages(car_images.concat(URLs));
   }, [new_car_images]);
 
-  useEffect(() => {
-    // fetch data
-    const dataFetch = async () => {
-      try {
-        const res = await axios.get(
-          `https://private-anon-25f08158ff-carsapi1.apiary-mock.com/manufacturers`
-        );
-        let brands = [];
-        for (const e of res.data) {
-          brands.push(e.name);
-        }
-        brands.sort();
-        setBrands(brands);
-      } catch (error) {
-        console.error(error);
-        handleShowResError(error);
-      }
-    };
-
-    dataFetch();
-  }, []);
-
   return (
     <div className="addcar-container">
       <div className="addcar-box">
@@ -317,7 +296,7 @@ const AddCar = () => {
             defaultValue=""
           >
             <option disabled hidden></option>
-            {brands.map((brand) => {
+            {carBrands.map((brand) => {
               return (
                 <option key={brand} value={brand}>
                   {brand}
