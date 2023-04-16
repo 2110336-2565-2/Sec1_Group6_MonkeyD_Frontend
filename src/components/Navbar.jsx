@@ -30,7 +30,6 @@ const Navbar = () => {
       }
 
       setAllNotificationsRead(true);
-      console.log("settrue");
     }
   };
 

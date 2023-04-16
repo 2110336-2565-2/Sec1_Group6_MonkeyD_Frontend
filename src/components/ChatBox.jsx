@@ -51,7 +51,6 @@ const ChatBox = ({chatId, user, userId, chatWith}) => {
   useEffect(() => {
     return () => {
       if (socket) {
-        console.log("====================================");
         socket.disconnect();
       }
     };

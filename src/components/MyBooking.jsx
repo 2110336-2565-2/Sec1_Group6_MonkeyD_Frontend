@@ -116,7 +116,18 @@ const MyBooking = () => {
               withCredentials: true,
             }
           );
-
+          await axios.post(
+            `http://localhost:8080/payment/transfer/${lessorID}`,
+            {
+              amount: amount,
+            },
+            {
+              headers: {
+                "Content-Type": "application/json",
+              },
+              withCredentials: true,
+            }
+          );
           await axios.patch(
             `http://localhost:8080/match/status`,
             {
