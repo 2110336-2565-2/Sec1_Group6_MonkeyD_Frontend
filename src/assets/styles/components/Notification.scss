@@ -3,6 +3,8 @@
   top: 56px;
   right: -10px;
   min-width: 450px;
+  max-height: 500px;
+  overflow-y: scroll;
   border-radius: 8px;
   color: var(--primary-color);
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
