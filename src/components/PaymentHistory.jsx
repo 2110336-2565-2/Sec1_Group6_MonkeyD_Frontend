@@ -9,9 +9,17 @@ const PaymentHistory = () => {
   const [status, setStatus] = useState("charge");
   const [trans, setTrans] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [sortBy, setSortBy] = useState("newest date");
   const navigate = useNavigate();
 
   const searchRef = useRef();
+
+  const filters = [
+    "newest date",
+    "oldest date",
+    "highest price",
+    "lowest price",
+  ];
 
   const fetchTrans = async () => {
     const id = sessionStorage.getItem("user_id");
@@ -22,14 +30,15 @@ const PaymentHistory = () => {
 
     try {
       setIsLoading(true);
-      const res = await axios.get(
+      const res = await axios.post(
         `http://localhost:8080/payment/transaction/${id}`,
+        {sortBy: sortBy},
         {
           // params,
           withCredentials: true,
         }
       );
-      console.log(res.data);
+      //console.log(res.data);
       setTrans(res.data);
       setIsLoading(false);
     } catch (error) {
@@ -41,10 +50,12 @@ const PaymentHistory = () => {
     event.preventDefault();
     fetchTrans();
   };
-
+  const handleChangeSort = (event) => {
+    setSortBy(event.target.value);
+  };
   useEffect(() => {
     fetchTrans();
-  }, [status]);
+  }, [status, sortBy]);
 
   return (
     <div className="trans-approval-container">
@@ -53,7 +64,29 @@ const PaymentHistory = () => {
         status={status}
         setStatus={setStatus}
       />
-      <ProfileSearchBar searchRef={searchRef} handleSearch={handleSearch} />
+      <div className="search-bar">
+        <ProfileSearchBar
+          className="search"
+          searchRef={searchRef}
+          handleSearch={handleSearch}
+        />
+        <div className="sort">
+          <select
+            name="sortby"
+            id="sortby"
+            class="sort-by-select"
+            onChange={handleChangeSort}
+          >
+            {filters.map((sort) => {
+              return (
+                <option key={sort} value={sort}>
+                  {sort}
+                </option>
+              );
+            })}
+          </select>
+        </div>
+      </div>
       <div className="trans-approval-list">
         {isLoading || trans.length === 0 ? (
           <div className="no-result">No result</div>
@@ -68,7 +101,7 @@ const PaymentHistory = () => {
               created_at,
               customer,
             } = tran;
-            created_at = Date(created_at);
+            created_at = new Date(created_at);
             return (
               <div className="trans-approval" key={index}>
                 <div className="header">
