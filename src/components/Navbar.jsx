@@ -144,6 +144,9 @@ const Navbar = () => {
           <Link to="/" className="content">
             FIND CAR
           </Link>
+          <Link to="/chat" className="content">
+            MESSAGE
+          </Link>
           <Link to="/about" className="content">
             ABOUT US
           </Link>
