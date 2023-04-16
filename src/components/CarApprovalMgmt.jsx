@@ -29,6 +29,7 @@ const CarApprovalMgmt = () => {
       setIsLoading(true);
       const res = await axios.get(`http://localhost:8080/car/admin`, {
         params,
+        withCredentials: true,
       });
       setCars(res.data.cars);
       // setCars(dummy);
