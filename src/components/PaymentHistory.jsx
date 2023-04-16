@@ -1,8 +1,11 @@
 import axios from "axios";
 import {useEffect, useRef, useState} from "react";
 import {useNavigate} from "react-router-dom";
+import {saveAs} from "file-saver";
+import {PDFViewer, PDFDownloadLink} from "@react-pdf/renderer";
 import ProfileStatusTab from "./ProfileStatusTab";
 import ProfileSearchBar from "./ProfileSearchBar";
+import Receipt from "./Receipt";
 
 const PaymentHistory = () => {
   const statusList = ["charge", "transfer"];
@@ -53,6 +56,19 @@ const PaymentHistory = () => {
   const handleChangeSort = (event) => {
     setSortBy(event.target.value);
   };
+  function formatDate(date) {
+    const options = {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+      second: "numeric",
+      timeZone: "Asia/Bangkok",
+    };
+    return new Date(date).toLocaleDateString("en-US", options);
+  }
   useEffect(() => {
     fetchTrans();
   }, [status, sortBy]);
@@ -65,11 +81,7 @@ const PaymentHistory = () => {
         setStatus={setStatus}
       />
       <div className="search-bar">
-        <ProfileSearchBar
-          className="search"
-          searchRef={searchRef}
-          handleSearch={handleSearch}
-        />
+        <ProfileSearchBar searchRef={searchRef} handleSearch={handleSearch} />
         <div className="sort">
           <select
             name="sortby"
@@ -101,7 +113,7 @@ const PaymentHistory = () => {
               created_at,
               customer,
             } = tran;
-            created_at = new Date(created_at);
+            created_at = formatDate(created_at);
             return (
               <div className="trans-approval" key={index}>
                 <div className="header">
@@ -110,9 +122,17 @@ const PaymentHistory = () => {
                 <h3>{`customer : ${customer}`}</h3>
                 <h3>{`payment method : ${object} ${bank} ${brand}`}</h3>
                 <h3>{`created at : ${created_at}`}</h3>
-                <h3 className="amount">{`amount : ${
-                  amount / 100
-                } ${currency}`}</h3>
+                <div className="footer">
+                  <PDFDownloadLink
+                    document={<Receipt tran={tran} created_at={created_at} />}
+                    fileName={`receipt-${id}.pdf`}
+                  >
+                    Download Receipt
+                  </PDFDownloadLink>
+                  <h3 className="amount">{`amount : ${
+                    amount / 100
+                  } ${currency}`}</h3>
+                </div>
               </div>
             );
           })
