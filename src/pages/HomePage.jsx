@@ -41,7 +41,7 @@ const HomePage = () => {
         params: searchParams,
       }); // change path to backend service
       await setSearch(true);
-      await setCarList(res.data);
+      await setCarList(res.data.data);
       if (scrollToRef.current) {
         scrollToRef.current.scrollIntoView({behavior: "smooth"});
       }

@@ -57,8 +57,8 @@
           width: 200px;
           border-radius: 8px;
           background-color: var(--contrast-color);
+          box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
           ::after {
-            content: " ";
             position: absolute;
             border-width: 0 10px 8px;
             top: -8px;
