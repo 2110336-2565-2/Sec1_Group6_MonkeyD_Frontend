@@ -74,8 +74,8 @@ const ChatBox = ({chatId, user, userId, chatWith}) => {
             <h2>{chatWith}</h2>
           </div>
           <div className="message-container">
-            {messages.reverse().map((message, index) => {
-              const prevMsg = messages.reverse()[index + 1];
+            {[...messages].reverse().map((message, index) => {
+              const prevMsg = [...messages].reverse()[index + 1];
               const isSameUser = prevMsg && prevMsg.user === message.user;
               return message.systemMessage ? (
                 <div
