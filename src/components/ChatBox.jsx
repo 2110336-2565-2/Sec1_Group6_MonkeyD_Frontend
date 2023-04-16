@@ -65,7 +65,7 @@ const ChatBox = ({chatId, user, userId, chatWith}) => {
       setMessage("");
     }
   };
-console.log(messages);
+
   return (
     <div className="chatbox-container">
       {!!chatId && (
