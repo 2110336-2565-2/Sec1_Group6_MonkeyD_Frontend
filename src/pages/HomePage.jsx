@@ -36,7 +36,7 @@ const HomePage = () => {
       enddate: formatDate(endDateInput.current.value),
       province: newFilterProvince,
       brandlist: JSON.stringify(brandInputList),
-      size: 2,
+      size: 8,
     };
 
     try {
@@ -127,7 +127,7 @@ const HomePage = () => {
       enddate: formatDate(endDateInput.current.value),
       province: filterProvince,
       brandlist: JSON.stringify(brandInputList),
-      size: 2,
+      size: 8,
       page: page + 1,
     });
 
