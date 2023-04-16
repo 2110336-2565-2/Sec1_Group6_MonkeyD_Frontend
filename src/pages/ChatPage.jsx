@@ -9,17 +9,19 @@ const ChatPage = () => {
 
   return (
     <div className="chatpage-container">
-      <ChatList
-        userId={userId}
-        setChatId={setChatId}
-        setChatWith={setChatWith}
-      />
-      <ChatBox
-        chatId={chatId}
-        user={user}
-        userId={userId}
-        chatWith={chatWith}
-      />
+      <div className="chat-container">
+        <ChatList
+          userId={userId}
+          setChatId={setChatId}
+          setChatWith={setChatWith}
+        />
+        <ChatBox
+          chatId={chatId}
+          user={user}
+          userId={userId}
+          chatWith={chatWith}
+        />
+      </div>
     </div>
   );
 };
