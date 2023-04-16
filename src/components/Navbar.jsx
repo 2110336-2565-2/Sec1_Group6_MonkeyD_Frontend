@@ -22,9 +22,13 @@ const Navbar = () => {
       const id = sessionStorage.getItem("user_id");
       try {
         // readNotifications
-        await axios.patch(`http://localhost:8080/notification/?userID=${id}`, {
-          withCredentials: true,
-        });
+        await axios.patch(
+          `http://localhost:8080/notification/?userID=${id}`,
+          {},
+          {
+            withCredentials: true,
+          }
+        );
       } catch (error) {
         console.error(error);
       }
@@ -112,10 +116,8 @@ const Navbar = () => {
         );
         setNotificationList(res.data.notifications);
 
-        console.log(notificationList);
         for (const notification of res.data.notifications) {
           const isRead = notification.isRead;
-          console.log(isRead);
           if (!isRead) {
             setAllNotificationsRead(false);
             break;
@@ -273,7 +275,10 @@ const Navbar = () => {
             onClick={toggleOpenNotification}
           />
           {openNotification && (
-            <Notification notifications={notificationList} />
+            <Notification
+              notifications={notificationList}
+              close={setOpenNotification}
+            />
           )}
         </div>
       </div>
