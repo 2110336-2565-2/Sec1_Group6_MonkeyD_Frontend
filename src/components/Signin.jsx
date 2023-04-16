@@ -64,6 +64,45 @@ const Signin = ({signin, signup}) => {
     console.log(error);
   };
 
+  const fetchUserInfo = async (user_id) => {
+    try {
+      const id = user_id;
+      const res = await axios.post(
+        `http://localhost:8080/user/info`,
+        {
+          id: id,
+        },
+        {
+          withCredentials: true,
+        }
+      );
+
+      const {firstName, lastName, IDCardNumber, drivingLicenseNumber} =
+        res.data;
+
+      if (!firstName || !lastName || !IDCardNumber || !drivingLicenseNumber) {
+        try {
+          await axios.post(
+            `http://localhost:8080/notification`,
+            {
+              notification: {
+                text: `Please fill your personal information`,
+                userID: user_id,
+              },
+            },
+            {
+              withCredentials: true,
+            }
+          );
+        } catch (error) {
+          console.error(error);
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const handleSignUp = async (event) => {
     event.preventDefault();
     if (JSON.stringify(error) !== JSON.stringify(resetForm)) {
@@ -95,8 +134,12 @@ const Signin = ({signin, signup}) => {
       const res = await axios.post(`http://localhost:8080/user/login`, data, {
         withCredentials: true,
       });
-      sessionStorage.setItem("user_id", res.headers.user_id);
-      sessionStorage.setItem("username", res.headers.username);
+      const user_id = res.headers.user_id;
+      const username = res.headers.username;
+      sessionStorage.setItem("user_id", user_id);
+      sessionStorage.setItem("username", username);
+      await fetchUserInfo(user_id);
+
       window.location.assign("/");
     } catch (error) {
       console.error(error);

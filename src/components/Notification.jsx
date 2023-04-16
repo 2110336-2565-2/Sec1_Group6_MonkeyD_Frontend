@@ -1,6 +1,9 @@
 import React from "react";
+import {useNavigate} from "react-router-dom";
 
-const Notification = ({notifications}) => {
+const Notification = ({notifications, close}) => {
+  const navigate = useNavigate();
+
   const dateDisplay = (dateInput) => {
     const date = new Date(dateInput);
     const year = date.getFullYear();
@@ -16,6 +19,16 @@ const Notification = ({notifications}) => {
     return formattedDate;
   };
 
+  const navigateClick = (text) => {
+    const fillInfor = text === "Please fill your personal information";
+    const rented = text.includes("rented your car");
+    const payment = text.includes("Payment");
+    if (fillInfor) navigate("/profile?menu=me");
+    if (rented) navigate("/profile?menu=car");
+    if (payment) navigate("/chat");
+    close(false);
+  };
+
   return (
     <div className="notification-container">
       <div className="header">Notification</div>
@@ -28,6 +41,7 @@ const Notification = ({notifications}) => {
               <div
                 className={notification.isRead ? "noti-box" : "noti-box unread"}
                 key={notification._id}
+                onClick={() => navigateClick(notification.text)}
               >
                 <div className="no">{index + 1}</div>
                 <div>
@@ -41,7 +55,7 @@ const Notification = ({notifications}) => {
             ))}
         </div>
       ) : (
-        <div>There is no notification.</div>
+        <div className="noti-wrapper">There is no notification.</div>
       )}
     </div>
   );
