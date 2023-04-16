@@ -1,8 +1,7 @@
 import axios from "axios";
 import {useEffect, useRef, useState} from "react";
 import {useNavigate} from "react-router-dom";
-import {saveAs} from "file-saver";
-import {PDFViewer, PDFDownloadLink} from "@react-pdf/renderer";
+import {PDFDownloadLink} from "@react-pdf/renderer";
 import ProfileStatusTab from "./ProfileStatusTab";
 import ProfileSearchBar from "./ProfileSearchBar";
 import Receipt from "./Receipt";
@@ -13,7 +12,6 @@ const PaymentHistory = () => {
   const [trans, setTrans] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [sortBy, setSortBy] = useState("newest date");
-  const navigate = useNavigate();
 
   const searchRef = useRef();
 
