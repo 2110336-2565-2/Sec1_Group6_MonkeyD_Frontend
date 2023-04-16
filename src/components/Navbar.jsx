@@ -144,6 +144,9 @@ const Navbar = () => {
           <Link to="/" className="content">
             FIND CAR
           </Link>
+          <Link to="/chat" className="content">
+            MESSAGE
+          </Link>
           <Link to="/about" className="content">
             ABOUT US
           </Link>
@@ -169,29 +172,35 @@ const Navbar = () => {
                           My profile
                         </Link>
                       </li>
-                      <li className="menu-item">
-                        <Link
-                          to="/profile?menu=booking"
-                          className="link"
-                          onClick={toggleDropdown}
-                        >
-                          My booking
-                        </Link>
-                      </li>
-                      <li className="menu-item">
-                        <Link
-                          to="/profile?menu=car"
-                          className="link"
-                          onClick={toggleDropdown}
-                        >
-                          My cars
-                        </Link>
-                      </li>
-                      {navbarInfo.role === "lessor" ? (
+                      {(navbarInfo.role === "renter" ||
+                        navbarInfo.role === "lessor") && (
+                        <li className="menu-item">
+                          <Link
+                            to="/profile?menu=booking"
+                            className="link"
+                            onClick={toggleDropdown}
+                          >
+                            My booking
+                          </Link>
+                        </li>
+                      )}
+                      {navbarInfo.role === "lessor" && (
+                        <li className="menu-item">
+                          <Link
+                            to="/profile?menu=car"
+                            className="link"
+                            onClick={toggleDropdown}
+                          >
+                            My cars
+                          </Link>
+                        </li>
+                      )}
+                      {navbarInfo.role === "lessor" && (
                         <li className="menu-item" onClick={handleAddCar}>
                           Add your car
                         </li>
-                      ) : (
+                      )}
+                      {navbarInfo.role === "renter" && (
                         <li
                           className="menu-item"
                           onClick={handleRegisterLessor}
@@ -199,15 +208,25 @@ const Navbar = () => {
                           Be a lessor
                         </li>
                       )}
+
                       {navbarInfo.role === "admin" ? (
                         <>
                           <li className="menu-item">
                             <Link
-                              to="/profile?menu=approval_management"
+                              to="/profile?menu=user_approval_management"
                               className="link"
                               onClick={toggleDropdown}
                             >
-                              Approval mgmt
+                              User Approval
+                            </Link>
+                          </li>
+                          <li className="menu-item">
+                            <Link
+                              to="/profile?menu=car_approval_management"
+                              className="link"
+                              onClick={toggleDropdown}
+                            >
+                              Car Approval
                             </Link>
                           </li>
                           <li className="menu-item">
@@ -216,14 +235,12 @@ const Navbar = () => {
                               className="link"
                               onClick={toggleDropdown}
                             >
-                              Match mgmt
+                              Match Approval
                             </Link>
                           </li>
                         </>
                       ) : (
-                        <li className="menu-item" onClick={handleBeAnAdmin}>
-                          Be an admin
-                        </li>
+                        <></>
                       )}
                       <li className="menu-item" onClick={handleLogout}>
                         Logout

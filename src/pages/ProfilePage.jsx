@@ -12,13 +12,13 @@ import PaymentHistory from "../components/PaymentHistory";
 const ProfilePage = () => {
   const userMenus = {
     me: "My profile",
-    // lessor: "Be a lessor",
     booking: "My booking",
     car: "My cars",
     payment: "Payment History",
   };
 
   const adminMenus = {
+    me: "My profile",
     user_approval_management: "User approval management",
     car_approval_management: "Car approval management",
     match_management: "Match management",
@@ -111,6 +111,7 @@ const ProfilePage = () => {
         image,
         IDCardNumber,
         drivingLicenseNumber,
+        role,
       };
 
       setIsAdmin(role === "admin" ? true : false);
@@ -157,18 +158,19 @@ const ProfilePage = () => {
             <p>{`@${userInfo.username}`}</p>
           </div>
           <div className="menu card">
-            {Object.keys(userMenus).map((key) => {
-              return (
-                <button
-                  value={key}
-                  key={`${key}-${userMenus[key]}`}
-                  className={key === menu ? "selected" : ""}
-                  onClick={changeParamsMenu}
-                >
-                  {userMenus[key]}
-                </button>
-              );
-            })}
+            {!isAdmin &&
+              Object.keys(userMenus).map((key) => {
+                return (
+                  <button
+                    value={key}
+                    key={`${key}-${userMenus[key]}`}
+                    className={key === menu ? "selected" : ""}
+                    onClick={changeParamsMenu}
+                  >
+                    {userMenus[key]}
+                  </button>
+                );
+              })}
             {isAdmin &&
               Object.keys(adminMenus).map((key) => {
                 return (
@@ -182,7 +184,7 @@ const ProfilePage = () => {
                   </button>
                 );
               })}
-            <button onClick={changeParamsMenu}>Log out</button>
+            {/* <button onClick={changeParamsMenu}>Log out</button> */}
           </div>
         </div>
         <div className="content">
@@ -197,12 +199,18 @@ const ProfilePage = () => {
                 fetchUserInfo={fetchUserInfo}
               />
             )}
-            {menu === "booking" && <MyBooking />}
-            {menu === "car" && <MyCars />}
-            {menu === "payment" && <PaymentHistory />}
-            {menu === "user_approval_management" && <UserApprovalMgmt />}
-            {menu === "car_approval_management" && <CarApprovalMgmt />}
-            {menu === "match_management" && <MatchMgmt />}
+            {menu === "booking" && userInfo.role !== "admin" && <MyBooking />}
+            {menu === "car" && userInfo.role === "lessor" && <MyCars />}
+            {menu === "payment" && userInfo.role !== "admin" && (
+              <PaymentHistory />
+            )}
+            {menu === "user_approval_management" &&
+              userInfo.role === "admin" && <UserApprovalMgmt />}
+            {menu === "car_approval_management" &&
+              userInfo.role === "admin" && <CarApprovalMgmt />}
+            {menu === "match_management" && userInfo.role === "admin" && (
+              <MatchMgmt />
+            )}
           </div>
         </div>
       </div>

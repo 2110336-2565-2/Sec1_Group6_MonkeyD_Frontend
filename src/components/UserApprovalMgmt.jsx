@@ -60,7 +60,7 @@ const UserApprovalMgmt = () => {
   const handleImageError = ({currentTarget}) => {
     currentTarget.onerror = null; // prevents looping
     currentTarget.src = dummypic;
-  }
+  };
 
   useEffect(() => {
     fetchUsers();
