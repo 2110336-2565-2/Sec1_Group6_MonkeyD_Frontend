@@ -133,7 +133,11 @@ const HomePage = () => {
     });
 
     try {
+<<<<<<< HEAD
       const res = await axios.get(`${Config.BACKEND_URL}/car`, {
+=======
+      const res = await axios.get("http://localhost:8080/car", {
+>>>>>>> origin/master
         params: searchParams,
       }); // change path to backend service
       setCanLoadMore(res.data.remainCount > 0);
