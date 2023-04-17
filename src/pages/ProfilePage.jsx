@@ -8,6 +8,7 @@ import UserApprovalMgmt from "../components/UserApprovalMgmt";
 import CarApprovalMgmt from "../components/CarApprovalMgmt";
 import MatchMgmt from "../components/MatchMgmt";
 import PaymentHistory from "../components/PaymentHistory";
+import Config from "../assets/configs/configs.json";
 
 const ProfilePage = () => {
   const userMenus = {
@@ -79,7 +80,7 @@ const ProfilePage = () => {
     try {
       const id = sessionStorage.getItem("user_id");
       const res = await axios.post(
-        `http://localhost:8080/user/info`,
+        `${Config.BACKEND_URL}/user/info`,
         {
           id: id,
         },

@@ -1,5 +1,6 @@
 import React, {useState, useRef} from "react";
 import axios from "axios";
+import Config from "../assets/configs/configs.json";
 
 const errorForm = {
   prefix: "",
@@ -295,7 +296,7 @@ const ModalCarRent = ({
       // getUserInfo
       try {
         const res = await axios.post(
-          "http://localhost:8080/user/info",
+          `${Config.BACKEND_URL}/user/info`,
           {
             id: sessionStorage.getItem("user_id"),
           },
@@ -316,7 +317,7 @@ const ModalCarRent = ({
       // car reserved
       try {
         await axios.patch(
-          `http://localhost:8080/car/reserve`,
+          `${Config.BACKEND_URL}/car/reserve`,
           {
             match: {
               carID: car_id,
@@ -355,7 +356,7 @@ const ModalCarRent = ({
 
       // carRented
       try {
-        await axios.patch(`http://localhost:8080/user`, formData, {
+        await axios.patch(`${Config.BACKEND_URL}/user`, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
             lessor_id: owner_id,
@@ -370,7 +371,7 @@ const ModalCarRent = ({
 
       try {
         await axios.post(
-          `http://localhost:8080/notification`,
+          `${Config.BACKEND_URL}/notification`,
           {
             notification: {
               text: `${sessionStorage.getItem("username")} rented your car`,

@@ -1,5 +1,6 @@
 import React, {useState, useRef} from "react";
 import axios from "axios";
+import Config from "../assets/configs/configs.json";
 
 const errorForm = {
   prefix: "",
@@ -118,7 +119,7 @@ const LessorRegisterationPage = () => {
 
       // updateRoleLessor
       try {
-        await axios.patch(`http://localhost:8080/user/update-role`, formData, {
+        await axios.patch(`${Config.BACKEND_URL}/user/update-role`, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
             user_id: sessionStorage.getItem("user_id"),

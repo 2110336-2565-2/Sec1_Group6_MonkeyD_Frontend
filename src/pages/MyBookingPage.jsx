@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from "react";
 import axios from "axios";
 import CarCard from "../components/CarCard";
+import Config from "../assets/configs/configs.json";
 
 const MyBookingPage = () => {
   const [carList, setCarList] = useState();
@@ -9,7 +10,7 @@ const MyBookingPage = () => {
     const fetchCars = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:8080/car/me/${sessionStorage.getItem("username")}`,
+          `${Config.BACKEND_URL}/car/me/${sessionStorage.getItem("username")}`,
           {
             withCredentials: true,
           }

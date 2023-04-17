@@ -6,9 +6,12 @@ import SlideBanner from "../components/SlideBanner";
 import SearchResult from "../components/SearchResult";
 import {useLocation, useNavigate} from "react-router-dom";
 import {getCookie, deleteCookie, cookieExists} from "../utils/cookies";
+import Config from "../assets/configs/configs.json";
 
 const HomePage = () => {
   const [carList, setCarList] = useState([]);
+  const [page, setPage] = useState(1);
+  const [canLoadMore, setCanLoadMore] = useState(false);
   const [isSearch, setSearch] = useState(false);
   const [filterProvince, setFilterProvince] = useState("");
 
@@ -34,14 +37,17 @@ const HomePage = () => {
       enddate: formatDate(endDateInput.current.value),
       province: newFilterProvince,
       brandlist: JSON.stringify(brandInputList),
+      size: 8,
     };
 
     try {
-      const res = await axios.get("http://localhost:8080/car", {
+      const res = await axios.get(`${Config.BACKEND_URL}/car`, {
         params: searchParams,
       }); // change path to backend service
       await setSearch(true);
       await setCarList(res.data.data);
+      setPage(1);
+      setCanLoadMore(res.data.remainCount > 0);
       if (scrollToRef.current) {
         scrollToRef.current.scrollIntoView({behavior: "smooth"});
       }
@@ -116,6 +122,31 @@ const HomePage = () => {
     navigate(path);
   };
 
+  const handleLoadMore = async () => {
+    const searchParams = new URLSearchParams({
+      startdate: formatDate(startDateInput.current.value),
+      enddate: formatDate(endDateInput.current.value),
+      province: filterProvince,
+      brandlist: JSON.stringify(brandInputList),
+      size: 8,
+      page: page + 1,
+    });
+
+    try {
+      const res = await axios.get(`${Config.BACKEND_URL}/car`, {
+        params: searchParams,
+      }); // change path to backend service
+      setCanLoadMore(res.data.remainCount > 0);
+      setPage((prev) => prev + 1);
+      setCarList((prevList) => {
+        const newList = [...prevList, ...res.data.data];
+        return newList;
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <div className="homepage-container">
       <Search
@@ -147,7 +178,12 @@ const HomePage = () => {
       )}
       <div ref={scrollToRef}>
         {isSearch ? (
-          <SearchResult carList={carList} handleChooseCar={handleChooseCar} />
+          <SearchResult
+            carList={carList}
+            handleChooseCar={handleChooseCar}
+            canLoadMore={canLoadMore}
+            handleLoadMore={handleLoadMore}
+          />
         ) : (
           <></>
         )}

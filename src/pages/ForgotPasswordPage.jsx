@@ -1,6 +1,6 @@
 import React, {useState, useRef} from "react";
-
 import axios from "axios";
+import Config from "../assets/configs/configs.json";
 
 const ForgotPasswordPage = () => {
   const [message, setMessage] = useState("");
@@ -19,7 +19,7 @@ const ForgotPasswordPage = () => {
     }
     try {
       const response = await axios.post(
-        "http://localhost:8080/user/forgot-password",
+        `${Config.BACKEND_URL}/user/forgot-password`,
         {
           email: emailValue,
         }

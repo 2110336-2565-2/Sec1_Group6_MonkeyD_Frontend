@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from "react";
 import axios from "axios";
+import Config from "../assets/configs/configs.json";
 
 const MatchCar = ({carId, brand, model, price}) => {
   const [carMatch, setCarMatch] = useState([]);
@@ -27,7 +28,7 @@ const MatchCar = ({carId, brand, model, price}) => {
   useEffect(() => {
     const fetchMatch = async () => {
       try {
-        const baseUrl = "http://localhost:8080/match";
+        const baseUrl = `${Config.BACKEND_URL}/match`;
         const userId = sessionStorage.getItem("user_id");
         const res = await axios.get(
           `${baseUrl}/?lessorID=${userId}&carID=${carId}`,

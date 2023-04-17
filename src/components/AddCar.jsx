@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from "react";
 import axios from "axios";
 import {provinces, carBrands} from "../utils/mockData";
+import Config from "../assets/configs/configs.json";
 
 const AddCar = () => {
   const resetForm = {
@@ -256,7 +257,7 @@ const AddCar = () => {
     }
 
     try {
-      await axios.post(`http://localhost:8080/car`, formData, {
+      await axios.post(`${Config.BACKEND_URL}/car`, formData, {
         withCredentials: true,
         headers: {
           "Content-Type": "multipart/form-data",

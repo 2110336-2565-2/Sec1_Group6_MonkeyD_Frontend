@@ -4,6 +4,7 @@ import {Link} from "react-router-dom";
 import {checkLogin} from "../utils/auth";
 import useOutsideClick from "../hooks/useOutsideClick";
 import Notification from "../components/Notification";
+import Config from "../assets/configs/configs.json";
 
 const Navbar = () => {
   const [navbarInfo, setNavbarInfo] = useState(null);
@@ -22,9 +23,13 @@ const Navbar = () => {
       const id = sessionStorage.getItem("user_id");
       try {
         // readNotifications
-        await axios.patch(`http://localhost:8080/notification/?userID=${id}`, {
-          withCredentials: true,
-        });
+        await axios.patch(
+          `${Config.BACKEND_URL}/notification/?userID=${id}`,
+          {},
+          {
+            withCredentials: true,
+          }
+        );
       } catch (error) {
         console.error(error);
       }
@@ -39,7 +44,7 @@ const Navbar = () => {
   const handleLogout = async () => {
     sessionStorage.clear();
     await axios.post(
-      `http://localhost:8080/user/logout`,
+      `${Config.BACKEND_URL}/user/logout`,
       {
         cookie_name: "auth",
       },
@@ -64,7 +69,7 @@ const Navbar = () => {
     const user_id = sessionStorage.getItem("user_id");
     try {
       await axios.patch(
-        `http://localhost:8080/user/update-role-admin`,
+        `${Config.BACKEND_URL}/user/update-role-admin`,
         {},
         {
           headers: {
@@ -84,7 +89,7 @@ const Navbar = () => {
       const result = await checkLogin();
       if (result) {
         try {
-          const res = await axios.get(`http://localhost:8080/user/navbar`, {
+          const res = await axios.get(`${Config.BACKEND_URL}/user/navbar`, {
             headers: {
               user_id: sessionStorage.getItem("user_id"),
             },
@@ -105,17 +110,15 @@ const Navbar = () => {
       try {
         const id = sessionStorage.getItem("user_id");
         const res = await axios.get(
-          `http://localhost:8080/notification/?userID=${id}&date=2023-04-02T10:52:47.185`,
+          `${Config.BACKEND_URL}/notification/?userID=${id}&date=2023-04-02T10:52:47.185`,
           {
             withCredentials: true,
           }
         );
         setNotificationList(res.data.notifications);
 
-        console.log(notificationList);
         for (const notification of res.data.notifications) {
           const isRead = notification.isRead;
-          console.log(isRead);
           if (!isRead) {
             setAllNotificationsRead(false);
             break;
@@ -273,7 +276,10 @@ const Navbar = () => {
             onClick={toggleOpenNotification}
           />
           {openNotification && (
-            <Notification notifications={notificationList} />
+            <Notification
+              notifications={notificationList}
+              close={setOpenNotification}
+            />
           )}
         </div>
       </div>

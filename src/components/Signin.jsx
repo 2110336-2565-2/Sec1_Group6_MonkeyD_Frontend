@@ -1,5 +1,6 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import axios from "axios";
+import Config from "../assets/configs/configs.json";
 
 const Signin = ({signin, signup}) => {
   const resetForm = {
@@ -11,6 +12,7 @@ const Signin = ({signin, signup}) => {
   const [form, setForm] = useState(resetForm);
   const [error, setError] = useState(resetForm);
   const [resError, setResError] = useState("");
+  const [linkGoogle, setGoogleUrl] = useState("");
 
   const handleChange = (event) => {
     const {name, value} = event.target;
@@ -64,6 +66,45 @@ const Signin = ({signin, signup}) => {
     console.log(error);
   };
 
+  const fetchUserInfo = async (user_id) => {
+    try {
+      const id = user_id;
+      const res = await axios.post(
+        `${Config.BACKEND_URL}/user/info`,
+        {
+          id: id,
+        },
+        {
+          withCredentials: true,
+        }
+      );
+
+      const {firstName, lastName, IDCardNumber, drivingLicenseNumber} =
+        res.data;
+
+      if (!firstName || !lastName || !IDCardNumber || !drivingLicenseNumber) {
+        try {
+          await axios.post(
+            `${Config.BACKEND_URL}/notification`,
+            {
+              notification: {
+                text: `Please fill your personal information`,
+                userID: user_id,
+              },
+            },
+            {
+              withCredentials: true,
+            }
+          );
+        } catch (error) {
+          console.error(error);
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const handleSignUp = async (event) => {
     event.preventDefault();
     if (JSON.stringify(error) !== JSON.stringify(resetForm)) {
@@ -73,7 +114,7 @@ const Signin = ({signin, signup}) => {
     const data = {user: {username: email.split("@")[0], email, password}};
 
     try {
-      await axios.post(`http://localhost:8080/user`, data);
+      await axios.post(`${Config.BACKEND_URL}/user`, data);
       window.location.assign("/");
     } catch (error) {
       console.error(error);
@@ -92,11 +133,15 @@ const Signin = ({signin, signup}) => {
     const data = {user: {email, password}};
 
     try {
-      const res = await axios.post(`http://localhost:8080/user/login`, data, {
+      const res = await axios.post(`${Config.BACKEND_URL}/user/login`, data, {
         withCredentials: true,
       });
-      sessionStorage.setItem("user_id", res.headers.user_id);
-      sessionStorage.setItem("username", res.headers.username);
+      const user_id = res.headers.user_id;
+      const username = res.headers.username;
+      sessionStorage.setItem("user_id", user_id);
+      sessionStorage.setItem("username", username);
+      await fetchUserInfo(user_id);
+
       window.location.assign("/");
     } catch (error) {
       console.error(error);
@@ -112,7 +157,9 @@ const Signin = ({signin, signup}) => {
       setResError("");
     }, 3000);
   };
-
+  useEffect(() => {
+    setGoogleUrl(`${Config.BACKEND_URL}/auth/google`);
+  }, []);
   return (
     <div className="signin-container">
       <div className="signin-box">
@@ -182,7 +229,7 @@ const Signin = ({signin, signup}) => {
           <p>or</p>
           <hr />
         </div>
-        <a href="http://localhost:8080/auth/google" class="btn-google">
+        <a href={linkGoogle} class="btn-google">
           <img
             src="https://www.freepnglogos.com/uploads/google-logo-png/google-logo-png-webinar-optimizing-for-success-google-business-webinar-13.png"
             alt="Google logo"

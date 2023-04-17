@@ -3,6 +3,7 @@ import {useEffect, useRef, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import ProfileStatusTab from "./ProfileStatusTab";
 import ProfileSearchBar from "./ProfileSearchBar";
+import Config from "../assets/configs/configs.json";
 
 const MatchMgmt = () => {
   const statusList = [
@@ -28,7 +29,7 @@ const MatchMgmt = () => {
     try {
       setIsLoading(true);
       const id = sessionStorage.getItem("user_id");
-      const res = await axios.get(`http://localhost:8080/match/admin`, {
+      const res = await axios.get(`${Config.BACKEND_URL}/match/admin`, {
         params,
         withCredentials: true,
       });
@@ -43,7 +44,7 @@ const MatchMgmt = () => {
   const handleChangeStatus = async (match_id, action) => {
     try {
       await axios.patch(
-        `http://localhost:8080/match/status`,
+        `${Config.BACKEND_URL}/match/status`,
         {
           match_id,
           action,

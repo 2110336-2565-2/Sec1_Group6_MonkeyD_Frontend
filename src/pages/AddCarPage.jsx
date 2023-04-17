@@ -1,12 +1,13 @@
 import React, {useEffect} from "react";
 import AddCar from "../components/AddCar";
+import Config from "../assets/configs/configs.json";
 import axios from "axios";
 const AddCarPage = () => {
   useEffect(() => {
     const checkUser = async () => {
       try {
         const res = await axios.post(
-          "http://localhost:8080/user/info",
+          `${Config.BACKEND_URL}/user/info`,
           {
             id: sessionStorage.getItem("user_id"),
           },

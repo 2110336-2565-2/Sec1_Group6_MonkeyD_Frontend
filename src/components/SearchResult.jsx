@@ -1,7 +1,12 @@
 import React from "react";
 import CarCard from "./CarCard";
 
-const SearchResult = ({carList, handleChooseCar}) => {
+const SearchResult = ({
+  carList,
+  handleChooseCar,
+  canLoadMore,
+  handleLoadMore,
+}) => {
   return (
     <div className="result-container">
       <h2>Search Results</h2>
@@ -37,7 +42,9 @@ const SearchResult = ({carList, handleChooseCar}) => {
           <></>
         )}
       </div>
-      <button>Load more listing</button>
+      {canLoadMore && (
+        <button onClick={handleLoadMore}>Load more listing</button>
+      )}
     </div>
   );
 };
