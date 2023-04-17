@@ -2,6 +2,7 @@ import React, {useState, useEffect} from "react";
 import axios from "axios";
 import {useLocation} from "react-router-dom";
 import AddReviewBox from "../components/AddReviewBox";
+import Config from "../assets/configs/configs.json";
 
 const AddReviewPage = () => {
   const [hygiene, setHygiene] = useState(5);
@@ -30,7 +31,7 @@ const AddReviewPage = () => {
   useEffect(() => {
     const checkMatch = async () => {
       try {
-        const res = await axios.get(`http://localhost:8080/match/${matchID}`, {
+        const res = await axios.get(`${Config.BACKEND_URL}/match/${matchID}`, {
           withCredentials: true,
         });
         const renterID = res.data.match.renterID;
@@ -73,7 +74,7 @@ const AddReviewPage = () => {
       },
     };
     try {
-      const res = await axios.post(`http://localhost:8080/review`, data, {
+      const res = await axios.post(`${Config.BACKEND_URL}/review`, data, {
         withCredentials: true,
       });
 

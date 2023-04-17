@@ -6,6 +6,7 @@ import LessorProfile from "../components/LessorProfile";
 import ModalCarRent from "../components/ModalCarRent";
 import {useParams} from "react-router-dom";
 import CommentBox from "../components/CommentBox";
+import Config from "../assets/configs/configs.json";
 
 const CarDetail = () => {
   const [carDetail, setCarDetail] = useState();
@@ -26,7 +27,7 @@ const CarDetail = () => {
   useEffect(() => {
     const fetchCarDetail = async () => {
       try {
-        const res = await axios.get(`http://localhost:8080/car/${carId}`); // change path to backend service
+        const res = await axios.get(`${Config.BACKEND_URL}/car/${carId}`); // change path to backend service
         setCarDetail(res.data);
       } catch (error) {
         window.location.assign("/404");
@@ -36,7 +37,7 @@ const CarDetail = () => {
     const fetchCarReview = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:8080/review?carID=${carId}`
+          `${Config.BACKEND_URL}/review?carID=${carId}`
         ); // change path to backend service
         setCarReview(res.data.reviews);
       } catch (error) {

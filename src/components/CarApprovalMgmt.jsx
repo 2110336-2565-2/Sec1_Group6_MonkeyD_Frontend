@@ -3,6 +3,7 @@ import {useEffect, useRef, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import ProfileStatusTab from "./ProfileStatusTab";
 import ProfileSearchBar from "./ProfileSearchBar";
+import Config from "../assets/configs/configs.json";
 
 const CarApprovalMgmt = () => {
   const dummypic =
@@ -27,7 +28,7 @@ const CarApprovalMgmt = () => {
     };
     try {
       setIsLoading(true);
-      const res = await axios.get(`http://localhost:8080/car/admin`, {
+      const res = await axios.get(`${Config.BACKEND_URL}/car/admin`, {
         params,
         withCredentials: true,
       });
@@ -42,7 +43,7 @@ const CarApprovalMgmt = () => {
   const handleChangeStatus = async (car_id, action) => {
     try {
       await axios.patch(
-        `http://localhost:8080/car/status`,
+        `${Config.BACKEND_URL}/car/status`,
         {
           car_id,
           action,

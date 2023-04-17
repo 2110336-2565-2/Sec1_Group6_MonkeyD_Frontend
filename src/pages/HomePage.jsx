@@ -6,6 +6,7 @@ import SlideBanner from "../components/SlideBanner";
 import SearchResult from "../components/SearchResult";
 import {useLocation, useNavigate} from "react-router-dom";
 import {getCookie, deleteCookie, cookieExists} from "../utils/cookies";
+import Config from "../assets/configs/configs.json";
 
 const HomePage = () => {
   const [carList, setCarList] = useState([]);
@@ -40,7 +41,7 @@ const HomePage = () => {
     };
 
     try {
-      const res = await axios.get("http://localhost:8080/car", {
+      const res = await axios.get(`${Config.BACKEND_URL}/car`, {
         params: searchParams,
       }); // change path to backend service
       await setSearch(true);
@@ -132,7 +133,7 @@ const HomePage = () => {
     });
 
     try {
-      const res = await axios.get("http://localhost:8080/car", {
+      const res = await axios.get(`${Config.BACKEND_URL}/car`, {
         params: searchParams,
       }); // change path to backend service
       setCanLoadMore(res.data.remainCount > 0);

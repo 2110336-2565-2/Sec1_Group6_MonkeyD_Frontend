@@ -5,6 +5,7 @@ import {PDFDownloadLink} from "@react-pdf/renderer";
 import ProfileStatusTab from "./ProfileStatusTab";
 import ProfileSearchBar from "./ProfileSearchBar";
 import Receipt from "./Receipt";
+import Config from "../assets/configs/configs.json";
 
 const PaymentHistory = () => {
   const statusList = ["charge", "transfer"];
@@ -32,7 +33,7 @@ const PaymentHistory = () => {
     try {
       setIsLoading(true);
       const res = await axios.post(
-        `http://localhost:8080/payment/transaction/${id}`,
+        `${Config.BACKEND_URL}/payment/transaction/${id}`,
         {sortBy: sortBy},
         {
           // params,

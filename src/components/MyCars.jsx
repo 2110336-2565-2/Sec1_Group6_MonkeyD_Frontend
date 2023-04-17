@@ -4,6 +4,7 @@ import UnavailableDatesMap from "./DatesMap";
 import CarDetails from "./ModalCarDetail";
 import MatchCar from "./MatchCar";
 import {provinces} from "../utils/mockData";
+import Config from "../assets/configs/configs.json";
 
 const MyCars = () => {
   const modalRef = useRef();
@@ -53,7 +54,7 @@ const MyCars = () => {
 
   const handleSave = async (car, car_id) => {
     try {
-      await axios.patch(`http://localhost:8080/car/change-car-info`, car, {
+      await axios.patch(`${Config.BACKEND_URL}/car/change-car-info`, car, {
         headers: {
           "Content-Type": "multipart/form-data",
           car_id: car_id,
@@ -102,7 +103,7 @@ const MyCars = () => {
     const username = sessionStorage.getItem("username");
     try {
       const res = await axios.post(
-        `http://localhost:8080/car/me/${username}`,
+        `${Config.BACKEND_URL}/car/me/${username}`,
         {province: filterProvince, sortBy: sortOption},
         {withCredentials: true}
       );

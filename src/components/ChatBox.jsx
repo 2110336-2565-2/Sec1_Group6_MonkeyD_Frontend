@@ -1,6 +1,7 @@
 import React, {useEffect, useRef, useState} from "react";
 import io from "socket.io-client";
 import {encryptMessage, decryptMessage} from "../utils/message.js";
+import Config from "../assets/configs/configs.json";
 
 const ChatBox = ({chatId, user, userId, chatWith}) => {
   const [messages, setMessages] = useState([]);
@@ -8,7 +9,7 @@ const ChatBox = ({chatId, user, userId, chatWith}) => {
   const [socket, setSocket] = useState(null);
 
   useEffect(() => {
-    const newSocket = io("http://localhost:8080", {
+    const newSocket = io(Config.BACKEND_URL, {
       query: {userId},
       withCredentials: true,
     });

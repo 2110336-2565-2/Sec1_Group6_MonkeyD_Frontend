@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from "react";
 import {useLocation} from "react-router-dom";
 import axios from "axios";
+import Config from "../assets/configs/configs.json";
 
 const ResetPasswordPage = () => {
   const [message, setMessage] = useState("");
@@ -19,7 +20,7 @@ const ResetPasswordPage = () => {
     }
     try {
       const response = await axios.post(
-        "http://localhost:8080/user/reset-password",
+        `${Config.BACKEND_URL}/user/reset-password`,
         {
           token: token,
           password: password,

@@ -1,7 +1,15 @@
 import axios from "axios";
 import {useState} from "react";
+import Config from "../assets/configs/configs.json";
 
-const MyProfile = ({isEdit, setIsEdit, userInfo, setUserInfo, imageFile, fetchUserInfo}) => {
+const MyProfile = ({
+  isEdit,
+  setIsEdit,
+  userInfo,
+  setUserInfo,
+  imageFile,
+  fetchUserInfo,
+}) => {
   const toggleIsEdit = () => {
     setIsEdit(!isEdit);
   };
@@ -27,7 +35,7 @@ const MyProfile = ({isEdit, setIsEdit, userInfo, setUserInfo, imageFile, fetchUs
       if (imageFile) {
         formData.append("image", imageFile);
       }
-      await axios.patch(`http://localhost:8080/user/info`, formData, {
+      await axios.patch(`${Config.BACKEND_URL}/user/info`, formData, {
         withCredentials: true,
         headers: {
           "Content-Type": "multipart/form-data",

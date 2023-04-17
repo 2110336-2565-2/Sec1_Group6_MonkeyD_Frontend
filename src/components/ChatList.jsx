@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
+import Config from "../assets/configs/configs.json";
 
 const ChatList = ({userId, setChatId, setChatWith}) => {
   const [chatList, setChatList] = useState([]);
@@ -15,7 +16,7 @@ const ChatList = ({userId, setChatId, setChatWith}) => {
   useEffect(() => {
     const fetchCsrfToken = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/csrf-token", {
+        const response = await axios.get(`${Config.BACKEND_URL}/csrf-token`, {
           withCredentials: true,
         });
         Cookies.set("csrf-token", response.data.token);
@@ -28,7 +29,7 @@ const ChatList = ({userId, setChatId, setChatWith}) => {
       await fetchCsrfToken();
       try {
         const res = await axios.get(
-          `http://localhost:8080/api/user/chatRooms/${userId}`,
+          `${Config.BACKEND_URL}/api/user/chatRooms/${userId}`,
           {
             withCredentials: true,
           }

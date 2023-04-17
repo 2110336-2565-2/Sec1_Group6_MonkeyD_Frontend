@@ -1,6 +1,7 @@
 import React from "react";
 import axios from "axios";
 import {checkLogin} from "../utils/auth";
+import Config from "../assets/configs/configs.json";
 
 const CarInforTable = ({
   owner_id,
@@ -28,7 +29,7 @@ const CarInforTable = ({
     try {
       const id = sessionStorage.getItem("user_id");
       const res = await axios.post(
-        `http://localhost:8080/user/info`,
+        `${Config.BACKEND_URL}/user/info`,
         {
           id: id,
         },

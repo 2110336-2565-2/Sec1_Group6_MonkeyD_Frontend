@@ -3,6 +3,7 @@ import {useEffect, useRef, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import ProfileStatusTab from "./ProfileStatusTab";
 import ProfileSearchBar from "./ProfileSearchBar";
+import Config from "../assets/configs/configs.json";
 
 const UserApprovalMgmt = () => {
   const dummypic =
@@ -22,7 +23,7 @@ const UserApprovalMgmt = () => {
     };
     try {
       setIsLoading(true);
-      const res = await axios.get(`http://localhost:8080/user/admin`, {
+      const res = await axios.get(`${Config.BACKEND_URL}/user/admin`, {
         params,
         withCredentials: true,
       });
@@ -37,7 +38,7 @@ const UserApprovalMgmt = () => {
   const handleChangeStatus = async (user_id, action) => {
     try {
       await axios.patch(
-        `http://localhost:8080/user/status`,
+        `${Config.BACKEND_URL}/user/status`,
         {
           user_id,
           action,

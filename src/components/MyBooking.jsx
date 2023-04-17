@@ -41,7 +41,7 @@ const MyBooking = () => {
       } else if (status !== "All") {
         statusList.push(status);
       }
-      const res = await axios.get(`http://localhost:8080/match/me/${id}`, {
+      const res = await axios.get(`${Config.BACKEND_URL}/match/me/${id}`, {
         params: {
           ...(status !== "All"
             ? {
@@ -61,7 +61,7 @@ const MyBooking = () => {
   const cancelBooking = async (car_id, match_id) => {
     try {
       await axios.patch(
-        `http://localhost:8080/match/cancel-reservation`,
+        `${Config.BACKEND_URL}/match/cancel-reservation`,
         {},
         {
           headers: {
@@ -103,7 +103,7 @@ const MyBooking = () => {
           const id = sessionStorage.getItem("user_id");
           const username = sessionStorage.getItem("username");
           await axios.post(
-            `http://localhost:8080/payment/charge/${id}`,
+            `${Config.BACKEND_URL}/payment/charge/${id}`,
             {
               description: username,
               amount: amount,
@@ -117,7 +117,7 @@ const MyBooking = () => {
             }
           );
           await axios.post(
-            `http://localhost:8080/payment/transfer/${lessorID}`,
+            `${Config.BACKEND_URL}/payment/transfer/${lessorID}`,
             {
               amount: amount,
             },
@@ -129,7 +129,7 @@ const MyBooking = () => {
             }
           );
           await axios.patch(
-            `http://localhost:8080/match/status`,
+            `${Config.BACKEND_URL}/match/status`,
             {
               match_id: match_id,
               action: "Paid",
@@ -143,7 +143,7 @@ const MyBooking = () => {
           );
 
           await axios.post(
-            `http://localhost:8080/chat`,
+            `${Config.BACKEND_URL}/chat`,
             {
               allowedUsers: [id, lessorID],
               matchID: match_id,
@@ -154,7 +154,7 @@ const MyBooking = () => {
           );
 
           await axios.post(
-            `http://localhost:8080/notification`,
+            `${Config.BACKEND_URL}/notification`,
             {
               notification: {
                 text: `Payment success! You can chat with your rental now.`,
