@@ -10,13 +10,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    
     - name: Checkout source repo
       uses: actions/checkout@v2
       with:
         path: source-repo
         persist-credentials: false
         fetch-depth: 0
-
+        
     - name: Checkout destination repo
       uses: actions/checkout@v2
       with:
@@ -24,7 +25,7 @@ jobs:
         repository: pwanstax/monkey-d-frontend
         token: ${{ secrets.AUTO_PUSH_TOKEN }}
         fetch-depth: 0
-
+        
     - name: Copy src folder and commit changes
       run: |
         cp -R source-repo/src destination-repo/
