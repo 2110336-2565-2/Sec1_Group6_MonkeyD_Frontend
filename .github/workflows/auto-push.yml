@@ -1,5 +1,8 @@
 name: Push to monkey-d-frontend
 
+permissions:
+  contents: read
+
 on:
   push:
     branches:
