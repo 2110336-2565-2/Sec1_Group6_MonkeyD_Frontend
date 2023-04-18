@@ -31,7 +31,7 @@ jobs:
       run: |
         git config --global user.name "pwanstax"
         git config --global user.email "tutor_pawan@hotmail.com"
-        git remote add target_repo ssh://git@github.com:pwanstax/monkey-d-frontend.git
+        git remote add target_repo https://git@github.com:pwanstax/monkey-d-frontend.git
         git fetch target_repo main
         git checkout master
         git merge target_repo/main --allow-unrelated-histories --strategy-option=theirs -m "Merge remote main branch"
