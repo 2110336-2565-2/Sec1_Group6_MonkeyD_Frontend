@@ -142,7 +142,7 @@ const Signin = ({signin, signup}) => {
       sessionStorage.setItem("username", username);
       await fetchUserInfo(user_id);
 
-      window.location.assign("/");
+      // window.location.assign("/");
     } catch (error) {
       console.error(error);
       handleShowResError(error.response.data.error);

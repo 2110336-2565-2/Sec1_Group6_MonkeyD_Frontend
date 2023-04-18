@@ -5,6 +5,7 @@ import {checkLogin} from "../utils/auth";
 import useOutsideClick from "../hooks/useOutsideClick";
 import Notification from "../components/Notification";
 import Config from "../assets/configs/configs.json";
+import {cookieExists} from "../utils/cookies";
 
 const Navbar = () => {
   const [navbarInfo, setNavbarInfo] = useState(null);
@@ -51,10 +52,28 @@ const Navbar = () => {
       {
         withCredentials: true,
       }
-    ); // change path to backend service
-
-    // alert(res.data);
-    // window.location.assign("/");
+    );
+    if (cookieExists("username") || cookieExists("userID")) {
+      await axios.post(
+        `${Config.BACKEND_URL}/user/logout`,
+        {
+          cookie_name: "username",
+        },
+        {
+          withCredentials: true,
+        }
+      );
+      await axios.post(
+        `${Config.BACKEND_URL}/user/logout`,
+        {
+          cookie_name: "userID",
+        },
+        {
+          withCredentials: true,
+        }
+      );
+    }
+    window.location.assign("/");
   };
 
   const handleRegisterLessor = async () => {
