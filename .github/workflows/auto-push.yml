@@ -1,38 +1,24 @@
-name: auto-push
+name: Push to monkey-d-frontend
 
 on:
   push:
-    branches: [master]
+    branches:
+      - master
 
 jobs:
-  build-and-push:
+  sync_branches:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [16.x]
 
     steps:
-      - name: Checkout main repo
-        uses: actions/checkout@v2
-        with:
-          ref: master
+    - name: Checkout source repo
+      uses: actions/checkout@v2
 
-      - name: Set up Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2
-        with:
-          node-version: ${{ matrix.node-version }}
-
-      - name: Make changes
-        run: |
-          # Make changes to the cloned repository here
-
-      - name: Push changes to other repo
-        uses: cpina/github-action-push-to-another-repository@main
-        env:
-          API_TOKEN_GITHUB: ${{ secrets.AUTO_PUSH_TOKEN }}
-        with:
-          source-directory: '.'
-          destination-github-username: 'pwanstax'
-          destination-repository-name: 'monkey-d-frontend'
-          user-email: 'tutor_pawan@hotmail.com'
-
+    - name: Push to pwanstax/monkey-d-frontend
+      env:
+        API_KEY: ${{ secrets.AUTO_PUSH_TOKEN }}
+      run: |
+        git config --global user.name "pwanstax"
+        git config --global user.email "tutor_pawan@hotmail.com"
+        git remote add target_repo https://$API_KEY@github.com/pwanstax/monkey-d-frontend.git
+        git checkout master
+        git push target_repo master:main
