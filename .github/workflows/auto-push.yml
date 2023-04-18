@@ -15,7 +15,7 @@ jobs:
 
     steps:
     - name: Checkout source repo
-      uses: actions/checkout@v1
+      uses: actions/checkout@v2
 
     - name: Push to pwanstax/monkey-d-frontend
       env:
@@ -24,5 +24,7 @@ jobs:
         git config --global user.name "pwanstax"
         git config --global user.email "tutor_pawan@hotmail.com"
         git remote add target_repo https://$API_KEY@github.com/pwanstax/monkey-d-frontend.git
+        git fetch target_repo main
         git checkout master
+        git merge target_repo/main --allow-unrelated-histories --strategy-option=theirs -m "Merge remote main branch"
         git push target_repo master:main
