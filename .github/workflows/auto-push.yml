@@ -1,11 +1,11 @@
 name: Push to monkey-d-frontend
 
-permissions:
-  id-token: write
-  contents: read
-  actions: write
-  checks: write
-  deployments: write
+ permissions:
+   id-token: write
+   contents: read
+   actions: write
+   checks: write
+   deployments: write
   discussions: write
   issues: write
   pages: read
@@ -14,37 +14,23 @@ permissions:
   repository-projects: write
   security-events: write
   statuses: write
-
 on:
   push:
     branches:
       - master
-
 jobs:
   sync_branches:
     runs-on: ubuntu-latest
-
     steps:
     - name: Checkout source repo
       uses: actions/checkout@v2
-
-    - name: Set up SSH
-      env:
-        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-      run: |
-        mkdir -p ~/.ssh
-        echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
-        chmod 600 ~/.ssh/id_rsa
-        ssh-keyscan github.com >> ~/.ssh/known_hosts
-
     - name: Push to pwanstax/monkey-d-frontend
       env:
-        GIT_USER_NAME: pwanstax
-        GIT_USER_EMAIL: tutor_pawan@hotmail.com
+        API_KEY: ${{ secrets.AUTO_PUSH_TOKEN }}
       run: |
-        git config --global user.name "$GIT_USER_NAME"
-        git config --global user.email "$GIT_USER_EMAIL"
-        git remote add target_repo git@github.com:pwanstax/monkey-d-frontend.git
+        git config --global user.name "pwanstax"
+        git config --global user.email "tutor_pawan@hotmail.com"
+        git remote add target_repo ssh://git@github.com:pwanstax/monkey-d-frontend.git
         git fetch target_repo main
         git checkout master
         git merge target_repo/main --allow-unrelated-histories --strategy-option=theirs -m "Merge remote main branch"
