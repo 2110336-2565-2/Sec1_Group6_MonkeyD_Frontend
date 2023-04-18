@@ -29,7 +29,7 @@ jobs:
       - name: Push changes to other repo
         uses: ad-m/github-push-action@master
         with:
-          github_token: ${{ secrets.AUTO_PUSH_TOKEN }}
+          token: ${{ secrets.AUTO_PUSH_TOKEN }}
           branch: main
           repository: pwanstax/monkey-d-frontend
 
