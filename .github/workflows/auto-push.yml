@@ -2,7 +2,7 @@ name: Push to monkey-d-frontend
 
 permissions:
   id-token: write
-  contents: write
+  contents: read
   actions: write
   checks: write
   deployments: write
