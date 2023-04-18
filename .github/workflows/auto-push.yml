@@ -2,7 +2,7 @@ name: auto-push
 
 permissions:
   id-token: write
-  contents: read
+  contents: write
   actions: write
   checks: write
   deployments: write
@@ -27,6 +27,9 @@ jobs:
     steps:
     - name: Checkout source repo
       uses: actions/checkout@v2
+      with:
+        persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal access token.
+        fetch-depth: 0 # otherwise, there would be errors pushing refs to the destination repository.
 
     - name: Push to pwanstax/monkey-d-frontend
       env:
