@@ -54,7 +54,7 @@ const Navbar = () => {
     ); // change path to backend service
 
     // alert(res.data);
-    window.location.assign("/");
+    // window.location.assign("/");
   };
 
   const handleRegisterLessor = async () => {
