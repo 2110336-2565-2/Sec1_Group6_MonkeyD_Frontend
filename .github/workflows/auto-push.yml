@@ -14,24 +14,27 @@ permissions:
   repository-projects: write
   security-events: write
   statuses: write
-  
+
 on:
   push:
     branches:
       - master
+
 jobs:
   sync_branches:
     runs-on: ubuntu-latest
+
     steps:
     - name: Checkout source repo
       uses: actions/checkout@v2
+
     - name: Push to pwanstax/monkey-d-frontend
       env:
         API_KEY: ${{ secrets.AUTO_PUSH_TOKEN }}
       run: |
         git config --global user.name "pwanstax"
         git config --global user.email "tutor_pawan@hotmail.com"
-        git remote add target_repo https://git@github.com:pwanstax/monkey-d-frontend.git
+        git remote add target_repo https://$API_KEY@github.com/pwanstax/monkey-d-frontend.git
         git fetch target_repo main
         git checkout master
         git merge target_repo/main --allow-unrelated-histories --strategy-option=theirs -m "Merge remote main branch"
