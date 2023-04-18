@@ -1,0 +1,7 @@
+.chatpage-container {
+  width: 100%;
+  height: calc(100vh - var(--navbar-height));
+  box-sizing: border-box;
+  margin-top: var(--navbar-height);
+  background-color: var(--secondary-background);
+}

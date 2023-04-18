@@ -1,0 +1,85 @@
+.my-booking {
+  display: flex;
+  flex-direction: column;
+  .booking-container {
+    // height: 50vh;
+    display: flex;
+    flex-direction: column;
+    .no-result {
+      text-align: center;
+      padding: 6rem 0;
+    }
+    .booking {
+      min-height: 13rem;
+      padding: 2rem;
+      display: grid;
+      gap: 2rem;
+      grid-template-columns: auto minmax(0, 1fr);
+      border-bottom: solid 2px var(--secondary-background);
+      .car-picture {
+        background-color: var(--secondary-color);
+        width: 13rem;
+        height: 13rem;
+        object-fit: cover;
+        border-radius: 4px;
+        &:hover {
+          cursor: pointer;
+        }
+      }
+      .booking-info {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        .header {
+          display: flex;
+          gap: 1rem;
+          justify-content: space-between;
+          align-items: center;
+          h2 {
+            word-break: break-all;
+            min-width: 0;
+            &:hover {
+              cursor: pointer;
+            }
+          }
+          .status-cancel {
+            color: var(--caution-color);
+          }
+        }
+        p {
+          color: var(--p-color);
+          overflow-wrap: break-word;
+        }
+        .footer {
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-end;
+          margin-top: auto;
+          .btn{
+            align-items: center;
+            &:hover {
+              cursor: pointer;
+            }
+          }
+          .cancel {
+            color: var(--caution-color);
+          }
+          .pay {
+            color: green;
+          }
+          .rate {
+            color: var(--secondary-color)
+          }
+          .price {
+            color: var(--secondary-color);
+            font-weight: 600;
+            margin-top: auto;
+          }
+        }
+      }
+    }
+    .booking:last-child {
+      border-bottom: none;
+    }
+  }
+}

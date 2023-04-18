@@ -1,0 +1,77 @@
+.car-spec {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  .car-table {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #d5d7d9;
+    border-radius: 8px;
+    .car-header {
+      display: grid;
+      grid-template-columns: calc(50% - 12px) calc(50% - 12px);
+      padding: 18px !important;
+      border-top: none !important;
+      h3 {
+        font-size: var(--heaser3-fs);
+        margin: 0;
+      }
+      button {
+        font-size: var(--button4-fs);
+        border: 1px solid transparent;
+        padding: 7px;
+        &:hover {
+          border: 1px solid #efefef;
+          background-color: var(--contrast-color);
+          cursor: pointer;
+        }
+      }
+    }
+    .car-row {
+      display: grid;
+      grid-template-columns: calc(50% - 12px) calc(50% - 12px);
+      gap: 24px;
+      white-space: nowrap;
+      align-items: center;
+      padding: 12px 18px;
+      border-top: 1px solid #d5d7d9;
+      p {
+        // color: var(--p-color);
+        font-size: var(--paragraph2-fs);
+      }
+      ::-webkit-scrollbar {
+        display: none;
+      }
+      .value {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        overflow: scroll;
+        font-size: var(--paragraph2-fs);
+        // color: var(--p-color);
+        i {
+          color: var(--secondary-color);
+          width: 12px;
+        }
+      }
+    }
+  }
+  .rent-btn {
+    font-size: var(--button1-fs);
+    padding: 12px;
+    border: 1px solid transparent;
+    background-color: var(--secondary-color);
+    color: var(--contrast-color);
+    border-radius: 6px;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    &:hover {
+      color: var(--secondary-color);
+      border: 1px solid var(--secondary-color);
+      background-color: var(--contrast-color);
+      cursor: pointer;
+    }
+  }
+}

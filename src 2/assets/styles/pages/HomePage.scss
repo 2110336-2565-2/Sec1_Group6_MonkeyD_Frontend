@@ -1,0 +1,13 @@
+.homepage-container {
+  width: 100%;
+  .not-search {
+    padding: 121px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    p {
+      text-align: center;
+      width: 75%;
+    }
+  }
+}
