@@ -1,8 +1,8 @@
-name: Auto-push to other repo
+name: auto-push
 
 on:
   push:
-    branches: [main]
+    branches: [master]
 
 jobs:
   build-and-push:
