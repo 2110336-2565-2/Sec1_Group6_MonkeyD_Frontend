@@ -32,3 +32,4 @@ jobs:
           github_token: ${{ secrets.AUTO_PUSH_TOKEN }}
           branch: main
           repository: pwanstax/monkey-d-frontend
+
