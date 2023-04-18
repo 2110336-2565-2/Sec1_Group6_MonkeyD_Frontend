@@ -11,7 +11,7 @@ jobs:
       - name: Checkout main repo
         uses: actions/checkout@v2
         with:
-          ref: main
+          ref: master
 
       - name: Make changes
         run: |
