@@ -1,0 +1,25 @@
+name: Auto-push to other repo
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main repo
+        uses: actions/checkout@v2
+        with:
+          ref: main
+
+      - name: Make changes
+        run: |
+          # Make changes to the cloned repository here
+
+      - name: Push changes to other repo
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.AUTO_PUSH_TOKEN }}
+          branch: main
+          repository: pwanstax/monkey-d-frontend
