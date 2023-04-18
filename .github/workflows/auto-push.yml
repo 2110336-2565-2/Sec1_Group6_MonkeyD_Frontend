@@ -1,20 +1,5 @@
 name: auto-push
 
-permissions:
-  id-token: write
-  contents: write
-  actions: write
-  checks: write
-  deployments: write
-  discussions: write
-  issues: write
-  pages: read
-  packages: write
-  pull-requests: write
-  repository-projects: write
-  security-events: write
-  statuses: write
-
 on:
   push:
     branches:
@@ -28,20 +13,25 @@ jobs:
     - name: Checkout source repo
       uses: actions/checkout@v2
       with:
-        persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal access token.
-        fetch-depth: 0 # otherwise, there would be errors pushing refs to the destination repository.
+        path: source-repo
+        persist-credentials: false
+        fetch-depth: 0
 
-    - name: Push to pwanstax/monkey-d-frontend
-      env:
-        API_KEY: ${{ secrets.AUTO_PUSH_TOKEN }}
+    - name: Checkout destination repo
+      uses: actions/checkout@v2
+      with:
+        path: destination-repo
+        repository: pwanstax/monkey-d-frontend
+        token: ${{ secrets.AUTO_PUSH_TOKEN }}
+        fetch-depth: 0
+
+    - name: Copy src folder and commit changes
       run: |
+        cp -R source-repo/src destination-repo/
+        cd destination-repo
         git config --global user.name "pwanstax"
         git config --global user.email "tutor_pawan@hotmail.com"
-        git remote add target_repo https://$API_KEY@github.com/pwanstax/monkey-d-frontend.git
-        git fetch target_repo main
-        git checkout master
-        git checkout target_repo/main -- src/assets/configs/configs.json src/pages/AboutUsPage.jsx
-        git add src/assets/configs/configs.json src/pages/AboutUsPage.jsx
-        git commit -m "Merge specific files from pwanstax/monkey-d-frontend"
-        git push target_repo master:main
+        git add src
+        git commit -m "Merge src folder from source repository"
+        git push origin main
 
