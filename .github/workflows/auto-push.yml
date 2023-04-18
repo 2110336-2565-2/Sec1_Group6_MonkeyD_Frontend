@@ -40,5 +40,8 @@ jobs:
         git remote add target_repo https://$API_KEY@github.com/pwanstax/monkey-d-frontend.git
         git fetch target_repo main
         git checkout master
-        git merge target_repo/main --allow-unrelated-histories --strategy-option=theirs -m "Merge remote main branch"
+        git checkout target_repo/main -- src/assets/configs/configs.json src/pages/AboutUsPage.jsx
+        git add src/assets/configs/configs.json src/pages/AboutUsPage.jsx
+        git commit -m "Merge specific files from pwanstax/monkey-d-frontend"
         git push target_repo master:main
+
