@@ -1,6 +1,7 @@
 name: Push to monkey-d-frontend
 
 permissions:
+  id-token: write
   contents: read
 
 on:
