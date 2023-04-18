@@ -27,9 +27,12 @@ jobs:
           # Make changes to the cloned repository here
 
       - name: Push changes to other repo
-        uses: ad-m/github-push-action@master
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.AUTO_PUSH_TOKEN }}
         with:
-          github_token: ${{ secrets.AUTO_PUSH_TOKEN }}
-          branch: main
-          repository: pwanstax/monkey-d-frontend
+          source-directory: '.'
+          destination-github-username: 'pwanstax'
+          destination-repository: 'monkey-d-frontend'
+          user-email: 'tutor_pawan@hotmail.com'
 
