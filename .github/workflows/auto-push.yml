@@ -33,6 +33,6 @@ jobs:
         with:
           source-directory: '.'
           destination-github-username: 'pwanstax'
-          destination-repository: 'monkey-d-frontend'
+          destination-repository-name: 'monkey-d-frontend'
           user-email: 'tutor_pawan@hotmail.com'
 
