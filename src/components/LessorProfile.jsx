@@ -19,11 +19,11 @@ const LessorProfile = ({
           <i className="fa-solid fa-star" />
           <p>{user_rating}</p>
         </div> */}
-        <button className="view-review-btn">View Lessor Reviews</button>
+        {/* <button className="view-review-btn">View Lessor Reviews</button>
         <button className="chat-btn">
           <i className="fa-solid fa-comments" />
           Start Chat Now
-        </button>
+        </button> */}
       </div>
       <div className="car-info">
         <h3>
