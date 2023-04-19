@@ -10,10 +10,28 @@ const Search = ({
   handleSearch,
   isSearch,
 }) => {
+  const [isCheckedAge, setIsCheckedAge] = useState(false);
+  const [error, setError] = useState("");
+
   const handleFilterChange = (event) => {
     setFilterProvince(event.target.value);
   };
 
+  const handleCheckDriverAge = (event) => {
+    if (event.target.checked) {
+      setError("");
+    }
+    setIsCheckedAge(event.target.checked);
+  };
+
+  const handleSubmit = (event) => {
+    if (!isCheckedAge) {
+      setError("Please confirm your age");
+      return;
+    }
+    setError("");
+    handleSearch(event);
+  };
   return (
     <div className="search-container">
       <div className="head-title">
@@ -46,11 +64,19 @@ const Search = ({
           </div>
         </div>
         <div className="submit">
-          <label>
-            <input type="checkbox" name="option1" value="Option 1" />
-            <p>Driver aged between 25 - 75</p>
-          </label>
-          <button onClick={handleSearch}>Search</button>
+          <div className="confirm-age">
+            <label>
+              <input
+                type="checkbox"
+                name="option1"
+                value="Option 1"
+                onChange={handleCheckDriverAge}
+              />
+              <p>Driver aged between 25 - 75</p>
+            </label>
+            {error && <span className="error">{error}</span>}
+          </div>
+          <button onClick={handleSubmit}>Search</button>
         </div>
       </div>
     </div>
