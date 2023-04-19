@@ -4,6 +4,7 @@ import {useNavigate} from "react-router-dom";
 import ProfileStatusTab from "./ProfileStatusTab";
 import ProfileSearchBar from "./ProfileSearchBar";
 import Config from "../assets/configs/configs.json";
+import {dateDisplay} from "../utils/dateDisplay";
 
 const MatchMgmt = () => {
   const statusList = [
@@ -16,9 +17,17 @@ const MatchMgmt = () => {
   const [status, setStatus] = useState("Unverified renter");
   const [matches, setMatches] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [sortBy, setSortBy] = useState("newest date");
   const navigate = useNavigate();
 
   const searchRef = useRef();
+
+  const filters = [
+    "newest date",
+    "oldest date",
+    "highest price",
+    "lowest price",
+  ];
 
   const fetchMatches = async () => {
     const params = {
@@ -53,15 +62,19 @@ const MatchMgmt = () => {
           withCredentials: true,
         }
       );
+      fetchMatches();
     } catch (error) {
       console.log(error);
     }
-    fetchMatches();
   };
 
   const handleSearch = async (event) => {
     event.preventDefault();
     fetchMatches();
+  };
+
+  const handleSortBy = (event) => {
+    setSortBy(event.target.value);
   };
 
   useEffect(() => {
@@ -75,7 +88,13 @@ const MatchMgmt = () => {
         status={status}
         setStatus={setStatus}
       />
-      <ProfileSearchBar searchRef={searchRef} handleSearch={handleSearch} />
+      <ProfileSearchBar
+        searchRef={searchRef}
+        handleSearch={handleSearch}
+        sortBy={sortBy}
+        sortByList={filters}
+        handleSortBy={handleSortBy}
+      />
       <div className="match-approval-list">
         {isLoading || matches?.length === 0 ? (
           <div className="no-result">No result</div>
@@ -87,6 +106,7 @@ const MatchMgmt = () => {
               lessorID: {username: lessorUsername},
               carID: {license_plate},
               status,
+              createdAt,
             } = match;
             return (
               <div className="match-approval" key={index}>
@@ -102,23 +122,18 @@ const MatchMgmt = () => {
                 </div>
                 <h3>{`renter : ${renterUsername}`}</h3>
                 <h3>{`lessor : ${lessorUsername}`}</h3>
-                <h3>{`car : ${license_plate}`}</h3>
-                {/* {status === "Pending" && (
+                <h3>{`license plate : ${license_plate}`}</h3>
+                <h3>{`created at : ${dateDisplay(createdAt)}`}</h3>
+                {status === "Rented" && (
                   <>
                     <h3
                       className="action approve"
-                      onClick={() => handleChangeStatus(_id, "Available")}
+                      onClick={() => handleChangeStatus(_id, "Completed")}
                     >
-                      ✔ Approve
-                    </h3>
-                    <h3
-                      className="action reject"
-                      onClick={() => handleChangeStatus(_id, "Rejected")}
-                    >
-                      ✖ Reject&nbsp;&nbsp;
+                      ✔ Complete
                     </h3>
                   </>
-                )} */}
+                )}
               </div>
             );
           })
