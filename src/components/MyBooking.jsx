@@ -17,11 +17,11 @@ const MyBooking = () => {
 
   const searchRef = useRef();
 
-  const calculatePrice = (firstDate, secondDate, rate) => {
-    return Math.round(
-      Math.abs((firstDate - secondDate) / (24 * 60 * 60 * 1000)) * rate
-    );
-  };
+  // const calculatePrice = (firstDate, secondDate, rate) => {
+  //   return Math.round(
+  //     (1 + Math.abs((firstDate - secondDate) / (24 * 60 * 60 * 1000))) * rate
+  //   );
+  // };
 
   const fetchMyBooking = async () => {
     const params = {
@@ -225,6 +225,7 @@ const MyBooking = () => {
               status,
               isReview,
               lessorID,
+              price,
             } = match;
             const pickupDate = new Date(pickUpDateTime);
             const returnDate = new Date(returnDateTime);
@@ -265,16 +266,7 @@ const MyBooking = () => {
                       <h3
                         className="pay btn"
                         onClick={(e) =>
-                          purchaseBooking(
-                            e,
-                            calculatePrice(
-                              pickupDate,
-                              returnDate,
-                              rental_price
-                            ),
-                            match_id,
-                            lessorID
-                          )
+                          purchaseBooking(e, price, match_id, lessorID)
                         }
                       >
                         ✓ Pay now
@@ -289,11 +281,7 @@ const MyBooking = () => {
                         <i class="fa-regular fa-comment"></i> Rate booking
                       </h3>
                     )}
-                    <h3 className="price">{`${calculatePrice(
-                      pickupDate,
-                      returnDate,
-                      rental_price
-                    )} THB`}</h3>
+                    <h3 className="price">{`${price} THB`}</h3>
                   </div>
                 </div>
               </div>
