@@ -91,6 +91,14 @@
       padding: 0 56px;
       padding-bottom: 20px;
       justify-content: space-between;
+      .confirm-age {
+        display: flex;
+        justify-content: space-between;
+        flex-direction: column;
+        .error {
+          font-weight: 500;
+        }
+      }
       label {
         display: flex;
         gap: 4px;
