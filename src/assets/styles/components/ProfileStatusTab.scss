@@ -5,13 +5,16 @@
     text-align: center;
     padding: 1rem;
     border-bottom: solid 2px var(--secondary-background);
+    display: flex;
+    justify-content: center;
+    align-items: center;
     &:hover {
       cursor: pointer;
       color: var(--secondary-color);
     }
-  }
-  .status.selected {
-    border-bottom: solid 2px var(--secondary-color);
-    color: var(--secondary-color);
+    &.selected {
+      border-bottom: solid 2px var(--secondary-color);
+      color: var(--secondary-color);
+    }
   }
 }
