@@ -29,7 +29,7 @@ const ProfilePage = () => {
   const [userInfo, setUserInfo] = useState({});
   const [imageFile, setImageFile] = useState(null);
   const [menu, setMenu] = useState("");
-  const [isAdmin, setIsAdmin] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(null);
   const [searchParams, setSearchParams] = useSearchParams();
 
   const changeParamsMenu = (event) => {
@@ -127,18 +127,19 @@ const ProfilePage = () => {
   }, []);
 
   useEffect(() => {
+    if (isAdmin === null) {
+      return;
+    }
     if (
       searchParams.get("menu") === null ||
-      !(
-        searchParams.get("menu") in userMenus ||
-        (isAdmin && searchParams.get("menu") in adminMenus)
-      )
+      isAdmin === false && !(searchParams.get("menu") in userMenus) ||
+      isAdmin === true && !(searchParams.get("menu") in adminMenus)
     ) {
       searchParams.set("menu", "me");
       setSearchParams(searchParams);
     }
     setMenu(searchParams.get("menu"));
-  }, [searchParams, setSearchParams]);
+  }, [searchParams, isAdmin]);
 
   return (
     <div className="profilepage-container">
