@@ -79,25 +79,13 @@ const PaymentHistory = () => {
         status={status}
         setStatus={setStatus}
       />
-      <div className="search-bar">
-        <ProfileSearchBar searchRef={searchRef} handleSearch={handleSearch} />
-        <div className="sort">
-          <select
-            name="sortby"
-            id="sortby"
-            class="sort-by-select"
-            onChange={handleChangeSort}
-          >
-            {filters.map((sort) => {
-              return (
-                <option key={sort} value={sort}>
-                  {sort}
-                </option>
-              );
-            })}
-          </select>
-        </div>
-      </div>
+      <ProfileSearchBar
+        searchRef={searchRef}
+        handleSearch={handleSearch}
+        sortBy={sortBy}
+        sortByList={filters}
+        handleSortBy={handleChangeSort}
+      />
       <div className="trans-approval-list">
         {isLoading || trans.length === 0 ? (
           <div className="no-result">No result</div>

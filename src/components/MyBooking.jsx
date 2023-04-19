@@ -12,10 +12,13 @@ const MyBooking = () => {
   const [status, setStatus] = useState("All");
   const [bookings, setBookings] = useState({});
   const [isLoading, setIsLoading] = useState(true);
+  const [sortBy, setSortBy] = useState("newest date");
   const [scriptLoaded, setScriptLoaded] = useState(false);
   const navigate = useNavigate();
 
   const searchRef = useRef();
+
+  const filters = ["newest date", "oldest date"];
 
   const calculatePrice = (firstDate, secondDate, rate) => {
     return Math.round(
@@ -28,6 +31,7 @@ const MyBooking = () => {
       ...(status !== "All" && {
         status: status,
       }),
+      sortBy,
       search: searchRef.current.value,
     };
 
@@ -79,6 +83,10 @@ const MyBooking = () => {
   const handleSearch = async (event) => {
     event.preventDefault();
     fetchMyBooking();
+  };
+
+  const handleSortBy = (event) => {
+    setSortBy(event.target.value);
   };
 
   const handleLoadScript = () => {
@@ -188,7 +196,7 @@ const MyBooking = () => {
 
   useEffect(() => {
     fetchMyBooking();
-  }, [status]);
+  }, [status, sortBy]);
 
   return (
     <div className="my-booking">
@@ -198,7 +206,13 @@ const MyBooking = () => {
         status={status}
         setStatus={setStatus}
       />
-      <ProfileSearchBar searchRef={searchRef} handleSearch={handleSearch} />
+      <ProfileSearchBar
+        searchRef={searchRef}
+        handleSearch={handleSearch}
+        sortBy={sortBy}
+        sortByList={filters}
+        handleSortBy={handleSortBy}
+      />
       <div className="booking-container">
         {isLoading || bookings?.count === 0 ? (
           <div className="no-result">No result</div>

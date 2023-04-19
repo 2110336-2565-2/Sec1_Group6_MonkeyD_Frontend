@@ -20,13 +20,12 @@ const UserApprovalMgmt = () => {
   const filters = [
     "newest date",
     "oldest date",
-    "highest price",
-    "lowest price",
   ];
 
   const fetchUsers = async () => {
     const params = {
-      status: status,
+      status,
+      sortBy,
       search: searchRef.current.value,
     };
     try {
@@ -68,7 +67,6 @@ const UserApprovalMgmt = () => {
 
   const handleSortBy = (event) => {
     setSortBy(event.target.value);
-    fetchUsers();
   };
 
   const handleImageError = ({currentTarget}) => {
@@ -78,7 +76,7 @@ const UserApprovalMgmt = () => {
 
   useEffect(() => {
     fetchUsers();
-  }, [status]);
+  }, [status, sortBy]);
 
   return (
     <div className="user-approval-container">

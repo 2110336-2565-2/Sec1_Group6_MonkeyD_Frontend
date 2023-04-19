@@ -74,12 +74,11 @@ const MatchMgmt = () => {
 
   const handleSortBy = (event) => {
     setSortBy(event.target.value);
-    fetchMatches();
   };
 
   useEffect(() => {
     fetchMatches();
-  }, [status]);
+  }, [status, sortBy]);
 
   return (
     <div className="match-approval-container">

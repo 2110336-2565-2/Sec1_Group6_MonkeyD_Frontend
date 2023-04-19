@@ -20,11 +20,12 @@ const ProfileSearchBar = ({
           name="sortby"
           id="sortby"
           className="sort-by-select"
+          value={sortBy}
           onChange={handleSortBy}
         >
           {sortByList.map((sort) => {
             return (
-              <option key={sort} value={sortBy}>
+              <option key={sort} value={sort}>
                 {sort}
               </option>
             );

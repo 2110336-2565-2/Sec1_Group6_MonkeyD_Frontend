@@ -20,8 +20,6 @@ const CarApprovalMgmt = () => {
   const filters = [
     "newest date",
     "oldest date",
-    "highest price",
-    "lowest price",
   ];
 
   const fetchCars = async () => {
@@ -32,6 +30,7 @@ const CarApprovalMgmt = () => {
     };
     const params = {
       filter: statusMap[status],
+      sortBy,
       search: searchRef.current.value,
     };
     try {
@@ -73,12 +72,11 @@ const CarApprovalMgmt = () => {
 
   const handleSortBy = (event) => {
     setSortBy(event.target.value);
-    fetchCars();
   };
 
   useEffect(() => {
     fetchCars();
-  }, [status]);
+  }, [status, sortBy]);
 
   return (
     <div className="car-approval-container">
