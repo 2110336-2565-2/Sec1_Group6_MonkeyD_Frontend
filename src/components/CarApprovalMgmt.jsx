@@ -73,6 +73,7 @@ const CarApprovalMgmt = () => {
 
   const handleSortBy = (event) => {
     setSortBy(event.target.value);
+    fetchCars();
   };
 
   useEffect(() => {

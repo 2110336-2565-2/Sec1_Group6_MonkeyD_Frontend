@@ -68,6 +68,7 @@ const UserApprovalMgmt = () => {
 
   const handleSortBy = (event) => {
     setSortBy(event.target.value);
+    fetchUsers();
   };
 
   const handleImageError = ({currentTarget}) => {

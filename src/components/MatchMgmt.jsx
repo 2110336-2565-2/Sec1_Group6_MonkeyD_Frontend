@@ -25,14 +25,13 @@ const MatchMgmt = () => {
   const filters = [
     "newest date",
     "oldest date",
-    "highest price",
-    "lowest price",
   ];
 
   const fetchMatches = async () => {
     const params = {
-      status: status,
+      status,
       search: searchRef.current.value,
+      sortBy
     };
 
     try {
@@ -75,6 +74,7 @@ const MatchMgmt = () => {
 
   const handleSortBy = (event) => {
     setSortBy(event.target.value);
+    fetchMatches();
   };
 
   useEffect(() => {
