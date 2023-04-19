@@ -59,7 +59,7 @@ const ModalCarRent = ({
       (new Date(endDateInput.current.value).getTime() -
         new Date(startDateInput.current.value).getTime()) /
       (24 * 60 * 60 * 1000);
-    return amountDayRent * rental_price;
+    return (amountDayRent + 1) * rental_price;
   };
 
   const handleImage = async (event) => {
