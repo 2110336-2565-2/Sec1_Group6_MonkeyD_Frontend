@@ -24,31 +24,33 @@ const CommentBox = ({
 }) => {
   const filters = ["Highest Rating", "Lowest Rating", "Oldest", "Newest"];
   return (
-    <div className="comment-box">
-      <div className="container rating">
-        <div className="overall-rating">
-          <h4>overall</h4>
-          <h1 className="point">{carRating.toFixed(2)}</h1>
-        </div>
-        <div className="types-rating">
-          <div className="type">
-            <h4>Car Conditon</h4>
-            <i className="fa-solid fa-star" />
-            <h4>{carConditionRating.toFixed(2)}</h4>
+    <div>
+      {reviews.length > 0 ? (
+        <div className="comment-box">
+          <div className="container rating">
+            <div className="overall-rating">
+              <h4>overall</h4>
+              <h1 className="point">{carRating.toFixed(2)}</h1>
+            </div>
+            <div className="types-rating">
+              <div className="type">
+                <h4>Car Conditon</h4>
+                <i className="fa-solid fa-star" />
+                <h4>{carConditionRating.toFixed(2)}</h4>
+              </div>
+              <div className="type">
+                <h4>Hygiene</h4>
+                <i className="fa-solid fa-star" />
+                <h4>{hygieneRating.toFixed(2)}</h4>
+              </div>
+              <div className="type">
+                <h4>Service</h4>
+                <i className="fa-solid fa-star" />
+                <h4>{serviceRating.toFixed(2)}</h4>
+              </div>
+            </div>
           </div>
-          <div className="type">
-            <h4>Hygiene</h4>
-            <i className="fa-solid fa-star" />
-            <h4>{hygieneRating.toFixed(2)}</h4>
-          </div>
-          <div className="type">
-            <h4>Service</h4>
-            <i className="fa-solid fa-star" />
-            <h4>{serviceRating.toFixed(2)}</h4>
-          </div>
-        </div>
-      </div>
-      {/* <div className="container">
+          {/* <div className="container">
         <p>Sort By</p>
         <select
           name="sortby"
@@ -66,21 +68,27 @@ const CommentBox = ({
           })}
         </select>
       </div> */}
-      <div className="reviews">
-        {reviews.map((review) => {
-          return (
-            <div className="review">
-              <div className="container user">
-                <img src={review.reviewerImg} alt="Reviewer" />
-                <p>{review.reviewer}</p>
-                <RenderStars class="rating-star" rating={review.rating} />
-              </div>
-              <p className="review-paragraph">{review.comment}</p>
-              <p className="review-date">{review.createdAt}</p>
-            </div>
-          );
-        })}
-      </div>
+          <div className="reviews">
+            {reviews.map((review) => {
+              return (
+                <div className="review">
+                  <div className="container user">
+                    <img src={review.reviewerImg} alt="Reviewer" />
+                    <p>{review.reviewer}</p>
+                    <RenderStars class="rating-star" rating={review.rating} />
+                  </div>
+                  <p className="review-paragraph">{review.comment}</p>
+                  <p className="review-date">{review.createdAt}</p>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      ) : (
+        <div className="comment-box">
+          <h3 className="no-review">- No Review -</h3>
+        </div>
+      )}
     </div>
   );
 };
