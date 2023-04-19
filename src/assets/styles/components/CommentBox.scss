@@ -1,91 +1,94 @@
-.comment-box{
-    padding: 1.5rem;
-    border: 1px solid #d5d7d9;
-    border-radius: 8px;
+.comment-box {
+  padding: 1.5rem;
+  border: 1px solid #d5d7d9;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin: 0 100px;
+  margin-bottom: 25px;
+  h4 {
+    font-weight: 400;
+  }
+  p {
+    font-size: var(--paragraph2-fs);
+  }
+  .rating {
+    gap: 0px !important;
+    .overall-rating {
+      text-align: center;
+      line-height: 10px;
+      padding-right: 25px;
+      .point {
+        color: var(--secondary-color);
+      }
+    }
+    .types-rating {
+      border-left: 1px solid #d5d7d9;
+      padding-left: 25px;
+      display: flex;
+      flex-direction: column;
+      .type {
+        i {
+          color: var(--secondary-color);
+          font-size: 16px;
+        }
+        display: grid;
+        grid-template-columns: 140px 30px auto;
+        align-items: center;
+      }
+      h4 {
+        line-height: 0px;
+      }
+    }
+  }
+  .container {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    align-items: center;
+    i {
+      color: var(--primary-cl);
+    }
+    .sort-by {
+      border: 1px solid #d5d7d9;
+      border-radius: 8px;
+      //height: 36px;
+      width: 206px;
+      padding-left: 5px;
+      //font-size: var(--header4-fs);
+      font-size: var(--paragraph2-fs);
+      //font-family: var(--primary-font);
+      //font-weight: 400;
+    }
+  }
+  .reviews {
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    margin: 0 100px;
-    margin-bottom: 25px;
-    h4{
-        font-weight: 400;
-    }
-    p{
-        font-size: var(--paragraph2-fs);
-    }
-    .rating{
-        gap: 0px !important;
-        .overall-rating{
-            text-align: center;
-            line-height: 10px; 
-            padding-right: 25px;
-            .point{
-                color: var(--secondary-color);
-            }
+    .review {
+      border: 1px solid #d5d7d9;
+      border-radius: 8px;
+      padding: 1.5rem;
+      .user {
+        img {
+          width: 33px;
+          height: 33px;
         }
-        .types-rating{
-            border-left: 1px solid #d5d7d9;
-            padding-left: 25px;
-            display: flex;
-            flex-direction: column;
-            .type{
-                i{
-                    color: var(--secondary-color);
-                    font-size: 16px;
-                }
-                display: grid;
-                grid-template-columns: 140px 30px auto;
-                align-items: center;
-            }
-            h4{
-                line-height: 0px; 
-            }
+        .rating-star {
+          font-size: 14px;
+          margin-left: 1rem;
+          color: var(--secondary-color);
         }
-        
+      }
+      .review-paragraph,
+      .review-date {
+        margin-top: 1.5rem;
+        margin-left: calc(1rem + 33px);
+      }
     }
-    .container{
-        display: flex;
-        flex-direction: row;
-        gap: 1rem;
-        align-items: center;
-        i{
-            color: var(--primary-cl);
-        }
-        .sort-by{
-            border: 1px solid #d5d7d9;
-            border-radius: 8px;
-            //height: 36px;
-            width: 206px;
-            padding-left: 5px;
-            //font-size: var(--header4-fs);
-            font-size: var(--paragraph2-fs);
-            //font-family: var(--primary-font);
-            //font-weight: 400;
-        }
-    }
-    .reviews{
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-        .review{
-            border: 1px solid #d5d7d9;
-            border-radius: 8px;
-            padding: 1.5rem;
-            .user{
-                img{
-                    width: 33px;
-                    height: 33px;
-                }
-                .rating-star{
-                    font-size: 14px;
-                    margin-left: 1rem;
-                    color: var(--secondary-color);
-                }
-            }
-            .review-paragraph, .review-date{
-                margin-top: 1.5rem;
-                margin-left: calc(1rem + 33px);
-            }
-        }
-    }
+  }
+  .no-review {
+    text-align: center;
+  }
 }

@@ -79,15 +79,13 @@ const CarDetail = () => {
               set_show_modal={setShowModalHandler}
             />
           </div>
-          {carReview.length > 0 && (
-            <CommentBox
-              reviews={carReview}
-              carRating={carDetail.rating}
-              hygieneRating={carDetail.hygieneRating}
-              carConditionRating={carDetail.carConditionRating}
-              serviceRating={carDetail.serviceRating}
-            />
-          )}
+          <CommentBox
+            reviews={carReview}
+            carRating={carDetail.rating}
+            hygieneRating={carDetail.hygieneRating}
+            carConditionRating={carDetail.carConditionRating}
+            serviceRating={carDetail.serviceRating}
+          />
         </>
       ) : (
         <></>
