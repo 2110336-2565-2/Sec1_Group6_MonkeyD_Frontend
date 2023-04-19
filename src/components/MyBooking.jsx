@@ -248,8 +248,8 @@ const MyBooking = () => {
                     </h3>
                   </div>
                   <h3>{`${license_plate}`}</h3>
-                  <p>{`Pickup : ${pickupDate.toLocaleString()} at ${pickupLocation}`}</p>
-                  <p>{`Return : ${returnDate.toLocaleString()} at ${returnLocation}`}</p>
+                  <p>{`Pickup : ${pickupDate.toDateString()} at ${pickupLocation}`}</p>
+                  <p>{`Return : ${returnDate.toDateString()} at ${returnLocation}`}</p>
                   <div className="footer">
                     {(status === "Unverified renter" ||
                       status === "Wait for payment") && (
