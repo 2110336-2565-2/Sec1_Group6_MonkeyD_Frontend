@@ -12,9 +12,15 @@ const CarApprovalMgmt = () => {
   const [status, setStatus] = useState("Pending");
   const [cars, setCars] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [sortBy, setSortBy] = useState("newest date");
   const navigate = useNavigate();
 
   const searchRef = useRef();
+
+  const filters = [
+    "newest date",
+    "oldest date",
+  ];
 
   const fetchCars = async () => {
     const statusMap = {
@@ -24,6 +30,7 @@ const CarApprovalMgmt = () => {
     };
     const params = {
       filter: statusMap[status],
+      sortBy,
       search: searchRef.current.value,
     };
     try {
@@ -52,10 +59,10 @@ const CarApprovalMgmt = () => {
           withCredentials: true,
         }
       );
+      fetchCars();
     } catch (error) {
       console.log(error);
     }
-    fetchCars();
   };
 
   const handleSearch = async (event) => {
@@ -63,9 +70,13 @@ const CarApprovalMgmt = () => {
     fetchCars();
   };
 
+  const handleSortBy = (event) => {
+    setSortBy(event.target.value);
+  };
+
   useEffect(() => {
     fetchCars();
-  }, [status]);
+  }, [status, sortBy]);
 
   return (
     <div className="car-approval-container">
@@ -74,7 +85,13 @@ const CarApprovalMgmt = () => {
         status={status}
         setStatus={setStatus}
       />
-      <ProfileSearchBar searchRef={searchRef} handleSearch={handleSearch} />
+      <ProfileSearchBar
+        searchRef={searchRef}
+        handleSearch={handleSearch}
+        sortBy={sortBy}
+        sortByList={filters}
+        handleSortBy={handleSortBy}
+      />
       <div className="car-approval-list">
         {isLoading || cars.length === 0 ? (
           <div className="no-result">No result</div>

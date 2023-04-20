@@ -12,13 +12,20 @@ const UserApprovalMgmt = () => {
   const [status, setStatus] = useState("Unverified");
   const [users, setUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [sortBy, setSortBy] = useState("newest date");
   const navigate = useNavigate();
 
   const searchRef = useRef();
 
+  const filters = [
+    "newest date",
+    "oldest date",
+  ];
+
   const fetchUsers = async () => {
     const params = {
-      status: status,
+      status,
+      sortBy,
       search: searchRef.current.value,
     };
     try {
@@ -47,15 +54,19 @@ const UserApprovalMgmt = () => {
           withCredentials: true,
         }
       );
+      fetchUsers();
     } catch (error) {
       console.log(error);
     }
-    fetchUsers();
   };
 
   const handleSearch = async (event) => {
     event.preventDefault();
     fetchUsers();
+  };
+
+  const handleSortBy = (event) => {
+    setSortBy(event.target.value);
   };
 
   const handleImageError = ({currentTarget}) => {
@@ -65,7 +76,7 @@ const UserApprovalMgmt = () => {
 
   useEffect(() => {
     fetchUsers();
-  }, [status]);
+  }, [status, sortBy]);
 
   return (
     <div className="user-approval-container">
@@ -74,7 +85,13 @@ const UserApprovalMgmt = () => {
         status={status}
         setStatus={setStatus}
       />
-      <ProfileSearchBar searchRef={searchRef} handleSearch={handleSearch} />
+      <ProfileSearchBar
+        searchRef={searchRef}
+        handleSearch={handleSearch}
+        sortBy={sortBy}
+        sortByList={filters}
+        handleSortBy={handleSortBy}
+      />
       <div className="user-approval-list">
         {isLoading || users.length === 0 ? (
           <div className="no-result">No result</div>

@@ -5,6 +5,7 @@
     // height: 50vh;
     display: flex;
     flex-direction: column;
+    border-top: solid 2px var(--secondary-background);
     .no-result {
       text-align: center;
       padding: 6rem 0;
@@ -66,7 +67,6 @@
           cursor: pointer;
         }
       }
-
     }
     .car-approval:last-child {
       border-bottom: none;
