@@ -4,7 +4,7 @@ import {useNavigate} from "react-router-dom";
 import ProfileStatusTab from "./ProfileStatusTab";
 import ProfileSearchBar from "./ProfileSearchBar";
 import Config from "../assets/configs/configs.json";
-import {dateDisplay} from "../utils/dateDisplay";
+import {dateDisplay} from "../utils/dateDisplay.js";
 
 const MatchMgmt = () => {
   const statusList = [
@@ -18,20 +18,16 @@ const MatchMgmt = () => {
   const [matches, setMatches] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [sortBy, setSortBy] = useState("newest date");
-  const navigate = useNavigate();
 
   const searchRef = useRef();
 
-  const filters = [
-    "newest date",
-    "oldest date",
-  ];
+  const filters = ["newest date", "oldest date"];
 
   const fetchMatches = async () => {
     const params = {
       status,
       search: searchRef.current.value,
-      sortBy
+      sortBy,
     };
 
     try {
