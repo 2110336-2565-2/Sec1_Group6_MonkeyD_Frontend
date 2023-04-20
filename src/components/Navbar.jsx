@@ -44,15 +44,6 @@ const Navbar = () => {
 
   const handleLogout = async () => {
     sessionStorage.clear();
-    await axios.post(
-      `${Config.BACKEND_URL}/user/logout`,
-      {
-        cookie_name: "auth",
-      },
-      {
-        withCredentials: true,
-      }
-    );
     if (cookieExists("username") || cookieExists("userID")) {
       await axios.post(
         `${Config.BACKEND_URL}/user/logout`,
@@ -73,6 +64,16 @@ const Navbar = () => {
         }
       );
     }
+    await axios.post(
+      `${Config.BACKEND_URL}/user/logout`,
+      {
+        cookie_name: "auth",
+      },
+      {
+        withCredentials: true,
+      }
+    );
+
     window.location.assign("/");
   };
 
