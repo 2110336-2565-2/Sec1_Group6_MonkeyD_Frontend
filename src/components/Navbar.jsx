@@ -44,6 +44,24 @@ const Navbar = () => {
 
   const handleLogout = async () => {
     sessionStorage.clear();
+    await axios.post(
+      `${Config.BACKEND_URL}/user/logout`,
+      {
+        cookie_name: "auth",
+      },
+      {
+        withCredentials: true,
+      }
+    );
+    await axios.post(
+      `${Config.BACKEND_URL}/user/logout`,
+      {
+        cookie_name: "auth",
+      },
+      {
+        withCredentials: true,
+      }
+    );
     (await cookieExists("username")) && (await deleteCookie("username"));
     (await cookieExists("userID")) && (await deleteCookie("userID"));
     await axios.post(

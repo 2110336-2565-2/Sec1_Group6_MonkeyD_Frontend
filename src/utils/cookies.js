@@ -14,7 +14,7 @@ export const getCookie = (name) => {
 
 // Helper function to delete a cookie by name
 export const deleteCookie = (name) => {
-  document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; secure; SameSite=Lax;`;
+  document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=monkeydcar.website; secure; samesite=none;`;
 };
 
 // Helper function to check if a cookie exists by name
