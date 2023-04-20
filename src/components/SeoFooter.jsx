@@ -49,7 +49,7 @@ const SeoFooter = () => {
       <div className="footer-list">
         <h3>Team and policies</h3>
         <ul>
-          <li>Terms of servies</li>
+          <li>Terms of services</li>
           <li>Privacy Policy</li>
           <li>Security</li>
         </ul>

@@ -142,7 +142,7 @@ const Signin = ({signin, signup}) => {
       sessionStorage.setItem("username", username);
       await fetchUserInfo(user_id);
 
-      // window.location.assign("/");
+      window.location.assign("/");
     } catch (error) {
       console.error(error);
       handleShowResError(error.response.data.error);
@@ -209,14 +209,14 @@ const Signin = ({signin, signup}) => {
             </>
           )}
           <div className="option-login">
-            <label>
+            {/* <label>
               <input
                 type="checkbox"
                 // checked={isChecked}
                 // onChange={handleCheckboxChange}
               />
               <p>Remember me</p>
-            </label>
+            </label> */}
             <a href="/forgotPassword">Forgot password?</a>
           </div>
           <button type="submit" disabled={form === resetForm}>

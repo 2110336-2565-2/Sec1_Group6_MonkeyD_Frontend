@@ -230,7 +230,88 @@ const AddCar = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if (JSON.stringify(error) !== JSON.stringify(errorForm)) {
+    let err = false;
+    if (form.gear_type === "") {
+      setError((prev) => ({
+        ...prev,
+        ["gear_type"]: "Please select gear type.",
+      }));
+      err = true;
+    }
+    if (form.energy_types.length === 0) {
+      setError((prev) => ({
+        ...prev,
+        ["energy_types"]: "Please select at least one energy type.",
+      }));
+      err = true;
+    }
+
+    if (!form.brand) {
+      setError((prev) => ({
+        ...prev,
+        ["brand"]: "Please select brand.",
+      }));
+      err = true;
+    }
+    if (!form.model) {
+      setError((prev) => ({
+        ...prev,
+        ["model"]: "Please enter model.",
+      }));
+      err = true;
+    }
+    if (!form.year) {
+      setError((prev) => ({
+        ...prev,
+        ["year"]: "Please select year.",
+      }));
+      err = true;
+    }
+    if (!form.passenger) {
+      setError((prev) => ({
+        ...prev,
+        ["passenger"]: "Please enter the number of passengers.",
+      }));
+      err = true;
+    }
+    if (!form.available_location) {
+      setError((prev) => ({
+        ...prev,
+        ["available_location"]: "Please enter available_location.",
+      }));
+      err = true;
+    }
+    if (!form.province) {
+      setError((prev) => ({
+        ...prev,
+        ["province"]: "Please select province.",
+      }));
+      err = true;
+    }
+    if (!form.license_plate) {
+      setError((prev) => ({
+        ...prev,
+        ["license_plate"]: "Please enter license_plate.",
+      }));
+      err = true;
+    }
+    if (!form.rental_price) {
+      setError((prev) => ({
+        ...prev,
+        ["rental_price"]: "Please enter rental_price.",
+      }));
+      err = true;
+    }
+    if (!form.registration_book_id) {
+      setError((prev) => ({
+        ...prev,
+        ["registration_book_id"]: "Please enter registration_book_id.",
+      }));
+      err = true;
+    }
+
+    if (err) {
+      handleShowResError("Please check error message above.");
       return;
     }
 
@@ -273,7 +354,7 @@ const AddCar = () => {
     setResError(text);
     setTimeout(() => {
       setResError("");
-    }, 3000);
+    }, 5000);
   };
 
   useEffect(() => {
@@ -295,6 +376,7 @@ const AddCar = () => {
             onChange={handleChange}
             onBlur={validateForm}
             defaultValue=""
+            //required
           >
             <option disabled hidden></option>
             {carBrands.map((brand) => {
@@ -313,6 +395,7 @@ const AddCar = () => {
             value={form.model}
             onChange={handleChange}
             onBlur={validateForm}
+            //required
           />
           {error.model && <span className="error">{error.model}</span>}
           <label>Year</label>
@@ -322,6 +405,7 @@ const AddCar = () => {
             onChange={handleChange}
             onBlur={validateForm}
             defaultValue=""
+            //required
           >
             <option disabled hidden></option>
             {years.map((year, index) => {
@@ -388,6 +472,7 @@ const AddCar = () => {
             onChange={handleChange}
             onBlur={validateForm}
             value={form.passenger}
+            //required
           ></input>
           {error.passenger && <span className="error">{error.passenger}</span>}
 
@@ -397,6 +482,7 @@ const AddCar = () => {
             onChange={handleChange}
             onBlur={validateForm}
             value={form.available_location}
+            //required
           ></input>
           {error.available_location && (
             <span className="error">{error.available_location}</span>
@@ -416,6 +502,7 @@ const AddCar = () => {
             onChange={handleChange}
             onBlur={validateForm}
             defaultValue=""
+            //required
           >
             <option disabled hidden></option>
             {provinces.map((province) => {
@@ -435,6 +522,7 @@ const AddCar = () => {
             onChange={handleChange}
             onBlur={validateForm}
             value={form.license_plate}
+            //required
             // onChange={}
             // onBlur={}
           />
@@ -449,6 +537,7 @@ const AddCar = () => {
             onChange={handleChange}
             onBlur={validateForm}
             value={form.rental_price}
+            //required
             // onChange={}
             // onBlur={}
           />
@@ -462,6 +551,7 @@ const AddCar = () => {
             onChange={handleChange}
             onBlur={validateForm}
             value={form.registration_book_id}
+            //required
             // onChange={}
             // onBlur={}
           />
@@ -477,6 +567,7 @@ const AddCar = () => {
             onChange={handleImage}
             accept="image/png, image/gif, image/jpeg"
             style={{width: "90px"}}
+            required
           />
           {registration_book_image ? (
             <img src={registration_book_image} alt="registration_book_image" />
@@ -509,9 +600,7 @@ const AddCar = () => {
             <span className="error">{error.car_images}</span>
           )}
 
-          <button type="submit" disabled={form === resetForm}>
-            Register
-          </button>
+          <button type="submit">Register</button>
           {resError && <span className="error">{resError}</span>}
         </form>
       </div>

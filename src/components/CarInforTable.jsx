@@ -75,7 +75,7 @@ const CarInforTable = ({
       <div className="car-table">
         <div className="car-header car-row">
           <h3>Car Information</h3>
-          <button>view car review</button>
+          {/* <button>view car review</button> */}
         </div>
         <div className="car-row">
           <p>Year</p>
