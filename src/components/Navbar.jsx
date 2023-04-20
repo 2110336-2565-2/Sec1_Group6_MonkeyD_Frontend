@@ -5,7 +5,7 @@ import {checkLogin} from "../utils/auth";
 import useOutsideClick from "../hooks/useOutsideClick";
 import Notification from "../components/Notification";
 import Config from "../assets/configs/configs.json";
-import {cookieExists} from "../utils/cookies";
+import {cookieExists, deleteCookie} from "../utils/cookies";
 
 const Navbar = () => {
   const [navbarInfo, setNavbarInfo] = useState(null);
@@ -44,26 +44,8 @@ const Navbar = () => {
 
   const handleLogout = async () => {
     sessionStorage.clear();
-    if (cookieExists("username") || cookieExists("userID")) {
-      await axios.post(
-        `${Config.BACKEND_URL}/user/logout`,
-        {
-          cookie_name: "username",
-        },
-        {
-          withCredentials: true,
-        }
-      );
-      await axios.post(
-        `${Config.BACKEND_URL}/user/logout`,
-        {
-          cookie_name: "userID",
-        },
-        {
-          withCredentials: true,
-        }
-      );
-    }
+    (await cookieExists("username")) && (await deleteCookie("username"));
+    (await cookieExists("userID")) && (await deleteCookie("userID"));
     await axios.post(
       `${Config.BACKEND_URL}/user/logout`,
       {
