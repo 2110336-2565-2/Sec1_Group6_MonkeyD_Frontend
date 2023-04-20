@@ -1,28 +1,11 @@
 .trans-approval-container {
   display: flex;
   flex-direction: column;
-  .search-bar {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    border-bottom: solid 2px var(--secondary-background);
-    padding-right: 1rem;
-    .profile-search-bar {
-      border: none;
-    }
-    .sort {
-      .sort-by-select {
-        padding: 0.25rem;
-        border: none;
-        height: 57.2px;
-        background-color: var(--secondary-background);
-      }
-    }
-  }
   .trans-approval-list {
     // height: 50vh;
     display: flex;
     flex-direction: column;
+    border-top: solid 2px var(--secondary-background);
     .no-result {
       text-align: center;
       padding: 6rem 0;
