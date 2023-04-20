@@ -5,6 +5,7 @@ import ProfileSearchBar from "./ProfileSearchBar";
 import ProfileStatusTab from "./ProfileStatusTab";
 import Script from "react-load-script";
 import Config from "../assets/configs/configs.json";
+import ConfirmModal from "./ConfirmModal";
 let OmiseCard;
 
 const MyBooking = () => {
@@ -13,15 +14,17 @@ const MyBooking = () => {
   const [bookings, setBookings] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [scriptLoaded, setScriptLoaded] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+
+  const [selectedBooking, setSelectedBooking] = useState(null);
   const navigate = useNavigate();
 
   const searchRef = useRef();
 
-  // const calculatePrice = (firstDate, secondDate, rate) => {
-  //   return Math.round(
-  //     (1 + Math.abs((firstDate - secondDate) / (24 * 60 * 60 * 1000))) * rate
-  //   );
-  // };
+  function handleCancelBooking(car_id, match_id) {
+    setSelectedBooking({car_id, match_id});
+    setShowModal(true);
+  }
 
   const fetchMyBooking = async () => {
     const params = {
@@ -58,7 +61,8 @@ const MyBooking = () => {
     }
   };
 
-  const cancelBooking = async (car_id, match_id) => {
+  const cancelBooking = async () => {
+    const {car_id, match_id} = selectedBooking;
     try {
       await axios.patch(
         `${Config.BACKEND_URL}/match/cancel-reservation`,
@@ -70,6 +74,7 @@ const MyBooking = () => {
           withCredentials: true,
         }
       );
+      setShowModal(false);
       fetchMyBooking();
     } catch (error) {
       console.log(error);
@@ -256,12 +261,11 @@ const MyBooking = () => {
                       status === "Wait for payment") && (
                       <h3
                         className="cancel btn"
-                        onClick={() => cancelBooking(car_id, match_id)}
+                        onClick={() => handleCancelBooking(car_id, match_id)}
                       >
                         ✖ Cancel booking
                       </h3>
                     )}
-
                     {status === "Wait for payment" && (
                       <h3
                         className="pay btn"
@@ -289,6 +293,20 @@ const MyBooking = () => {
           })
         )}
       </div>
+      <ConfirmModal
+        showModalSignal={showModal}
+        setModalSignal={setShowModal}
+        header={"Are you sure?"}
+        message={"This process can not be undone."}
+        onPickLeft={() => setShowModal(false)}
+        onPickRight={() => cancelBooking()}
+        leftTxt={"Continue Booking"}
+        leftColor={"white"}
+        leftBGColor={"#aeb3ab"}
+        rightTxt={"Cancel Booking"}
+        rightColor={"white"}
+        rightBGColor={"#ea4335"}
+      />
     </div>
   );
 };

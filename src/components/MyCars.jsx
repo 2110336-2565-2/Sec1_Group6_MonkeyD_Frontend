@@ -131,7 +131,7 @@ const MyCars = () => {
   };
 
   useEffect(() => {
-    console.log("fetch");
+    window.scrollTo(0, 0);
 
     fetchCars();
 
@@ -204,7 +204,7 @@ const MyCars = () => {
                       <span>{car.unavailable_times.length}</span>
                     </p>
                     <p>
-                      rentedOutCount : <span>{car.rentedOutCount}</span>
+                      rented count : <span>{car.rentedOutCount}</span>
                     </p>
                     <p>
                       price : <span>฿ {car.rental_price}</span>

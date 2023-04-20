@@ -108,7 +108,7 @@ const CarApprovalMgmt = () => {
                   </h3>
                 </div>
                 <p>{`owner : ${owner}`}</p>
-                <p>{`renter : ${renter}`}</p>
+                {/* <p>{`renter : ${renter}`}</p> */}
                 <div className="images">
                   <div className="card">
                     <img
