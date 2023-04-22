@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState, useRef} from "react";
 import axios from "axios";
 import {Link} from "react-router-dom";
 import {checkLogin} from "../utils/auth";
@@ -7,12 +7,29 @@ import Notification from "../components/Notification";
 import Config from "../assets/configs/configs.json";
 import {cookieExists, deleteCookie} from "../utils/cookies";
 
+const useOutsideClickNoti = (ref, callback) => {
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (ref.current && !ref.current.contains(event.target)) {
+        callback();
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [ref, callback]);
+};
+
 const Navbar = () => {
   const [navbarInfo, setNavbarInfo] = useState(null);
   const [openDropdown, setOpenDropdown] = useState(false);
   const [openNotification, setOpenNotification] = useState(false);
   const [notificationList, setNotificationList] = useState([]);
   const [allNotificationsRead, setAllNotificationsRead] = useState(true);
+  const notiRef = useRef(null);
 
   const toggleDropdown = () => {
     setOpenDropdown(!openDropdown);
@@ -39,8 +56,29 @@ const Navbar = () => {
     }
   };
 
+  const closenoti = async () => {
+    if (openNotification) {
+      setOpenNotification(false);
+      const id = sessionStorage.getItem("user_id");
+      try {
+        // readNotifications
+        await axios.patch(
+          `${Config.BACKEND_URL}/notification/?userID=${id}`,
+          {},
+          {
+            withCredentials: true,
+          }
+        );
+      } catch (error) {
+        console.error(error);
+      }
+
+      setAllNotificationsRead(true);
+    }
+  };
+
   const ref = useOutsideClick(() => setOpenDropdown(false));
-  const notioutsideClick = useOutsideClick(() => setOpenNotification(false));
+  useOutsideClickNoti(notiRef, closenoti);
 
   const handleLogout = async () => {
     sessionStorage.clear();
@@ -316,7 +354,7 @@ const Navbar = () => {
         </nav>
         <div
           className={openNotification ? "bell-noti open" : "bell-noti"}
-          ref={notioutsideClick}
+          ref={notiRef}
         >
           <i
             className={
