@@ -166,9 +166,7 @@ const Navbar = () => {
     };
     getNotifications();
   }, [allNotificationsRead]);
-  console.log("====================================");
-  console.log(navbarInfo);
-  console.log("====================================");
+
   return (
     <div className="navbar-container">
       <img
