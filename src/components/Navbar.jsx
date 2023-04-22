@@ -97,7 +97,21 @@ const Navbar = () => {
     window.location.assign("/");
   };
 
-  const handleRegisterLessor = async (status, haveVerificationInfo) => {
+  const handleRegisterLessor = async () => {
+    let status, haveVerificationInfo;
+    try {
+      const res = await axios.get(`${Config.BACKEND_URL}/user/navbar`, {
+        headers: {
+          user_id: sessionStorage.getItem("user_id"),
+        },
+        withCredentials: true,
+      });
+      status = res.data.user.status;
+      haveVerificationInfo = res.data.user.haveVerificationInfo;
+      console.log(status, haveVerificationInfo);
+    } catch (error) {
+      console.error(error);
+    }
     if (status === "Verified") {
       try {
         await axios.patch(
@@ -282,12 +296,7 @@ const Navbar = () => {
                         (navbarInfo.requestTobeLessor === false ? (
                           <li
                             className="menu-item"
-                            onClick={() =>
-                              handleRegisterLessor(
-                                navbarInfo.role,
-                                navbarInfo.haveVerificationInfo
-                              )
-                            }
+                            onClick={() => handleRegisterLessor()}
                           >
                             Be a lessor
                           </li>

@@ -17,10 +17,7 @@ const UserApprovalMgmt = () => {
 
   const searchRef = useRef();
 
-  const filters = [
-    "newest date",
-    "oldest date",
-  ];
+  const filters = ["newest date", "oldest date"];
 
   const fetchUsers = async () => {
     const params = {
@@ -34,7 +31,7 @@ const UserApprovalMgmt = () => {
         params,
         withCredentials: true,
       });
-      console.log(res.data.users);
+      console.log(res);
       setUsers(res.data.users);
       setIsLoading(false);
     } catch (error) {
