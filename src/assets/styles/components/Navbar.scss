@@ -54,7 +54,8 @@
           position: absolute;
           right: -15px;
           margin-top: 8px;
-          width: 200px;
+          width: max-content;
+          min-width: 200px;
           border-radius: 8px;
           background-color: var(--contrast-color);
           box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
@@ -88,6 +89,24 @@
                   color: var(--secondary-color);
                   font-weight: 600;
                 }
+              }
+            }
+            .in-progress {
+              display: flex;
+              flex-direction: column;
+              color: rgb(242, 181, 15);
+              align-items: flex-start;
+              justify-content: center;
+              .top {
+                color: var(--primary-color);
+              }
+              .bottom {
+                font-size: 12px;
+              }
+              &:hover {
+                color: rgb(242, 181, 15);
+                cursor: default;
+                font-weight: 400;
               }
             }
           }
