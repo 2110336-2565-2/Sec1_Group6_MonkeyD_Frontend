@@ -24,12 +24,33 @@ const Search = ({
     setIsCheckedAge(event.target.checked);
   };
 
-  const handleSubmit = (event) => {
-    if (!isCheckedAge) {
-      setError("Please confirm your age");
-      return;
+  const dateValidation = () => {
+    const start = new Date(startDateInput.current.value).getTime();
+    const end = new Date(endDateInput.current.value).getTime();
+    const today = new Date().setHours(0, 0, 0, 0);
+    const period = start - end;
+    const presentperiodstart = start - today;
+    const presentperiodend = end - today;
+
+    const dateFillCheck = period || period >= 0;
+    const startpresentCheck = presentperiodstart && presentperiodstart >= 0;
+    const endpresentCheck = presentperiodend && presentperiodend >= 0;
+
+    if (!dateFillCheck || !startpresentCheck || !endpresentCheck) {
+      return false;
     }
-    setError("");
+    return true;
+  };
+
+  const handleSubmit = (event) => {
+    let errorText = "";
+    if (!isCheckedAge) {
+      errorText += "Please confirm your age. ";
+    }
+    if (!dateValidation()) {
+      errorText += "Please enter a valid date.";
+    }
+    setError(errorText);
     handleSearch(event);
   };
   return (
