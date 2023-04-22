@@ -257,7 +257,11 @@ const Navbar = () => {
                           </li>
                         ) : (
                           <li className="menu-item in-progress">
-                            Verification in progress
+                            <p className="top">Be a lessor</p>
+                            <p className="bottom">
+                              ( verification in progress )
+                            </p>
+                            {/* {"Lessor \n Verification in progress"} */}
                           </li>
                         ))}
 

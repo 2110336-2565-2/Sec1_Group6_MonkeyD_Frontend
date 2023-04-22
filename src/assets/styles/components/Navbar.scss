@@ -92,9 +92,20 @@
               }
             }
             .in-progress {
-              &:hover {
-                cursor: default;
+              display: flex;
+              flex-direction: column;
+              color: rgb(242, 181, 15);
+              align-items: flex-start;
+              justify-content: center;
+              .top {
                 color: var(--primary-color);
+              }
+              .bottom {
+                font-size: 12px;
+              }
+              &:hover {
+                color: rgb(242, 181, 15);
+                cursor: default;
                 font-weight: 400;
               }
             }
