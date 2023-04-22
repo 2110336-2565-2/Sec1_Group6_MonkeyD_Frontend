@@ -261,7 +261,6 @@ const Navbar = () => {
                             <p className="bottom">
                               ( verification in progress )
                             </p>
-                            {/* {"Lessor \n Verification in progress"} */}
                           </li>
                         ))}
 
