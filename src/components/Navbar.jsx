@@ -98,7 +98,55 @@ const Navbar = () => {
   };
 
   const handleRegisterLessor = async () => {
-    window.location.assign("/lessorRegister");
+    let status, haveVerificationInfo;
+    try {
+      const res = await axios.get(`${Config.BACKEND_URL}/user/navbar`, {
+        headers: {
+          user_id: sessionStorage.getItem("user_id"),
+        },
+        withCredentials: true,
+      });
+      status = res.data.user.status;
+      haveVerificationInfo = res.data.user.haveVerificationInfo;
+      console.log(status, haveVerificationInfo);
+    } catch (error) {
+      console.error(error);
+    }
+    if (status === "Verified") {
+      try {
+        await axios.patch(
+          `${Config.BACKEND_URL}/user/lessor`,
+          {},
+          {
+            headers: {
+              user_id: sessionStorage.getItem("user_id"),
+            },
+            withCredentials: true,
+          }
+        );
+        window.location.reload();
+      } catch (error) {
+        console.error(error);
+      }
+    } else if (haveVerificationInfo) {
+      try {
+        await axios.patch(
+          `${Config.BACKEND_URL}/user/togglereqLessor`,
+          {},
+          {
+            headers: {
+              user_id: sessionStorage.getItem("user_id"),
+            },
+            withCredentials: true,
+          }
+        );
+        window.location.reload();
+      } catch (error) {
+        console.error(error);
+      }
+    } else {
+      window.location.assign("/lessorRegister");
+    }
   };
 
   const handleAddCar = () => {
@@ -244,14 +292,22 @@ const Navbar = () => {
                           Add your car
                         </li>
                       )}
-                      {navbarInfo.role === "renter" && (
-                        <li
-                          className="menu-item"
-                          onClick={handleRegisterLessor}
-                        >
-                          Be a lessor
-                        </li>
-                      )}
+                      {navbarInfo.role === "renter" &&
+                        (navbarInfo.requestTobeLessor === false ? (
+                          <li
+                            className="menu-item"
+                            onClick={() => handleRegisterLessor()}
+                          >
+                            Be a lessor
+                          </li>
+                        ) : (
+                          <li className="menu-item in-progress">
+                            <p className="top">Be a lessor</p>
+                            <p className="bottom">
+                              ( verification in progress )
+                            </p>
+                          </li>
+                        ))}
 
                       {navbarInfo.role === "admin" ? (
                         <>
