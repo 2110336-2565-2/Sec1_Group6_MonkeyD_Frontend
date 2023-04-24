@@ -45,43 +45,96 @@ const MatchCar = ({carId, brand, model, price}) => {
     fetchMatch();
   }, []);
 
+  const completeHandler = async (matchId) => {
+    console.log(matchId);
+    try {
+      await axios.patch(
+        `${Config.BACKEND_URL}/match/complete`,
+        {},
+        {
+          headers: {
+            match_id: matchId,
+          },
+          withCredentials: true,
+        }
+      );
+    } catch (error) {
+      console.error(error);
+    }
+
+    try {
+      const baseUrl = `${Config.BACKEND_URL}/match`;
+      const userId = sessionStorage.getItem("user_id");
+      const res = await axios.get(
+        `${baseUrl}/?lessorID=${userId}&carID=${carId}`,
+        {
+          withCredentials: true,
+        }
+      );
+      setCarMatch(res.data.matches);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="matchcar-container">
       <h2>
         {brand} {model}
       </h2>
-      {carMatch.map((match) => (
-        <div className="match-container" key={match._id}>
-          <div className="one-line-wrapper">
-            <div className="head">Status:</div>
-            <div>{match.status}</div>
-          </div>
-          <div>
-            <div className="head">Pick-up and Drop-off</div>
-            <div className="two-column">
-              <div className="date-wrapper">
-                <div className="date-time">
-                  {dateDisplay(match.pickUpDateTime)}
+      {carMatch.length === 0 ? (
+        <div className="no-match">No Match Yet</div>
+      ) : (
+        <>
+          {carMatch.map((match) => (
+            <div className="match-container" key={match._id}>
+              <div className="detail-wrap">
+                <div className="one-line-wrapper">
+                  <div className="head">Status:</div>
+                  <div>{match.status}</div>
                 </div>
-                <div className="location">{match.pickupLocation}</div>
+                <div>
+                  <div className="head">Pick-up and Drop-off</div>
+                  <div className="two-column">
+                    <div className="date-wrapper">
+                      <div className="date-time">
+                        {dateDisplay(match.pickUpDateTime)}
+                      </div>
+                      <div className="location">{match.pickupLocation}</div>
+                    </div>
+                    <div>
+                      <div className="date-time">
+                        {dateDisplay(match.returnDateTime)}
+                      </div>
+                      <div className="location">{match.returnLocation}</div>
+                    </div>
+                  </div>
+                </div>
+                <div className="one-line-wrapper">
+                  <div className="head">Price:</div>
+                  <div>
+                    ฿ {match.price} (Price for {reversePrice(match.price)}{" "}
+                    {reversePrice(match.price) > 1 ? "days" : "day"})
+                  </div>
+                </div>
               </div>
-              <div>
-                <div className="date-time">
-                  {dateDisplay(match.returnDateTime)}
-                </div>
-                <div className="location">{match.returnLocation}</div>
+              <div className="btn-wrap">
+                {match.status === "Rented" ? (
+                  <button
+                    className="complete-btn"
+                    onClick={() => completeHandler(match._id)}
+                  >
+                    <i className="fa-solid fa-circle-check" />
+                    Complete
+                  </button>
+                ) : (
+                  <></>
+                )}
               </div>
             </div>
-          </div>
-          <div className="one-line-wrapper">
-            <div className="head">Price:</div>
-            <div>
-              ฿ {match.price} (Price for {reversePrice(match.price)}{" "}
-              {reversePrice(match.price) > 1 ? "days" : "day"})
-            </div>
-          </div>
-        </div>
-      ))}
+          ))}
+        </>
+      )}
     </div>
   );
 };
