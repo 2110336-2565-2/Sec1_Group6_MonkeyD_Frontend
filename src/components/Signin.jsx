@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from "react";
 import axios from "axios";
 import Config from "../assets/configs/configs.json";
+import {useForm} from "react-hook-form";
 
 const Signin = ({signin, signup}) => {
   const resetForm = {
@@ -14,57 +15,12 @@ const Signin = ({signin, signup}) => {
   const [resError, setResError] = useState("");
   const [linkGoogle, setGoogleUrl] = useState("");
 
-  const handleChange = (event) => {
-    const {name, value} = event.target;
-    setForm({
-      ...form,
-      [name]: value,
-    });
-    validateForm(event);
-  };
-
-  const validateForm = (event) => {
-    let {name, value} = event.target;
-    setError((prev) => {
-      const stateObj = {...prev, [name]: ""};
-      switch (name) {
-        case "email":
-          if (!value) {
-            stateObj[name] = "Please enter email.";
-          } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)) {
-            stateObj[name] = "Invalid email address";
-          }
-          break;
-
-        case "password":
-          if (!value) {
-            stateObj[name] = "Please enter Password.";
-          } else if (form.confirmPassword && value !== form.confirmPassword) {
-            stateObj["confirmPassword"] =
-              "Password and Confirm Password does not match.";
-          } else {
-            stateObj["confirmPassword"] = form.confirmPassword
-              ? ""
-              : error.confirmPassword;
-          }
-          break;
-
-        case "confirmPassword":
-          if (!value) {
-            stateObj[name] = "Please enter Confirm Password.";
-          } else if (form.password && value !== form.password) {
-            stateObj[name] = "Password and Confirm Password does not match.";
-          }
-          break;
-
-        default:
-          break;
-      }
-
-      return stateObj;
-    });
-    console.log(error);
-  };
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: {errors},
+  } = useForm({mode: "all"});
 
   const fetchUserInfo = async (user_id) => {
     try {
@@ -106,11 +62,7 @@ const Signin = ({signin, signup}) => {
   };
 
   const handleSignUp = async (event) => {
-    event.preventDefault();
-    if (JSON.stringify(error) !== JSON.stringify(resetForm)) {
-      return;
-    }
-    const {email, password} = form;
+    const {email, password} = event
     const data = {user: {username: email.split("@")[0], email, password}};
 
     try {
@@ -120,16 +72,10 @@ const Signin = ({signin, signup}) => {
       console.error(error);
       handleShowResError(error.response.data.error);
     }
-
-    // setForm(resetForm);
   };
 
   const handleSignIn = async (event) => {
-    event.preventDefault();
-    if (JSON.stringify(error) !== JSON.stringify(resetForm)) {
-      return;
-    }
-    const {email, password} = form;
+    const {email, password} = event
     const data = {user: {email, password}};
 
     try {
@@ -147,8 +93,6 @@ const Signin = ({signin, signup}) => {
       console.error(error);
       handleShowResError(error.response.data.error);
     }
-
-    // setForm(resetForm);
   };
 
   const handleShowResError = (text) => {
@@ -157,54 +101,66 @@ const Signin = ({signin, signup}) => {
       setResError("");
     }, 3000);
   };
+
   useEffect(() => {
     setGoogleUrl(`${Config.BACKEND_URL}/auth/google`);
   }, []);
+  
   return (
     <div className="signin-container">
       <div className="signin-box">
         <h2>{signup ? "Create New Account" : "Sign in"}</h2>
         <form
-          onSubmit={signup ? handleSignUp : handleSignIn}
+          onSubmit={handleSubmit(signup ? handleSignUp : handleSignIn)}
           className="signin-form"
         >
           <label>Email address</label>
           <input
-            // type="email"
-            id="email"
-            name="email"
-            value={form.email}
-            onChange={handleChange}
-            onBlur={validateForm}
-            className={error.email ? "error-validate" : ""}
-            required
+            type="email"
+            className={errors.email ? "error-validate" : ""}
+            {...register("email", {
+              required: "Email is required",
+              pattern: {
+                value: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/i,
+                message: "Please enter a valid email",
+              },
+            })}
           />
-          {error.email && <span className="error">{error.email}</span>}
+          {errors.email?.message && (
+            <span className="error">{errors.email?.message}</span>
+          )}
           <label>Password</label>
           <input
             type="password"
-            id="password"
-            name="password"
-            value={form.password}
-            onChange={handleChange}
-            onBlur={validateForm}
-            required
+            className={errors.password ? "error-validate" : ""}
+            {...register("password", {
+              required: "Password is required",
+              minLength: {
+                value: signup ? 8 : 0,
+                message: "Password required 8 characters",
+              },
+            })}
           />
-          {error.password && <span className="error">{error.password}</span>}
+          {errors.password?.message && (
+            <span className="error">{errors.password?.message}</span>
+          )}
           {signup && (
             <>
               <label>Confirm password</label>
               <input
                 type="password"
-                id="confirmPassword"
-                name="confirmPassword"
-                value={form.confirmPassword}
-                onChange={handleChange}
-                onBlur={validateForm}
-                required
+                className={errors.confirmPassword ? "error-validate" : ""}
+                {...register("confirmPassword", {
+                  required: "Confirm Password is required",
+                  validate: (val) => {
+                    if (watch("password") !== val) {
+                      return "Passwords do not match";
+                    }
+                  },
+                })}
               />
-              {error.confirmPassword && (
-                <span className="error">{error.confirmPassword}</span>
+              {errors.confirmPassword?.message && (
+                <span className="error">{errors.confirmPassword?.message}</span>
               )}
             </>
           )}
@@ -219,9 +175,7 @@ const Signin = ({signin, signup}) => {
             </label> */}
             <a href="/forgotPassword">Forgot password?</a>
           </div>
-          <button type="submit" disabled={form === resetForm}>
-            {signup ? "Get Started" : "Sign in"}
-          </button>
+          <button type="submit">{signup ? "Get Started" : "Sign in"}</button>
           {resError && <span className="error">{resError}</span>}
         </form>
         <div className="divider">
@@ -229,7 +183,7 @@ const Signin = ({signin, signup}) => {
           <p>or</p>
           <hr />
         </div>
-        <a href={linkGoogle} class="btn-google">
+        <a href={linkGoogle} className="btn-google">
           <img
             src="https://www.freepnglogos.com/uploads/google-logo-png/google-logo-png-webinar-optimizing-for-success-google-business-webinar-13.png"
             alt="Google logo"
