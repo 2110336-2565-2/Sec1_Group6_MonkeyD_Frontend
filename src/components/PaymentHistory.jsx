@@ -41,8 +41,10 @@ const PaymentHistory = () => {
         }
       );
       console.log(res.data);
-      if (status === "charge") setTrans(res.data.charges);
-      else if (status === "transfer") setTrans(res.data.transfers);
+      if (res.data.length > 0) {
+        if (status === "charge") setTrans(res.data.charges);
+        else if (status === "transfer") setTrans(res.data.transfers);
+      }
       setIsLoading(false);
     } catch (error) {
       console.log(error);
