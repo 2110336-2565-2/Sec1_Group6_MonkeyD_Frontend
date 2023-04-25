@@ -16,7 +16,7 @@ const SeoFooter = () => {
         </p>
         <p className="email">Email: monkeyDcarrental@gmail.com</p>
         <div className="contact-logo">
-          <img
+          {/* <img
             src={require("../assets/images/fb-logo.png")}
             alt="fb-logo"
             className="fb-logo"
@@ -25,7 +25,7 @@ const SeoFooter = () => {
             src={require("../assets/images/ig-logo.png")}
             alt="ig-logo"
             className="ig-logo"
-          />
+          /> */}
         </div>
       </div>
       <div className="footer-list">
