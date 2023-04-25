@@ -126,7 +126,7 @@ const MyBooking = () => {
             `${Config.BACKEND_URL}/payment/transfer/${lessorID}`,
             {
               amount: amount,
-              sender: username
+              sender: username,
             },
             {
               headers: {
@@ -311,9 +311,12 @@ const MyBooking = () => {
         leftTxt={"Continue Booking"}
         leftColor={"white"}
         leftBGColor={"#aeb3ab"}
+        disableLeft={false}
         rightTxt={"Cancel Booking"}
         rightColor={"white"}
         rightBGColor={"#ea4335"}
+        disableRight={false}
+        enableClickOutside={true}
       />
     </div>
   );
