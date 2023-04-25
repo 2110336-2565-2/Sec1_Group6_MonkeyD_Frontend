@@ -35,7 +35,6 @@ const ChatList = ({userId, setChatId, setChatWith}) => {
           }
         );
         setChatList(res.data.chats);
-        console.log(res.data.chats);
       } catch (error) {
         console.error(error);
       }
