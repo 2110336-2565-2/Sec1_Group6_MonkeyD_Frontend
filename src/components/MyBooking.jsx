@@ -29,14 +29,6 @@ const MyBooking = () => {
   const filters = ["newest date", "oldest date"];
 
   const fetchMyBooking = async () => {
-    const params = {
-      ...(status !== "All" && {
-        status: status,
-      }),
-      sortBy,
-      search: searchRef.current.value,
-    };
-
     try {
       setIsLoading(true);
       const id = sessionStorage.getItem("user_id");
@@ -54,6 +46,8 @@ const MyBooking = () => {
                 status: encodeURIComponent(JSON.stringify(statusList)),
               }
             : {}),
+          sortBy,
+          search: searchRef.current.value,
         },
         withCredentials: true,
       });
@@ -132,6 +126,7 @@ const MyBooking = () => {
             `${Config.BACKEND_URL}/payment/transfer/${lessorID}`,
             {
               amount: amount,
+              sender: username
             },
             {
               headers: {
