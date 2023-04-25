@@ -16,9 +16,7 @@ const MyProfile = ({
 
   const handleChange = (event) => {
     const {name, value} = event.target;
-    console.log("====================================");
-    console.log(name, value);
-    console.log("====================================");
+
     setUserInfo({
       ...userInfo,
       [name]: value,
