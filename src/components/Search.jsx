@@ -44,6 +44,7 @@ const Search = ({
 
   const handleSubmit = (event) => {
     let errorText = "";
+
     let check = true;
     if (!isCheckedAge) {
       errorText += "Please confirm your age. ";
@@ -57,6 +58,7 @@ const Search = ({
       setError(errorText);
       return;
     }
+
     handleSearch(event);
   };
   return (
