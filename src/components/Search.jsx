@@ -25,21 +25,18 @@ const Search = ({
   };
 
   const dateValidation = () => {
-    const start = new Date(startDateInput.current.value).getTime();
-    const end = new Date(endDateInput.current.value).getTime();
+    const start = new Date(startDateInput.current.value).setHours(0, 0, 0, 0);
+    const end = new Date(endDateInput.current.value).setHours(0, 0, 0, 0);
     const today = new Date().setHours(0, 0, 0, 0);
     const period = start - end;
     const presentperiodstart = start - today;
     const presentperiodend = end - today;
 
-    const dateFillCheck = period || period >= 0;
-    const startpresentCheck = presentperiodstart && presentperiodstart >= 0;
-    const endpresentCheck = presentperiodend && presentperiodend >= 0;
+    const dateFillCheck = period <= 0; // start before end
+    const startpresentCheck = presentperiodstart >= 0; // start after or equal today
+    const endpresentCheck = presentperiodend >= 0; // end after or equal today
 
-    if (!dateFillCheck || !startpresentCheck || !endpresentCheck) {
-      return false;
-    }
-    return true;
+    return dateFillCheck && startpresentCheck && endpresentCheck;
   };
 
   const handleSubmit = (event) => {
@@ -59,6 +56,7 @@ const Search = ({
       return;
     }
 
+    setError("");
     handleSearch(event);
   };
   return (
