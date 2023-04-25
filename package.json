@@ -18,6 +18,7 @@
     "react": "^18.2.0",
     "react-big-calendar": "^1.6.8",
     "react-dom": "^18.2.0",
+    "react-hook-form": "^7.43.9",
     "react-load-script": "^0.0.6",
     "react-router-dom": "^6.8.0",
     "react-scripts": "^5.0.1",
