@@ -10,9 +10,12 @@ const ConfirmModal = ({
   leftTxt,
   leftColor,
   leftBGColor,
+  disableLeft,
   rightTxt,
   rightColor,
   rightBGColor,
+  disableRight,
+  enableClickOutside,
 }) => {
   const [showModal, setShowModal] = useState(false);
   const [leftHover, setLeftHover] = useState(false);
@@ -22,26 +25,24 @@ const ConfirmModal = ({
   const defaultLeftStyle = {
     backgroundColor: leftBGColor,
     color: leftColor,
-    cursor: "pointer",
   };
 
   const hoverLeftStyle = {
     backgroundColor: leftColor,
     color: leftBGColor,
-    cursor: "pointer",
+    cursor: disableLeft ? "default" : "pointer",
     borderColor: leftBGColor,
   };
 
   const defaultRightStyle = {
     backgroundColor: rightBGColor,
     color: rightColor,
-    cursor: "pointer",
   };
 
   const hoverRightStyle = {
     backgroundColor: rightColor,
     color: rightBGColor,
-    cursor: "pointer",
+    cursor: disableRight ? "default" : "pointer",
     borderColor: rightBGColor,
   };
 
@@ -56,7 +57,7 @@ const ConfirmModal = ({
   }
 
   function handleClickOutside(e) {
-    if (modalContainerRef.current === e.target) {
+    if (enableClickOutside && modalContainerRef.current === e.target) {
       setShowModal(false);
       setModalSignal(false);
     }
@@ -87,6 +88,7 @@ const ConfirmModal = ({
                 onMouseEnter={() => setLeftHover(true)}
                 onMouseLeave={() => setLeftHover(false)}
                 onClick={handleLeft}
+                disabled={disableLeft}
               >
                 {leftTxt}
               </button>
@@ -95,6 +97,7 @@ const ConfirmModal = ({
                 onMouseEnter={() => setRightHover(true)}
                 onMouseLeave={() => setRightHover(false)}
                 onClick={handleRight}
+                disabled={disableRight}
               >
                 {rightTxt}
               </button>
