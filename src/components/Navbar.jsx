@@ -231,18 +231,15 @@ const Navbar = () => {
           <Link to="/" className="content">
             HOME
           </Link>
-          {/* <Link to="/" className="content">
-            FIND CAR
-          </Link> */}
           {navbarInfo && (
             <Link to="/chat" className="content">
               MESSAGE
             </Link>
           )}
-          {/* <Link to="/about" className="content">
+          <Link to="/about" className="content">
             ABOUT US
           </Link>
-          <button className="content">CONTACT US</button> */}
+
           {navbarInfo ? (
             <>
               <div className="profile" ref={ref}>
