@@ -44,13 +44,21 @@ const Search = ({
 
   const handleSubmit = (event) => {
     let errorText = "";
+
+    let check = true;
     if (!isCheckedAge) {
       errorText += "Please confirm your age. ";
+      check = false;
     }
     if (!dateValidation()) {
       errorText += "Please enter a valid date.";
+      check = false;
     }
-    setError(errorText);
+    if (!check) {
+      setError(errorText);
+      return;
+    }
+
     handleSearch(event);
   };
   return (

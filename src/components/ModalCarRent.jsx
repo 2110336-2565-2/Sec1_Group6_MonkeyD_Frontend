@@ -23,6 +23,11 @@ const formatName = (nameInput) => {
   return name;
 };
 
+const numberCheck = (numInput, limit) => {
+  const regex = /^[0-9\b]+$/;
+  return numInput.toString().length <= limit && regex.test(numInput);
+};
+
 const ModalCarRent = ({
   user_info,
   set_show_modal,
@@ -36,12 +41,12 @@ const ModalCarRent = ({
   const prefix = useRef(user_info.prefix);
   // const firstName = useRef(user_info.firstName);
   // const lastName = useRef(user_info.lastName);
-  const [firstName, setFirstName] = useState(user_info.firstName);
-  const [lastName, setLastName] = useState(user_info.lastName);
   //const mobileNumber = useRef(user_info.phoneNumber);
-  const [mobileNumber, setMobileNumber] = useState(user_info.mobileNumber);
   // const drivingLicense = useRef(user_info.drivingLicenseNumber);
   // const identificationNumber = useRef(user_info.IDCardNumber);
+  const [firstName, setFirstName] = useState(user_info.firstName);
+  const [lastName, setLastName] = useState(user_info.lastName);
+  const [mobileNumber, setMobileNumber] = useState(user_info.mobileNumber);
   const [drivingLicense, setDrivingLicense] = useState(
     user_info.drivingLicenseNumber
   );
@@ -104,22 +109,32 @@ const ModalCarRent = ({
   const handleChange = (event) => {
     const {name, value} = event.target;
     if (name === "firstName") {
-      setFirstName(formatName(value));
+      setFirstName(value);
+      return;
     }
     if (name === "lastName") {
-      setLastName(formatName(value));
+      setLastName(value);
+      return;
     }
     if (name === "mobileNumber") {
       const limit = 10;
-      setMobileNumber(value.slice(0, limit));
+      if (numberCheck(value, limit) || value === "") {
+        setMobileNumber(value);
+      }
+      return;
     }
     if (name === "drivingLicense") {
       const limit = 8;
-      setDrivingLicense(value.slice(0, limit));
+      if (numberCheck(value, limit) || value === "") {
+        setDrivingLicense(value);
+      }
+      return;
     }
     if (name === "IDCardNumber") {
       const limit = 13;
-      setIdentificationNumber(value.slice(0, limit));
+      if (numberCheck(value, limit) || value === "") {
+        setIdentificationNumber(value);
+      }
     }
     validateForm(event);
   };
@@ -447,7 +462,7 @@ const ModalCarRent = ({
         <div className="row-input">
           <label>Mobile Number: </label>
           <input
-            type="number"
+            type="text"
             name="mobileNumber"
             // ref={mobileNumber}
             onChange={handleChange}
@@ -461,7 +476,7 @@ const ModalCarRent = ({
         <div className="row-input">
           <label>Driving License: </label>
           <input
-            type="number"
+            type="text"
             name="drivingLicense"
             // ref={drivingLicense}
             onChange={handleChange}
@@ -476,7 +491,7 @@ const ModalCarRent = ({
         <div className="row-input">
           <label>Identification Number: </label>
           <input
-            type="number"
+            type="text"
             name="IDCardNumber"
             // ref={identificationNumber}
             onChange={handleChange}
@@ -488,30 +503,38 @@ const ModalCarRent = ({
             disabled={emptyCheck(user_info.IDCardNumber)}
           />
         </div>
-        <div className="row-input">
-          <label>ID Card Image: </label>
-          <input
-            type="file"
-            id="idcardimg"
-            name="IDCardImg"
-            onBlur={validateImage}
-            onChange={handleImage}
-            accept="image/png, image/gif, image/jpeg"
-            required
-          />
-        </div>
-        <div className="row-input">
-          <label>Driving License Image: </label>
-          <input
-            type="file"
-            id="drivinglicenseimg"
-            name="drivingLicenseImg"
-            onBlur={validateImage}
-            onChange={handleImage}
-            accept="image/png, image/gif, image/jpeg"
-            required
-          />
-        </div>
+        {user_info.IDCardImage.toString().length === 0 ? (
+          <div className="row-input">
+            <label>ID Card Image: </label>
+            <input
+              type="file"
+              id="idcardimg"
+              name="IDCardImg"
+              onBlur={validateImage}
+              onChange={handleImage}
+              accept="image/png, image/gif, image/jpeg"
+              required
+            />
+          </div>
+        ) : (
+          <></>
+        )}
+        {user_info.drivingLicenseImage.toString().length === 0 ? (
+          <div className="row-input">
+            <label>Driving License Image: </label>
+            <input
+              type="file"
+              id="drivinglicenseimg"
+              name="drivingLicenseImg"
+              onBlur={validateImage}
+              onChange={handleImage}
+              accept="image/png, image/gif, image/jpeg"
+              required
+            />
+          </div>
+        ) : (
+          <></>
+        )}
         <div className="two-in-one">
           <div className="row-input">
             <label>Start Date:</label>

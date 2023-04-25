@@ -8,7 +8,7 @@ const ContactFooter = () => {
         <p>
           Find the best car of your choice using different searching option.
         </p>
-        <button>Contact Us</button>
+        {/* <button>Contact Us</button> */}
       </div>
     </div>
   );
