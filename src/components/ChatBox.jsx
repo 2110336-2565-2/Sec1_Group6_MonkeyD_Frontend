@@ -14,6 +14,7 @@ const ChatBox = ({chatId, user, userId, chatWith}) => {
     }
 
     const newSocket = io(Config.BACKEND_URL, {
+      transports: ["websocket"],
       query: {userId},
       withCredentials: true,
     });
