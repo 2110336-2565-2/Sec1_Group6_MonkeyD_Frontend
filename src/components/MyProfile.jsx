@@ -16,6 +16,9 @@ const MyProfile = ({
 
   const handleChange = (event) => {
     const {name, value} = event.target;
+    console.log("====================================");
+    console.log(name, value);
+    console.log("====================================");
     setUserInfo({
       ...userInfo,
       [name]: value,
@@ -64,16 +67,41 @@ const MyProfile = ({
               <div className="text" key={`${key}`}>
                 <h5 className="label">{key}</h5>
                 {isEdit ? (
-                  <input
-                    id={`${key}`}
-                    name={`${key}`}
-                    className=""
-                    value={userInfo[key]}
-                    onChange={handleChange}
-                    disabled={
-                      key === "username" || key === "email" || key === "image"
-                    }
-                  />
+                  key === "prefix" ? (
+                    <select
+                      id={`${key}`}
+                      name={`${key}`}
+                      value={userInfo[key]}
+                      onChange={handleChange}
+                    >
+                      {[
+                        "not set",
+                        "Mr.",
+                        "Mrs.",
+                        "Miss",
+                        "Ms.",
+                        "(Not Specific)",
+                      ].map((each, index) => (
+                        <option key={index} value={each}>
+                          {each}
+                        </option>
+                      ))}
+                    </select>
+                  ) : (
+                    <input
+                      id={`${key}`}
+                      name={`${key}`}
+                      className=""
+                      value={userInfo[key]}
+                      onChange={handleChange}
+                      disabled={
+                        key === "username" ||
+                        key === "email" ||
+                        key === "image" ||
+                        key === "role"
+                      }
+                    />
+                  )
                 ) : (
                   <h5 className="value">{userInfo[key]}</h5>
                 )}
