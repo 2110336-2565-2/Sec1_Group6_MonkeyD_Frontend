@@ -40,8 +40,9 @@ const PaymentHistory = () => {
           withCredentials: true,
         }
       );
-      //console.log(res.data);
-      setTrans(res.data);
+      console.log(res.data);
+      if (status === "charge") setTrans(res.data.charges);
+      else if (status === "transfer") setTrans(res.data.transfers);
       setIsLoading(false);
     } catch (error) {
       console.log(error);
@@ -87,7 +88,9 @@ const PaymentHistory = () => {
         handleSortBy={handleChangeSort}
       />
       <div className="trans-approval-list">
-        {isLoading || trans.length === 0 ? (
+        {isLoading ? (
+          <div className="no-result">Loading</div>
+        ) : trans.length === 0 ? (
           <div className="no-result">No result</div>
         ) : (
           trans?.map((tran, index) => {
@@ -96,9 +99,9 @@ const PaymentHistory = () => {
               id,
               amount,
               currency,
-              card: {object, bank, brand} = {},
+              bank_account: {object, bank_code, brand} = {},
               created_at,
-              customer,
+              recipient,
             } = tran;
             created_at = formatDate(created_at);
             return (
@@ -106,8 +109,8 @@ const PaymentHistory = () => {
                 <div className="header">
                   <h3>{`Transaction ID : ${id}`}</h3>
                 </div>
-                <h3>{`customer : ${customer}`}</h3>
-                <h3>{`payment method : ${object} ${bank} ${brand}`}</h3>
+                <h3>{`recipient : ${recipient}`}</h3>
+                <h3>{`payment method : ${object} ${bank_code} ${brand}`}</h3>
                 <h3>{`created at : ${created_at}`}</h3>
                 <div className="footer">
                   <PDFDownloadLink

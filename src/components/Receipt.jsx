@@ -59,8 +59,8 @@ const Receipt = ({tran, created_at}) => {
     id,
     amount,
     currency,
-    card: {object, bank, brand} = {},
-    customer,
+    bank_account: {object, bank_code, brand} = {},
+    recipient,
   } = tran;
   return (
     <Document>
@@ -83,13 +83,13 @@ const Receipt = ({tran, created_at}) => {
         </View>
 
         <View style={styles.container}>
-          <Text style={styles.label}>Customer:</Text>
-          <Text style={styles.value}>{customer}</Text>
+          <Text style={styles.label}>Recipient:</Text>
+          <Text style={styles.value}>{recipient}</Text>
         </View>
 
         <View style={styles.container}>
           <Text style={styles.label}>Payment Method:</Text>
-          <Text style={styles.value}>{`${object} ${bank} ${brand}`}</Text>
+          <Text style={styles.value}>{`${object} ${bank_code} ${brand}`}</Text>
         </View>
 
         <View style={styles.container}>
