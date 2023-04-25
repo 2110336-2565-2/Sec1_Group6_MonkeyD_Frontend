@@ -110,8 +110,8 @@ const ProfilePage = () => {
         lastName,
         phoneNumber,
         image,
-        IDCardNumber,
-        drivingLicenseNumber,
+        // IDCardNumber,
+        // drivingLicenseNumber,
         role,
       };
 
@@ -132,8 +132,8 @@ const ProfilePage = () => {
     }
     if (
       searchParams.get("menu") === null ||
-      isAdmin === false && !(searchParams.get("menu") in userMenus) ||
-      isAdmin === true && !(searchParams.get("menu") in adminMenus)
+      (isAdmin === false && !(searchParams.get("menu") in userMenus)) ||
+      (isAdmin === true && !(searchParams.get("menu") in adminMenus))
     ) {
       searchParams.set("menu", "me");
       setSearchParams(searchParams);
