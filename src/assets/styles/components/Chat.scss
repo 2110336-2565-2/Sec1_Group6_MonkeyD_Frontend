@@ -31,22 +31,29 @@
       overflow: hidden;
       overflow-y: scroll;
       .chat {
+        border-top: solid 1px var(--arrow-color);
         display: flex;
-        align-items: center;
-        height: 32px;
+        flex-direction: column;
+        justify-content: center;
+        gap: 4px;
+        // height: 64px;
         padding: 16px;
-        span {
+        h3 {
+          margin: 0;
           overflow: hidden;
           text-overflow: ellipsis;
         }
+        p {
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          color: var(--p-color);
+        }
         &.selected {
           background-color: var(--secondary-background);
-          span {
-            font-weight: 600;
-          }
         }
         &:hover {
-          span {
+          p {
             font-weight: 600;
           }
         }
