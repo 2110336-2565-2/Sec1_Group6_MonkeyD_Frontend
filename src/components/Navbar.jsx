@@ -236,7 +236,7 @@ const Navbar = () => {
               MESSAGE
             </Link>
           )}
-          <Link to="/about" className="content">
+          <Link to="/" className="content">
             ABOUT US
           </Link>
 

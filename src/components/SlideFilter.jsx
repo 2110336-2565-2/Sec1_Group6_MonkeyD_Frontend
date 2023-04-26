@@ -3,7 +3,7 @@ import React, {useState} from "react";
 const SlideFilter = ({brandInputList, setBrandInputList, handleSearch}) => {
   const cars = [
     {
-      brand: "Benz",
+      brand: "Mercedes-Benz",
       image:
         "https://www.mercedes-benz.co.th/th/passengercars/mercedes-benz-cars/models/c-class/saloon-w206/offers-and-services/download/_jcr_content/par/productinfotextimage/media/slides/videoimageslide/image.MQ6.7.20220323063026.jpeg",
     },
