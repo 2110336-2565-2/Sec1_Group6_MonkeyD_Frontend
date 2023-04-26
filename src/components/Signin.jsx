@@ -62,7 +62,7 @@ const Signin = ({signin, signup}) => {
   };
 
   const handleSignUp = async (event) => {
-    const {email, password} = event
+    const {email, password} = event;
     const data = {user: {username: email.split("@")[0], email, password}};
 
     try {
@@ -75,7 +75,7 @@ const Signin = ({signin, signup}) => {
   };
 
   const handleSignIn = async (event) => {
-    const {email, password} = event
+    const {email, password} = event;
     const data = {user: {email, password}};
 
     try {
@@ -105,7 +105,7 @@ const Signin = ({signin, signup}) => {
   useEffect(() => {
     setGoogleUrl(`${Config.BACKEND_URL}/auth/google`);
   }, []);
-  
+
   return (
     <div className="signin-container">
       <div className="signin-box">
@@ -116,6 +116,7 @@ const Signin = ({signin, signup}) => {
         >
           <label>Email address</label>
           <input
+            id="email"
             type="email"
             className={errors.email ? "error-validate" : ""}
             {...register("email", {
@@ -131,6 +132,7 @@ const Signin = ({signin, signup}) => {
           )}
           <label>Password</label>
           <input
+            id="password"
             type="password"
             className={errors.password ? "error-validate" : ""}
             {...register("password", {
@@ -148,6 +150,7 @@ const Signin = ({signin, signup}) => {
             <>
               <label>Confirm password</label>
               <input
+                id="confirmPassword"
                 type="password"
                 className={errors.confirmPassword ? "error-validate" : ""}
                 {...register("confirmPassword", {
