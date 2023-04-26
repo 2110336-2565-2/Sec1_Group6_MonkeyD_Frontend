@@ -53,14 +53,16 @@ const styles = StyleSheet.create({
   },
 });
 
-const Receipt = ({tran, created_at}) => {
+const Receipt = ({tran, status, created_at}) => {
   let {
     object: type,
     id,
     amount,
     currency,
     bank_account: {object, bank_code, brand} = {},
+    card: {object: object_charge, bank: bank_charge, brand: brand_charge} = {},
     recipient,
+    customer,
   } = tran;
   return (
     <Document>
@@ -83,13 +85,25 @@ const Receipt = ({tran, created_at}) => {
         </View>
 
         <View style={styles.container}>
-          <Text style={styles.label}>Recipient:</Text>
-          <Text style={styles.value}>{recipient}</Text>
+          <Text style={styles.label}>
+            {status === "charge" ? "Customer:" : "Recipient:"}
+          </Text>
+          <Text style={styles.value}>
+            {status === "charge" ? customer : recipient}
+          </Text>
         </View>
 
         <View style={styles.container}>
           <Text style={styles.label}>Payment Method:</Text>
-          <Text style={styles.value}>{`${object} ${bank_code} ${brand}`}</Text>
+          {status === "charge" ? (
+            <Text
+              style={styles.value}
+            >{`${object_charge} ${bank_charge} ${brand_charge}`}</Text>
+          ) : (
+            <Text
+              style={styles.value}
+            >{`${object} ${bank_code} ${brand}`}</Text>
+          )}
         </View>
 
         <View style={styles.container}>
