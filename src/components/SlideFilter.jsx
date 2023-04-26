@@ -63,11 +63,9 @@ const SlideFilter = ({brandInputList, setBrandInputList, handleSearch}) => {
 
   return (
     <div className="slide-container">
-      <h2>Propertice by Brand</h2>
-      <p>
-        Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere
-        cubilia curae; Proin sodales ultrices nulla blandit volutpat.
-      </p>
+      <h2>Filter by Brand</h2>
+      <p>Ready for your road trip?</p>
+      <p>Book car rental at the best price on MonkeyDcar and let's travel!</p>
       <div className="slide-wrapper">
         <button className="left" onClick={handlePrev}>
           &#10094;
