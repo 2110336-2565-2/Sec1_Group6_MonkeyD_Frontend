@@ -8,6 +8,12 @@
     text-align: center;
     margin: 48px 0 36px 0;
   }
+  .loading {
+    font-size: var(--header2-fs);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
   .one-line-wrapper {
     display: grid;
     grid-template-columns: 1fr 9fr;
