@@ -2,7 +2,7 @@
   position: absolute;
   top: 56px;
   right: -10px;
-  min-width: 550px;
+  min-width: 500px;
   max-height: 500px;
   overflow-y: scroll;
   border-radius: 8px;
@@ -23,11 +23,13 @@
     .noti-box {
       display: flex;
       align-items: center;
+      gap: 12px;
       padding: 8px;
       border-radius: 8px;
       cursor: pointer;
       .each-notification {
         font-weight: 450;
+        max-width: 450px;
       }
       .show-date {
         margin-top: 4px;
@@ -37,7 +39,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        margin-right: 16px;
+        // margin-right: 12px;
         width: 26px;
         height: 26px;
         padding: 4px;
