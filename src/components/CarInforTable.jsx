@@ -27,7 +27,7 @@ const CarInforTable = ({
     }
 
     try {
-      const id = sessionStorage.getItem("user_id");
+      const id = localStorage.getItem("user_id");
       const res = await axios.post(
         `${Config.BACKEND_URL}/user/info`,
         {
@@ -138,7 +138,7 @@ const CarInforTable = ({
       <button
         style={{
           display:
-            owner_id === sessionStorage.getItem("user_id") ? "none" : "block",
+            owner_id === localStorage.getItem("user_id") ? "none" : "block",
         }}
         onClick={handleClick}
         className="rent-btn"

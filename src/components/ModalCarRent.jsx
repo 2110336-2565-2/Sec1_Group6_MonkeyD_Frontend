@@ -313,7 +313,7 @@ const ModalCarRent = ({
         const res = await axios.post(
           `${Config.BACKEND_URL}/user/info`,
           {
-            id: sessionStorage.getItem("user_id"),
+            id: localStorage.getItem("user_id"),
           },
           {
             withCredentials: true,
@@ -337,7 +337,7 @@ const ModalCarRent = ({
             match: {
               carID: car_id,
               lessorID: owner_id,
-              renterID: sessionStorage.getItem("user_id"),
+              renterID: localStorage.getItem("user_id"),
               status: matchStatus,
               pickupLocation: location,
               pickUpDateTime: new Date(startDateInput.current.value),
@@ -375,7 +375,7 @@ const ModalCarRent = ({
           headers: {
             "Content-Type": "multipart/form-data",
             lessor_id: owner_id,
-            renter_id: sessionStorage.getItem("user_id"),
+            renter_id: localStorage.getItem("user_id"),
           },
           withCredentials: true,
         });
@@ -389,7 +389,7 @@ const ModalCarRent = ({
           `${Config.BACKEND_URL}/notification`,
           {
             notification: {
-              text: `${sessionStorage.getItem("username")} rented your car`,
+              text: `${localStorage.getItem("username")} rented your car`,
               userID: owner_id,
             },
           },
@@ -542,7 +542,7 @@ const ModalCarRent = ({
               type="date"
               name="startDate"
               disabled
-              value={sessionStorage.getItem("startDate")}
+              value={localStorage.getItem("startDate")}
               ref={startDateInput}
             />
           </div>
@@ -552,7 +552,7 @@ const ModalCarRent = ({
               type="date"
               name="returnDate"
               disabled
-              value={sessionStorage.getItem("endDate")}
+              value={localStorage.getItem("endDate")}
               ref={endDateInput}
             />
           </div>

@@ -84,8 +84,8 @@ const Signin = ({signin, signup}) => {
       });
       const user_id = res.headers.user_id;
       const username = res.headers.username;
-      sessionStorage.setItem("user_id", user_id);
-      sessionStorage.setItem("username", username);
+      localStorage.setItem("user_id", user_id);
+      localStorage.setItem("username", username);
       await fetchUserInfo(user_id);
 
       window.location.assign("/");

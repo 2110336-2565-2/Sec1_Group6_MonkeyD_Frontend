@@ -6,7 +6,7 @@ import ProfileStatusTab from "./ProfileStatusTab";
 import Script from "react-load-script";
 import Config from "../assets/configs/configs.json";
 import ConfirmModal from "./ConfirmModal";
-import { dateDisplay } from "../utils/dateDisplay";
+import {dateDisplay} from "../utils/dateDisplay";
 let OmiseCard;
 
 const MyBooking = () => {
@@ -32,7 +32,7 @@ const MyBooking = () => {
   const fetchMyBooking = async () => {
     try {
       setIsLoading(true);
-      const id = sessionStorage.getItem("user_id");
+      const id = localStorage.getItem("user_id");
       const statusList = [];
       if (status === "Pending") {
         statusList.push("Wait for payment");
@@ -107,8 +107,8 @@ const MyBooking = () => {
       amount: amount,
       onCreateTokenSuccess: async (token) => {
         try {
-          const id = sessionStorage.getItem("user_id");
-          const username = sessionStorage.getItem("username");
+          const id = localStorage.getItem("user_id");
+          const username = localStorage.getItem("username");
           await axios.post(
             `${Config.BACKEND_URL}/payment/charge/${id}`,
             {
@@ -166,7 +166,7 @@ const MyBooking = () => {
             {
               notification: {
                 text: `Payment success! You can chat with your rental now.`,
-                userID: sessionStorage.getItem("user_id"),
+                userID: localStorage.getItem("user_id"),
               },
             },
             {
@@ -261,8 +261,12 @@ const MyBooking = () => {
                     </h3>
                   </div>
                   <h3>{`${license_plate}`}</h3>
-                  <p>{`Pickup : ${dateDisplay(pickUpDateTime)} at ${pickupLocation}`}</p>
-                  <p>{`Return : ${dateDisplay(returnDateTime)} at ${returnLocation}`}</p>
+                  <p>{`Pickup : ${dateDisplay(
+                    pickUpDateTime
+                  )} at ${pickupLocation}`}</p>
+                  <p>{`Return : ${dateDisplay(
+                    returnDateTime
+                  )} at ${returnLocation}`}</p>
                   <div className="footer">
                     {(status === "Unverified renter" ||
                       status === "Wait for payment") && (

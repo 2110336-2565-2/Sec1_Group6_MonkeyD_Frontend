@@ -153,7 +153,7 @@ const LessorRegisterationPage = () => {
         await axios.patch(`${Config.BACKEND_URL}/user/update-role`, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
-            user_id: sessionStorage.getItem("user_id"),
+            user_id: localStorage.getItem("user_id"),
           },
           withCredentials: true,
         }); // change path to backend service
@@ -203,7 +203,7 @@ const LessorRegisterationPage = () => {
 
   const fetchUserInfo = async () => {
     try {
-      const id = sessionStorage.getItem("user_id");
+      const id = localStorage.getItem("user_id");
       const res = await axios.post(
         `${Config.BACKEND_URL}/user/info`,
         {
