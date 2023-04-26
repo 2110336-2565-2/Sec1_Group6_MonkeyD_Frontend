@@ -217,9 +217,12 @@ const ModalCarRent = ({
     const today = new Date().setHours(0, 0, 0, 0);
     const period = start - end;
     const presentperiodstart = start - today;
-    const idCardImg = document.querySelector("#idcardimg").files[0];
-    const drivingLicenseImg =
-      document.querySelector("#drivinglicenseimg").files[0];
+    const idCardImg = document.querySelector("#idcardimg")
+      ? document.querySelector("#idcardimg").files[0]
+      : "";
+    const drivingLicenseImg = document.querySelector("#drivinglicenseimg")
+      ? document.querySelector("#drivinglicenseimg").files[0]
+      : "";
 
     const presentperiodend = end - today;
     const prefixCheck = prefix.current.value === "";
@@ -270,34 +273,6 @@ const ModalCarRent = ({
       return false;
     }
 
-    // if (
-    //   prefixCheck ||
-    //   firstNameCheck ||
-    //   lastNameCheck ||
-    //   mobileNumberCheck ||
-    //   drivingLicenseCheck ||
-    //   identificationNumberCheck ||
-    //   !dateFillCheck ||
-    //   !startpresentCheck ||
-    //   !endpresentCheck ||
-    //   !idCardImg ||
-    //   !drivingLicenseImg
-    // ) {
-    //   // console.log(
-    //   //   prefixCheck,
-    //   //   firstNameCheck,
-    //   //   lastNameCheck,
-    //   //   mobileNumberCheck,
-    //   //   drivingLicenseCheck,
-    //   //   identificationNumberCheck,
-    //   //   !dateFillCheck,
-    //   //   !startpresentCheck,
-    //   //   !endpresentCheck
-    //   // );
-
-    //   setFormValidate(false);
-    //   return false;
-    // }
     setFormValidate(true);
     return true;
   };
@@ -362,12 +337,15 @@ const ModalCarRent = ({
       formData.append("driving_license", drivingLicense);
       formData.append("identification_number", identificationNumber);
 
-      const drivingLicenseImage =
-        document.querySelector("#drivinglicenseimg").files[0];
-      formData.append("drivingLicenseImage", drivingLicenseImage);
-
-      const IDCardImage = document.querySelector("#idcardimg").files[0];
-      formData.append("IDCardImage", IDCardImage);
+      if (document.querySelector("#drivinglicenseimg")) {
+        const drivingLicenseImage =
+          document.querySelector("#drivinglicenseimg").files[0];
+        formData.append("drivingLicenseImage", drivingLicenseImage);
+      }
+      if (document.querySelector("#idcardimg")) {
+        const IDCardImage = document.querySelector("#idcardimg").files[0];
+        formData.append("IDCardImage", IDCardImage);
+      }
 
       // carRented
       try {
