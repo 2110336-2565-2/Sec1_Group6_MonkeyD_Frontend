@@ -14,17 +14,20 @@ const MyProfile = ({
   fetchUserInfo,
 }) => {
   const schema = yup.object().shape({
-    firstName: yup
-      .string()
-      .matches(/^[A-z\u0E00-\u0E7F]+$/, "Name can only contain letters"),
-    lastName: yup
-      .string()
-      .matches(/^[A-z\u0E00-\u0E7F]+$/, "Name can only contain letters"),
+    firstName: yup.string().matches(/^[A-z\u0E00-\u0E7F]+$/, {
+      excludeEmptyString: true,
+      message: "Name can only contain letters",
+    }),
+    lastName: yup.string().matches(/^[A-z\u0E00-\u0E7F]+$/, {
+      excludeEmptyString: true,
+      message: "Name can only contain letters",
+    }),
     phoneNumber: yup
       .string()
-      .matches(/^[0-9]+$/, "Must be only digits")
-      .min(10, "Must be exactly 10 digits")
-      .max(10, "Must be exactly 10 digits"),
+      .matches(/^$|^[0-9]{10}$/,{
+        excludeEmptyString: true,
+        message: "Please enter a valid phone number",
+      })
   });
 
   const {
@@ -33,6 +36,7 @@ const MyProfile = ({
     reset,
     formState: {errors},
   } = useForm({
+    mode: "all",
     resolver: yupResolver(schema),
     defaultValues: useMemo(() => {
       return userInfo;
@@ -41,7 +45,7 @@ const MyProfile = ({
 
   const submitUserInfo = async (data) => {
     try {
-      const id = sessionStorage.getItem("user_id");
+      const id = localStorage.getItem("user_id");
       const formData = new FormData();
       formData.append("id", id);
 

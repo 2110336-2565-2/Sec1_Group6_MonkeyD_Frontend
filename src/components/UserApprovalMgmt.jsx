@@ -12,7 +12,7 @@ const UserApprovalMgmt = () => {
   const [status, setStatus] = useState("Unverified");
   const [users, setUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [sortBy, setSortBy] = useState("newest date");
+  const [sortBy, setSortBy] = useState("oldest date");
   const navigate = useNavigate();
 
   const searchRef = useRef();

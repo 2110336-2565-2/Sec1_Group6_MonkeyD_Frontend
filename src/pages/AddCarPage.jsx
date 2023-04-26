@@ -9,7 +9,7 @@ const AddCarPage = () => {
         const res = await axios.post(
           `${Config.BACKEND_URL}/user/info`,
           {
-            id: sessionStorage.getItem("user_id"),
+            id: localStorage.getItem("user_id"),
           },
           {
             withCredentials: true,

@@ -32,7 +32,7 @@ const MatchMgmt = () => {
 
     try {
       setIsLoading(true);
-      const id = sessionStorage.getItem("user_id");
+      const id = localStorage.getItem("user_id");
       const res = await axios.get(`${Config.BACKEND_URL}/match/admin`, {
         params,
         withCredentials: true,

@@ -10,7 +10,7 @@ const MyBookingPage = () => {
     const fetchCars = async () => {
       try {
         const res = await axios.get(
-          `${Config.BACKEND_URL}/car/me/${sessionStorage.getItem("username")}`,
+          `${Config.BACKEND_URL}/car/me/${localStorage.getItem("username")}`,
           {
             withCredentials: true,
           }
