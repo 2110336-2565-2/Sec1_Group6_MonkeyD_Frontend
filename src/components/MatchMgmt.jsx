@@ -37,7 +37,6 @@ const MatchMgmt = () => {
         params,
         withCredentials: true,
       });
-      console.log(res.data.matches);
       setMatches(res.data.matches);
       setIsLoading(false);
     } catch (error) {
