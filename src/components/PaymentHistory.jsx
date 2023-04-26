@@ -40,7 +40,6 @@ const PaymentHistory = () => {
           withCredentials: true,
         }
       );
-      console.log(res.data);
       if (res.data.length > 0) {
         if (status === "charge") setTrans(res.data.charges);
         else if (status === "transfer") setTrans(res.data.transfers);
