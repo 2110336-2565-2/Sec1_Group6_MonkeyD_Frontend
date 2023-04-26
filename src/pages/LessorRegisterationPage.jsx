@@ -18,6 +18,11 @@ const numberCheck = (numInput, limit) => {
   return numInput.toString().length <= limit && regex.test(numInput);
 };
 
+const textCheck = (textInput) => {
+  const regex = /^[A-z\u0E00-\u0E7F]+$/;
+  return regex.test(textInput);
+};
+
 const LessorRegisterationPage = () => {
   const [formValidate, setFormValidate] = useState(true);
   const [error, setError] = useState(errorForm);
@@ -172,11 +177,15 @@ const LessorRegisterationPage = () => {
       return;
     }
     if (name === "firstName") {
-      setFirstName(value);
+      if (textCheck(value) || value === "") {
+        setFirstName(value);
+      }
       return;
     }
     if (name === "lastName") {
-      setLastName(value);
+      if (textCheck(value) || value === "") {
+        setLastName(value);
+      }
       return;
     }
     if (name === "mobileNumber") {
