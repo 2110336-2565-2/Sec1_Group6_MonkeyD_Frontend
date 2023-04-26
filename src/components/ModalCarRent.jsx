@@ -145,7 +145,7 @@ const ModalCarRent = ({
       const stateObj = {...prev, [name]: ""};
       switch (name) {
         case "prefix":
-          if (!value) {
+          if (value === "not set") {
             stateObj[name] = "Please select prefix.";
           }
           break;
@@ -225,7 +225,7 @@ const ModalCarRent = ({
       : "";
 
     const presentperiodend = end - today;
-    const prefixCheck = prefix.current.value === "";
+    const prefixCheck = prefix.current.value === "not set";
     const firstNameCheck = firstName === "";
     const lastNameCheck = lastName === "";
     const mobileNumberCheck = mobileNumber.toString().length !== 10;
@@ -385,7 +385,8 @@ const ModalCarRent = ({
   };
 
   const emptyCheck = (data) => {
-    if (data.toString().length === 0) return false;
+    if (data.toString().length === 0 || data.toString() === "not set")
+      return false;
     return true;
   };
 
@@ -402,10 +403,12 @@ const ModalCarRent = ({
               defaultValue={user_info.prefix}
               disabled={emptyCheck(user_info.prefix)}
             >
+              <option value="not set">not set</option>
               <option value="Mr.">Mr.</option>
               <option value="Mrs.">Mrs.</option>
               <option value="Miss">Miss</option>
               <option value="Ms.">Ms.</option>
+              <option value="(Not Specific)">{"(Not Specific)"}</option>
             </select>
           </div>
         </div>
