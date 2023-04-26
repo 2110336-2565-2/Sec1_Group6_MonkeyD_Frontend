@@ -129,7 +129,7 @@ const PaymentHistory = () => {
                 <h3>{`created at : ${created_at}`}</h3>
                 <div className="footer">
                   <PDFDownloadLink
-                    document={<Receipt tran={tran} created_at={created_at} />}
+                    document={<Receipt tran={tran} status={status} created_at={created_at} />}
                     fileName={`receipt-${id}.pdf`}
                   >
                     Download Receipt
