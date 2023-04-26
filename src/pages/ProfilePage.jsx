@@ -82,7 +82,7 @@ const ProfilePage = () => {
 
   const fetchUserInfo = async () => {
     try {
-      const id = sessionStorage.getItem("user_id");
+      const id = localStorage.getItem("user_id");
       const res = await axios.post(
         `${Config.BACKEND_URL}/user/info`,
         {

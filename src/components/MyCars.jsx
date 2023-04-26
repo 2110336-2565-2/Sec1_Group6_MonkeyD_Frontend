@@ -58,7 +58,7 @@ const MyCars = () => {
         headers: {
           "Content-Type": "multipart/form-data",
           car_id: car_id,
-          user_id: sessionStorage.getItem("user_id"),
+          user_id: localStorage.getItem("user_id"),
         },
         withCredentials: true,
       });
@@ -100,7 +100,7 @@ const MyCars = () => {
 
   const fetchCars = async () => {
     console.log("hi");
-    const username = sessionStorage.getItem("username");
+    const username = localStorage.getItem("username");
     try {
       const res = await axios.post(
         `${Config.BACKEND_URL}/car/me/${username}`,

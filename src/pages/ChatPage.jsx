@@ -4,8 +4,8 @@ import ChatList from "../components/ChatList";
 const ChatPage = () => {
   const [chatId, setChatId] = useState("");
   const [chatWith, setChatWith] = useState("");
-  const user = sessionStorage.getItem("username");
-  const userId = sessionStorage.getItem("user_id");
+  const user = localStorage.getItem("username");
+  const userId = localStorage.getItem("user_id");
 
   return (
     <div className="chatpage-container">

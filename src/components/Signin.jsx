@@ -62,7 +62,7 @@ const Signin = ({signin, signup}) => {
   };
 
   const handleSignUp = async (event) => {
-    const {email, password} = event
+    const {email, password} = event;
     const data = {user: {username: email.split("@")[0], email, password}};
 
     try {
@@ -75,7 +75,7 @@ const Signin = ({signin, signup}) => {
   };
 
   const handleSignIn = async (event) => {
-    const {email, password} = event
+    const {email, password} = event;
     const data = {user: {email, password}};
 
     try {
@@ -84,8 +84,8 @@ const Signin = ({signin, signup}) => {
       });
       const user_id = res.headers.user_id;
       const username = res.headers.username;
-      sessionStorage.setItem("user_id", user_id);
-      sessionStorage.setItem("username", username);
+      localStorage.setItem("user_id", user_id);
+      localStorage.setItem("username", username);
       await fetchUserInfo(user_id);
 
       window.location.assign("/");
@@ -105,7 +105,7 @@ const Signin = ({signin, signup}) => {
   useEffect(() => {
     setGoogleUrl(`${Config.BACKEND_URL}/auth/google`);
   }, []);
-  
+
   return (
     <div className="signin-container">
       <div className="signin-box">

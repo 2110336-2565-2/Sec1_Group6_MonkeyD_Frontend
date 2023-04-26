@@ -24,7 +24,7 @@ const PaymentHistory = () => {
   ];
 
   const fetchTrans = async () => {
-    const id = sessionStorage.getItem("user_id");
+    const id = localStorage.getItem("user_id");
     const params = {
       renterID: id,
       search: searchRef.current.value,

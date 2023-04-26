@@ -325,8 +325,8 @@ const AddCar = () => {
         formData.append(key, value);
       }
     }
-    formData.append("owner_user_id", sessionStorage.getItem("user_id"));
-    formData.append("owner", sessionStorage.getItem("username"));
+    formData.append("owner_user_id", localStorage.getItem("user_id"));
+    formData.append("owner", localStorage.getItem("username"));
     formData.append("rating", 0);
 
     const registrationBookImage = document.querySelector("#bookimg").files[0];

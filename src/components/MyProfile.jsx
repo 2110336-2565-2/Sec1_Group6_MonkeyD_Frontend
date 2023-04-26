@@ -41,7 +41,7 @@ const MyProfile = ({
 
   const submitUserInfo = async (data) => {
     try {
-      const id = sessionStorage.getItem("user_id");
+      const id = localStorage.getItem("user_id");
       const formData = new FormData();
       formData.append("id", id);
 
