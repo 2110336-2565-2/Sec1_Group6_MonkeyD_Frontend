@@ -4,6 +4,7 @@ import Config from "../assets/configs/configs.json";
 
 const MatchCar = ({carId, brand, model, price}) => {
   const [carMatch, setCarMatch] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const dateDisplay = (dateInput) => {
     const date = new Date(dateInput);
@@ -28,6 +29,7 @@ const MatchCar = ({carId, brand, model, price}) => {
 
   useEffect(() => {
     const fetchMatch = async () => {
+      setIsLoading(true);
       try {
         const baseUrl = `${Config.BACKEND_URL}/match`;
         const userId = localStorage.getItem("user_id");
@@ -38,6 +40,7 @@ const MatchCar = ({carId, brand, model, price}) => {
           }
         );
         setCarMatch(res.data.matches);
+        setIsLoading(false);
       } catch (error) {
         console.log(error);
       }
@@ -46,7 +49,7 @@ const MatchCar = ({carId, brand, model, price}) => {
   }, []);
 
   const completeHandler = async (matchId) => {
-    console.log(matchId);
+    // setIsLoading(true);
     try {
       await axios.patch(
         `${Config.BACKEND_URL}/match/complete`,
@@ -75,6 +78,7 @@ const MatchCar = ({carId, brand, model, price}) => {
     } catch (error) {
       console.log(error);
     }
+    // setIsLoading(false);
   };
 
   return (
@@ -82,57 +86,63 @@ const MatchCar = ({carId, brand, model, price}) => {
       <h2>
         {brand} {model}
       </h2>
-      {carMatch.length === 0 ? (
-        <div className="no-match">No Match Yet</div>
+      {isLoading ? (
+        <div className="loading">Loading...</div>
       ) : (
         <>
-          {carMatch.map((match) => (
-            <div className="match-container" key={match._id}>
-              <div className="detail-wrap">
-                <div className="one-line-wrapper">
-                  <div className="head">Status:</div>
-                  <div>{match.status}</div>
-                </div>
-                <div>
-                  <div className="head">Pick-up and Drop-off</div>
-                  <div className="two-column">
-                    <div className="date-wrapper">
-                      <div className="date-time">
-                        {dateDisplay(match.pickUpDateTime)}
-                      </div>
-                      <div className="location">{match.pickupLocation}</div>
+          {carMatch.length === 0 ? (
+            <div className="no-match">No Match Yet</div>
+          ) : (
+            <>
+              {carMatch.map((match) => (
+                <div className="match-container" key={match._id}>
+                  <div className="detail-wrap">
+                    <div className="one-line-wrapper">
+                      <div className="head">Status:</div>
+                      <div>{match.status}</div>
                     </div>
                     <div>
-                      <div className="date-time">
-                        {dateDisplay(match.returnDateTime)}
+                      <div className="head">Pick-up and Drop-off</div>
+                      <div className="two-column">
+                        <div className="date-wrapper">
+                          <div className="date-time">
+                            {dateDisplay(match.pickUpDateTime)}
+                          </div>
+                          <div className="location">{match.pickupLocation}</div>
+                        </div>
+                        <div>
+                          <div className="date-time">
+                            {dateDisplay(match.returnDateTime)}
+                          </div>
+                          <div className="location">{match.returnLocation}</div>
+                        </div>
                       </div>
-                      <div className="location">{match.returnLocation}</div>
+                    </div>
+                    <div className="one-line-wrapper">
+                      <div className="head">Price:</div>
+                      <div>
+                        ฿ {match.price} (Price for {reversePrice(match.price)}{" "}
+                        {reversePrice(match.price) > 1 ? "days" : "day"})
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div className="one-line-wrapper">
-                  <div className="head">Price:</div>
-                  <div>
-                    ฿ {match.price} (Price for {reversePrice(match.price)}{" "}
-                    {reversePrice(match.price) > 1 ? "days" : "day"})
+                  <div className="btn-wrap">
+                    {match.status === "Rented" ? (
+                      <button
+                        className="complete-btn"
+                        onClick={() => completeHandler(match._id)}
+                      >
+                        <i className="fa-solid fa-circle-check" />
+                        Complete
+                      </button>
+                    ) : (
+                      <></>
+                    )}
                   </div>
                 </div>
-              </div>
-              <div className="btn-wrap">
-                {match.status === "Rented" ? (
-                  <button
-                    className="complete-btn"
-                    onClick={() => completeHandler(match._id)}
-                  >
-                    <i className="fa-solid fa-circle-check" />
-                    Complete
-                  </button>
-                ) : (
-                  <></>
-                )}
-              </div>
-            </div>
-          ))}
+              ))}
+            </>
+          )}
         </>
       )}
     </div>

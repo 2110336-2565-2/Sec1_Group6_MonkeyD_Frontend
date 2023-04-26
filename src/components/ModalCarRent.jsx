@@ -17,10 +17,9 @@ const errorForm = {
   returnLocation: "",
 };
 
-const formatName = (nameInput) => {
-  if (!nameInput) return nameInput;
-  const name = nameInput.replace(/[^a-zA-Z ]/g, "");
-  return name;
+const textCheck = (textInput) => {
+  const regex = /^[A-z\u0E00-\u0E7F]+$/;
+  return regex.test(textInput);
 };
 
 const numberCheck = (numInput, limit) => {
@@ -109,11 +108,15 @@ const ModalCarRent = ({
   const handleChange = (event) => {
     const {name, value} = event.target;
     if (name === "firstName") {
-      setFirstName(value);
+      if (textCheck(value) || value === "") {
+        setFirstName(value);
+      }
       return;
     }
     if (name === "lastName") {
-      setLastName(value);
+      if (textCheck(value) || value === "") {
+        setLastName(value);
+      }
       return;
     }
     if (name === "mobileNumber") {
