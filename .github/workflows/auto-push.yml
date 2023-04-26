@@ -33,6 +33,7 @@ jobs:
         git config --global user.name "pwanstax"
         git config --global user.email "tutor_pawan@hotmail.com"
         git add src
+        git add package.json
         git commit -m "Merge src folder from source repository"
         git push origin main
 
