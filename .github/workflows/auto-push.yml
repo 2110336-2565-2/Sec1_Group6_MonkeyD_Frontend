@@ -29,11 +29,13 @@ jobs:
     - name: Copy src folder and commit changes
       run: |
         cp -R source-repo/src destination-repo/
+        cp source-repo/package.json destination-repo/  # Add this line to copy the package.json file
         cd destination-repo
         git config --global user.name "pwanstax"
         git config --global user.email "tutor_pawan@hotmail.com"
         git add src
         git add package.json
-        git commit -m "Merge src folder from source repository"
+        git commit -m "Merge src folder and package.json from source repository"
         git push origin main
+
 
