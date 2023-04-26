@@ -12,15 +12,12 @@ const CarApprovalMgmt = () => {
   const [status, setStatus] = useState("Pending");
   const [cars, setCars] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [sortBy, setSortBy] = useState("newest date");
+  const [sortBy, setSortBy] = useState("oldest date");
   const navigate = useNavigate();
 
   const searchRef = useRef();
 
-  const filters = [
-    "newest date",
-    "oldest date",
-  ];
+  const filters = ["newest date", "oldest date"];
 
   const fetchCars = async () => {
     const statusMap = {
