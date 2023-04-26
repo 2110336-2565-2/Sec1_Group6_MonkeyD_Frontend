@@ -14,6 +14,7 @@ const UserApprovalMgmt = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [sortBy, setSortBy] = useState("oldest date");
   const navigate = useNavigate();
+  const scrollToRef = useRef();
 
   const searchRef = useRef();
 
@@ -51,6 +52,9 @@ const UserApprovalMgmt = () => {
         }
       );
       fetchUsers();
+      if (scrollToRef.current) {
+        scrollToRef.current.scrollIntoView({behavior: "smooth"});
+      }
     } catch (error) {
       console.log(error);
     }
@@ -109,7 +113,7 @@ const UserApprovalMgmt = () => {
               status,
             } = user;
             return (
-              <div className="user-approval" key={index}>
+              <div ref={scrollToRef} className="user-approval" key={index}>
                 <div className="header">
                   <img className="profile-pic" src={image} alt="" />
                   <h3 className="username">{username}</h3>

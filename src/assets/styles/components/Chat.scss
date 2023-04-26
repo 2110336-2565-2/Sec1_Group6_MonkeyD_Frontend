@@ -31,7 +31,7 @@
       overflow: hidden;
       overflow-y: scroll;
       .chat {
-        border-top: solid 1px var(--arrow-color);
+        border-bottom: solid 1px var(--arrow-color);
         display: flex;
         flex-direction: column;
         justify-content: center;
