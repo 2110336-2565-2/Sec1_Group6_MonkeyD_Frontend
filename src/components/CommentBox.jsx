@@ -2,9 +2,6 @@ import React from "react";
 const RenderStars = ({rating}) => {
   const fullStars = Math.floor(rating);
   const halfStar = rating - fullStars >= 0.5 ? 1 : 0;
-  console.log("====================================");
-  console.log(fullStars, halfStar);
-  console.log("====================================");
   return (
     <div className="rating-star">
       {[...Array(fullStars)].map((v, i) => (
