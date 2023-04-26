@@ -30,7 +30,7 @@ const MatchCar = ({carId, brand, model, price}) => {
     const fetchMatch = async () => {
       try {
         const baseUrl = `${Config.BACKEND_URL}/match`;
-        const userId = sessionStorage.getItem("user_id");
+        const userId = localStorage.getItem("user_id");
         const res = await axios.get(
           `${baseUrl}/?lessorID=${userId}&carID=${carId}`,
           {
@@ -64,7 +64,7 @@ const MatchCar = ({carId, brand, model, price}) => {
 
     try {
       const baseUrl = `${Config.BACKEND_URL}/match`;
-      const userId = sessionStorage.getItem("user_id");
+      const userId = localStorage.getItem("user_id");
       const res = await axios.get(
         `${baseUrl}/?lessorID=${userId}&carID=${carId}`,
         {

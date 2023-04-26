@@ -38,7 +38,7 @@ const Navbar = () => {
   const toggleOpenNotification = async () => {
     setOpenNotification(!openNotification);
     if (openNotification) {
-      const id = sessionStorage.getItem("user_id");
+      const id = localStorage.getItem("user_id");
       try {
         // readNotifications
         await axios.patch(
@@ -59,7 +59,7 @@ const Navbar = () => {
   const closenoti = async () => {
     if (openNotification) {
       setOpenNotification(false);
-      const id = sessionStorage.getItem("user_id");
+      const id = localStorage.getItem("user_id");
       try {
         // readNotifications
         await axios.patch(
@@ -81,7 +81,7 @@ const Navbar = () => {
   useOutsideClickNoti(notiRef, closenoti);
 
   const handleLogout = async () => {
-    sessionStorage.clear();
+    localStorage.clear();
     (await cookieExists("username")) && (await deleteCookie("username"));
     (await cookieExists("userID")) && (await deleteCookie("userID"));
     await axios.post(
@@ -102,7 +102,7 @@ const Navbar = () => {
     try {
       const res = await axios.get(`${Config.BACKEND_URL}/user/navbar`, {
         headers: {
-          user_id: sessionStorage.getItem("user_id"),
+          user_id: localStorage.getItem("user_id"),
         },
         withCredentials: true,
       });
@@ -119,7 +119,7 @@ const Navbar = () => {
           {},
           {
             headers: {
-              user_id: sessionStorage.getItem("user_id"),
+              user_id: localStorage.getItem("user_id"),
             },
             withCredentials: true,
           }
@@ -135,7 +135,7 @@ const Navbar = () => {
           {},
           {
             headers: {
-              user_id: sessionStorage.getItem("user_id"),
+              user_id: localStorage.getItem("user_id"),
             },
             withCredentials: true,
           }
@@ -154,7 +154,7 @@ const Navbar = () => {
   };
 
   const handleBeAnAdmin = async () => {
-    const user_id = sessionStorage.getItem("user_id");
+    const user_id = localStorage.getItem("user_id");
     try {
       await axios.patch(
         `${Config.BACKEND_URL}/user/update-role-admin`,
@@ -179,7 +179,7 @@ const Navbar = () => {
         try {
           const res = await axios.get(`${Config.BACKEND_URL}/user/navbar`, {
             headers: {
-              user_id: sessionStorage.getItem("user_id"),
+              user_id: localStorage.getItem("user_id"),
             },
             withCredentials: true,
           }); // change path to backend service
@@ -196,7 +196,7 @@ const Navbar = () => {
     // getNotifications;
     const getNotifications = async () => {
       try {
-        const id = sessionStorage.getItem("user_id");
+        const id = localStorage.getItem("user_id");
         const res = await axios.get(
           `${Config.BACKEND_URL}/notification/?userID=${id}&date=2023-04-02T10:52:47.185`,
           {

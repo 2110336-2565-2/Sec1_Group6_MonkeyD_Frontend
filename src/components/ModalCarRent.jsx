@@ -145,7 +145,7 @@ const ModalCarRent = ({
       const stateObj = {...prev, [name]: ""};
       switch (name) {
         case "prefix":
-          if (!value) {
+          if (value === "not set") {
             stateObj[name] = "Please select prefix.";
           }
           break;
@@ -217,12 +217,15 @@ const ModalCarRent = ({
     const today = new Date().setHours(0, 0, 0, 0);
     const period = start - end;
     const presentperiodstart = start - today;
-    const idCardImg = document.querySelector("#idcardimg").files[0];
-    const drivingLicenseImg =
-      document.querySelector("#drivinglicenseimg").files[0];
+    const idCardImg = document.querySelector("#idcardimg")
+      ? document.querySelector("#idcardimg").files[0]
+      : "";
+    const drivingLicenseImg = document.querySelector("#drivinglicenseimg")
+      ? document.querySelector("#drivinglicenseimg").files[0]
+      : "";
 
     const presentperiodend = end - today;
-    const prefixCheck = prefix.current.value === "";
+    const prefixCheck = prefix.current.value === "not set";
     const firstNameCheck = firstName === "";
     const lastNameCheck = lastName === "";
     const mobileNumberCheck = mobileNumber.toString().length !== 10;
@@ -270,34 +273,6 @@ const ModalCarRent = ({
       return false;
     }
 
-    // if (
-    //   prefixCheck ||
-    //   firstNameCheck ||
-    //   lastNameCheck ||
-    //   mobileNumberCheck ||
-    //   drivingLicenseCheck ||
-    //   identificationNumberCheck ||
-    //   !dateFillCheck ||
-    //   !startpresentCheck ||
-    //   !endpresentCheck ||
-    //   !idCardImg ||
-    //   !drivingLicenseImg
-    // ) {
-    //   // console.log(
-    //   //   prefixCheck,
-    //   //   firstNameCheck,
-    //   //   lastNameCheck,
-    //   //   mobileNumberCheck,
-    //   //   drivingLicenseCheck,
-    //   //   identificationNumberCheck,
-    //   //   !dateFillCheck,
-    //   //   !startpresentCheck,
-    //   //   !endpresentCheck
-    //   // );
-
-    //   setFormValidate(false);
-    //   return false;
-    // }
     setFormValidate(true);
     return true;
   };
@@ -313,7 +288,7 @@ const ModalCarRent = ({
         const res = await axios.post(
           `${Config.BACKEND_URL}/user/info`,
           {
-            id: sessionStorage.getItem("user_id"),
+            id: localStorage.getItem("user_id"),
           },
           {
             withCredentials: true,
@@ -337,7 +312,7 @@ const ModalCarRent = ({
             match: {
               carID: car_id,
               lessorID: owner_id,
-              renterID: sessionStorage.getItem("user_id"),
+              renterID: localStorage.getItem("user_id"),
               status: matchStatus,
               pickupLocation: location,
               pickUpDateTime: new Date(startDateInput.current.value),
@@ -362,12 +337,15 @@ const ModalCarRent = ({
       formData.append("driving_license", drivingLicense);
       formData.append("identification_number", identificationNumber);
 
-      const drivingLicenseImage =
-        document.querySelector("#drivinglicenseimg").files[0];
-      formData.append("drivingLicenseImage", drivingLicenseImage);
-
-      const IDCardImage = document.querySelector("#idcardimg").files[0];
-      formData.append("IDCardImage", IDCardImage);
+      if (document.querySelector("#drivinglicenseimg")) {
+        const drivingLicenseImage =
+          document.querySelector("#drivinglicenseimg").files[0];
+        formData.append("drivingLicenseImage", drivingLicenseImage);
+      }
+      if (document.querySelector("#idcardimg")) {
+        const IDCardImage = document.querySelector("#idcardimg").files[0];
+        formData.append("IDCardImage", IDCardImage);
+      }
 
       // carRented
       try {
@@ -375,7 +353,7 @@ const ModalCarRent = ({
           headers: {
             "Content-Type": "multipart/form-data",
             lessor_id: owner_id,
-            renter_id: sessionStorage.getItem("user_id"),
+            renter_id: localStorage.getItem("user_id"),
           },
           withCredentials: true,
         });
@@ -389,7 +367,7 @@ const ModalCarRent = ({
           `${Config.BACKEND_URL}/notification`,
           {
             notification: {
-              text: `${sessionStorage.getItem("username")} rented your car`,
+              text: `${localStorage.getItem("username")} rented your car`,
               userID: owner_id,
             },
           },
@@ -407,7 +385,8 @@ const ModalCarRent = ({
   };
 
   const emptyCheck = (data) => {
-    if (data.toString().length === 0) return false;
+    if (data.toString().length === 0 || data.toString() === "not set")
+      return false;
     return true;
   };
 
@@ -424,10 +403,12 @@ const ModalCarRent = ({
               defaultValue={user_info.prefix}
               disabled={emptyCheck(user_info.prefix)}
             >
+              <option value="not set">not set</option>
               <option value="Mr.">Mr.</option>
               <option value="Mrs.">Mrs.</option>
               <option value="Miss">Miss</option>
               <option value="Ms.">Ms.</option>
+              <option value="(Not Specific)">{"(Not Specific)"}</option>
             </select>
           </div>
         </div>
@@ -542,7 +523,7 @@ const ModalCarRent = ({
               type="date"
               name="startDate"
               disabled
-              value={sessionStorage.getItem("startDate")}
+              value={localStorage.getItem("startDate")}
               ref={startDateInput}
             />
           </div>
@@ -552,7 +533,7 @@ const ModalCarRent = ({
               type="date"
               name="returnDate"
               disabled
-              value={sessionStorage.getItem("endDate")}
+              value={localStorage.getItem("endDate")}
               ref={endDateInput}
             />
           </div>

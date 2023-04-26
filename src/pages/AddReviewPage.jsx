@@ -36,7 +36,7 @@ const AddReviewPage = () => {
         });
         const renterID = res.data.match.renterID;
         const isReview = res.data.match.isReview;
-        if (sessionStorage.getItem("user_id") != renterID || isReview) {
+        if (localStorage.getItem("user_id") != renterID || isReview) {
           window.location.assign("/404");
         } else {
           const car = res.data.match.car;

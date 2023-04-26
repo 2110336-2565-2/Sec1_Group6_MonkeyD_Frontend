@@ -58,8 +58,8 @@ const HomePage = () => {
 
   const handleChooseCar = (event) => {
     event.preventDefault();
-    sessionStorage.setItem("startDate", startDateInput.current.value);
-    sessionStorage.setItem("endDate", endDateInput.current.value);
+    localStorage.setItem("startDate", startDateInput.current.value);
+    localStorage.setItem("endDate", endDateInput.current.value);
   };
 
   const handleCookiesAuth = () => {
@@ -67,8 +67,8 @@ const HomePage = () => {
     if (cookieExists("userID") && cookieExists("username")) {
       const useridValue = getCookie("userID");
       const usernameValue = getCookie("username");
-      sessionStorage.setItem("user_id", useridValue);
-      sessionStorage.setItem("username", usernameValue);
+      localStorage.setItem("user_id", useridValue);
+      localStorage.setItem("username", usernameValue);
       deleteCookie("userID");
       deleteCookie("username");
     } else {
