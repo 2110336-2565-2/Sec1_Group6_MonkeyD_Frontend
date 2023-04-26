@@ -22,10 +22,13 @@ const Notification = ({notifications, close}) => {
   const navigateClick = (text) => {
     const fillInfor = text === "Please fill your personal information";
     const rented = text.includes("rented your car");
-    const payment = text.includes("Payment");
+    const chat = text.includes("Payment success");
+    const payment = text.includes("Please pay a rental");
+
     if (fillInfor) navigate("/profile?menu=me");
     if (rented) navigate("/profile?menu=car");
-    if (payment) navigate("/chat");
+    if (chat) navigate("/chat");
+    if (payment) navigate("/profile?menu=booking");
     close(false);
   };
 
