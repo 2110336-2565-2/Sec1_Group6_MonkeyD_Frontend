@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import Config from "../assets/configs/configs.json";
+import { dateDisplay } from "../utils/dateDisplay";
 
 const ChatList = ({userId, setChatId, setChatWith}) => {
   const [chatList, setChatList] = useState([]);
@@ -35,7 +36,6 @@ const ChatList = ({userId, setChatId, setChatWith}) => {
           }
         );
         setChatList(res.data.chats);
-        console.log(res.data.chats);
       } catch (error) {
         console.error(error);
       }
@@ -52,13 +52,22 @@ const ChatList = ({userId, setChatId, setChatWith}) => {
         {chatList && chatList !== [] ? (
           <>
             {chatList.map((chat, index) => {
+              const {
+                _id,
+                name,
+                matchID: {
+                  carID: {brand, model, license_plate},
+                },
+              } = chat;
               return (
                 <div
                   className={`chat ${index === chatSelected ? "selected" : ""}`}
-                  key={chat._id}
-                  onClick={() => handleChoose(chat._id, chat.name, index)}
+                  key={_id}
+                  onClick={() => handleChoose(_id, name, index)}
                 >
-                  <span>{chat.name}</span>
+                  <h3>{name}</h3>
+                  <p>{`${brand} · ${model}`}</p>
+                  <p>{license_plate}</p>
                 </div>
               );
             })}

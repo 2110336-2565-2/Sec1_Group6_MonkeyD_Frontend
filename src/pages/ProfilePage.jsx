@@ -1,6 +1,6 @@
 import axios from "axios";
 import {useEffect, useState} from "react";
-import {useSearchParams} from "react-router-dom";
+import {useSearchParams, useNavigate} from "react-router-dom";
 import MyBooking from "../components/MyBooking";
 import MyProfile from "../components/MyProfile";
 import MyCars from "../components/MyCars";
@@ -9,6 +9,7 @@ import CarApprovalMgmt from "../components/CarApprovalMgmt";
 import MatchMgmt from "../components/MatchMgmt";
 import PaymentHistory from "../components/PaymentHistory";
 import Config from "../assets/configs/configs.json";
+import ConfirmModal from "../components/ConfirmModal";
 
 const ProfilePage = () => {
   const userMenus = {
@@ -30,12 +31,15 @@ const ProfilePage = () => {
   const [imageFile, setImageFile] = useState(null);
   const [menu, setMenu] = useState("");
   const [isAdmin, setIsAdmin] = useState(null);
+  const [showModal, setShowModal] = useState(true);
+  const [requestToBeLessor, setRequestToBeLessor] = useState();
   const [searchParams, setSearchParams] = useSearchParams();
 
   const changeParamsMenu = (event) => {
     searchParams.set("menu", event.target.value);
     setSearchParams(searchParams);
   };
+  const navigate = useNavigate();
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
@@ -99,9 +103,10 @@ const ProfilePage = () => {
         image,
         IDCardNumber,
         drivingLicenseNumber,
+        requestTobeLessor,
         role,
       } = res.data;
-
+      setRequestToBeLessor(requestTobeLessor);
       const selectedUserInfo = {
         username,
         email,
@@ -121,7 +126,12 @@ const ProfilePage = () => {
       console.log(error);
     }
   };
-
+  const handleClickRegisterModal = async () => {
+    navigate("/lessorRegister");
+  };
+  const handleClickCancelModal = async () => {
+    navigate("/profile?menu");
+  };
   useEffect(() => {
     fetchUserInfo();
   }, []);
@@ -212,6 +222,28 @@ const ProfilePage = () => {
               userInfo.role === "admin" && <CarApprovalMgmt />}
             {menu === "match_management" && userInfo.role === "admin" && (
               <MatchMgmt />
+            )}
+            {menu === "car" && userInfo.role !== "lessor" && (
+              <ConfirmModal
+                showModalSignal={showModal}
+                setModalSignal={setShowModal}
+                header={"Want to add your first car??"}
+                message={
+                  requestToBeLessor
+                    ? "You've already registered. (Verification in progress)"
+                    : "Please register to be a lessor."
+                }
+                onPickLeft={() => handleClickRegisterModal()}
+                onPickRight={() => handleClickCancelModal()}
+                leftTxt={requestToBeLessor ? "Pending" : "Register"}
+                leftColor={"white"}
+                leftBGColor={requestToBeLessor ? "#aeb3ab" : "#4a60a1"}
+                disableLeft={requestToBeLessor}
+                rightTxt={"Cancel"}
+                rightColor={"white"}
+                rightBGColor={"#ea4335"}
+                disableRight={false}
+              />
             )}
           </div>
         </div>

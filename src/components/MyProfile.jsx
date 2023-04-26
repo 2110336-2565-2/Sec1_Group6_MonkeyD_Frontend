@@ -1,6 +1,9 @@
 import axios from "axios";
-import {useState} from "react";
+import {useEffect, useMemo} from "react";
 import Config from "../assets/configs/configs.json";
+import {useForm} from "react-hook-form";
+import {yupResolver} from "@hookform/resolvers/yup";
+import * as yup from "yup";
 
 const MyProfile = ({
   isEdit,
@@ -10,26 +13,39 @@ const MyProfile = ({
   imageFile,
   fetchUserInfo,
 }) => {
-  const toggleIsEdit = () => {
-    setIsEdit(!isEdit);
-  };
+  const schema = yup.object().shape({
+    firstName: yup
+      .string()
+      .matches(/^[A-z\u0E00-\u0E7F]+$/, "Name can only contain letters"),
+    lastName: yup
+      .string()
+      .matches(/^[A-z\u0E00-\u0E7F]+$/, "Name can only contain letters"),
+    phoneNumber: yup
+      .string()
+      .matches(/^[0-9]+$/, "Must be only digits")
+      .min(10, "Must be exactly 10 digits")
+      .max(10, "Must be exactly 10 digits"),
+  });
 
-  const handleChange = (event) => {
-    const {name, value} = event.target;
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: {errors},
+  } = useForm({
+    resolver: yupResolver(schema),
+    defaultValues: useMemo(() => {
+      return userInfo;
+    }, [userInfo]),
+  });
 
-    setUserInfo({
-      ...userInfo,
-      [name]: value,
-    });
-  };
-
-  const submitUserInfo = async () => {
+  const submitUserInfo = async (data) => {
     try {
       const id = sessionStorage.getItem("user_id");
       const formData = new FormData();
       formData.append("id", id);
 
-      for (const [key, value] of Object.entries(userInfo)) {
+      for (const [key, value] of Object.entries(data)) {
         formData.append(key, value);
       }
 
@@ -42,72 +58,84 @@ const MyProfile = ({
           "Content-Type": "multipart/form-data",
         },
       });
-      toggleIsEdit();
+      setIsEdit(false);
       fetchUserInfo();
     } catch (error) {
       console.log(error);
     }
   };
 
+  useEffect(() => {
+    reset(userInfo);
+  }, [userInfo]);
+
   return (
-    <div className="my-profile">
-      <div className="header">
-        <h2>My profile</h2>
-        <button onClick={isEdit ? submitUserInfo : toggleIsEdit}>
-          {isEdit ? "Save" : "Edit"}
-        </button>
-      </div>
-      <div className="info-container">
-        {userInfo &&
-          Object.keys(userInfo).map((key, index) => {
-            if (key === "image") return null;
-            return (
-              <div className="text" key={`${key}`}>
-                <h5 className="label">{key}</h5>
-                {isEdit ? (
-                  key === "prefix" ? (
-                    <select
-                      id={`${key}`}
-                      name={`${key}`}
-                      value={userInfo[key]}
-                      onChange={handleChange}
-                    >
-                      {[
-                        "not set",
-                        "Mr.",
-                        "Mrs.",
-                        "Miss",
-                        "Ms.",
-                        "(Not Specific)",
-                      ].map((each, index) => (
-                        <option key={index} value={each}>
-                          {each}
-                        </option>
-                      ))}
-                    </select>
+    <form onSubmit={handleSubmit(submitUserInfo)}>
+      <div className="my-profile">
+        <div className="header">
+          <h2>My profile</h2>
+          {isEdit && <button type="submit">Save</button>}
+          {!isEdit && (
+            <button type="button" onClick={() => setIsEdit(true)}>
+              Edit
+            </button>
+          )}
+        </div>
+        <div className="info-container">
+          {userInfo &&
+            Object.keys(userInfo).map((key, index) => {
+              if (key === "image") return null;
+              return (
+                <div className="text" key={`${key}`}>
+                  <h5 className="label">{key}</h5>
+                  {isEdit ? (
+                    key === "prefix" ? (
+                      <select
+                        id={`${key}`}
+                        name={`${key}`}
+                        {...register(key, {})}
+                      >
+                        {[
+                          "not set",
+                          "Mr.",
+                          "Mrs.",
+                          "Miss",
+                          "Ms.",
+                          "(Not Specific)",
+                        ].map((each, index) => (
+                          <option key={index} value={each}>
+                            {each}
+                          </option>
+                        ))}
+                      </select>
+                    ) : (
+                      <div className="input-error">
+                        <input
+                          id={`${key}`}
+                          name={`${key}`}
+                          className=""
+                          disabled={
+                            key === "username" ||
+                            key === "email" ||
+                            key === "image" ||
+                            key === "role"
+                          }
+                          {...register(key, {})}
+                        />
+                        {errors[key]?.message && (
+                          <span className="error">{errors[key]?.message}</span>
+                        )}
+                      </div>
+                    )
                   ) : (
-                    <input
-                      id={`${key}`}
-                      name={`${key}`}
-                      className=""
-                      value={userInfo[key]}
-                      onChange={handleChange}
-                      disabled={
-                        key === "username" ||
-                        key === "email" ||
-                        key === "image" ||
-                        key === "role"
-                      }
-                    />
-                  )
-                ) : (
-                  <h5 className="value">{userInfo[key]}</h5>
-                )}
-              </div>
-            );
-          })}
+                    <h5 className="value">{userInfo[key]}</h5>
+                  )}
+                </div>
+              );
+            })}
+        </div>
       </div>
-    </div>
+    </form>
   );
 };
 

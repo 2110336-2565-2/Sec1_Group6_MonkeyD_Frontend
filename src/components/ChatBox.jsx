@@ -9,6 +9,10 @@ const ChatBox = ({chatId, user, userId, chatWith}) => {
   const [socket, setSocket] = useState(null);
 
   useEffect(() => {
+    if (socket) {
+      socket.disconnect();
+    }
+
     const newSocket = io(Config.BACKEND_URL, {
       query: {userId},
       withCredentials: true,
@@ -39,13 +43,6 @@ const ChatBox = ({chatId, user, userId, chatWith}) => {
           {...newMessage, text: decryptedMessage},
         ]);
       });
-      newSocket.on("user_joined", ({user}) => {
-        console.log(`${user} joined the room`);
-        setMessages((messages) => [
-          ...messages,
-          {text: `${user} in the chat`, systemMessage: true},
-        ]);
-      });
     }
   }, [chatId]);
 
@@ -55,7 +52,7 @@ const ChatBox = ({chatId, user, userId, chatWith}) => {
         socket.disconnect();
       }
     };
-  }, []); // Pass an empty dependency array, so this useEffect only runs on component unmount.
+  }, []);
 
   const handleSubmit = (event) => {
     event.preventDefault();

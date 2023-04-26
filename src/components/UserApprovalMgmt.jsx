@@ -31,7 +31,6 @@ const UserApprovalMgmt = () => {
         params,
         withCredentials: true,
       });
-      console.log(res);
       setUsers(res.data.users);
       setIsLoading(false);
     } catch (error) {

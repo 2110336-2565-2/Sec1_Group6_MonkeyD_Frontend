@@ -6,6 +6,7 @@ import ProfileStatusTab from "./ProfileStatusTab";
 import Script from "react-load-script";
 import Config from "../assets/configs/configs.json";
 import ConfirmModal from "./ConfirmModal";
+import { dateDisplay } from "../utils/dateDisplay";
 let OmiseCard;
 
 const MyBooking = () => {
@@ -126,7 +127,7 @@ const MyBooking = () => {
             `${Config.BACKEND_URL}/payment/transfer/${lessorID}`,
             {
               amount: amount,
-              sender: username
+              sender: username,
             },
             {
               headers: {
@@ -240,8 +241,6 @@ const MyBooking = () => {
               lessorID,
               price,
             } = match;
-            const pickupDate = new Date(pickUpDateTime);
-            const returnDate = new Date(returnDateTime);
             return (
               <div className="booking" key={index}>
                 <img
@@ -262,8 +261,8 @@ const MyBooking = () => {
                     </h3>
                   </div>
                   <h3>{`${license_plate}`}</h3>
-                  <p>{`Pickup : ${pickupDate.toDateString()} at ${pickupLocation}`}</p>
-                  <p>{`Return : ${returnDate.toDateString()} at ${returnLocation}`}</p>
+                  <p>{`Pickup : ${dateDisplay(pickUpDateTime)} at ${pickupLocation}`}</p>
+                  <p>{`Return : ${dateDisplay(returnDateTime)} at ${returnLocation}`}</p>
                   <div className="footer">
                     {(status === "Unverified renter" ||
                       status === "Wait for payment") && (
@@ -311,9 +310,12 @@ const MyBooking = () => {
         leftTxt={"Continue Booking"}
         leftColor={"white"}
         leftBGColor={"#aeb3ab"}
+        disableLeft={false}
         rightTxt={"Cancel Booking"}
         rightColor={"white"}
         rightBGColor={"#ea4335"}
+        disableRight={false}
+        enableClickOutside={true}
       />
     </div>
   );
