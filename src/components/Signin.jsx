@@ -91,7 +91,11 @@ const Signin = ({signin, signup}) => {
       window.location.assign("/");
     } catch (error) {
       console.error(error);
-      handleShowResError(error.response.data.error);
+      handleShowResError(
+        error?.response?.data?.error
+          ? error.response.data.error
+          : "email or password is invalid"
+      );
     }
   };
 
