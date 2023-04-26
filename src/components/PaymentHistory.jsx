@@ -40,7 +40,7 @@ const PaymentHistory = () => {
           withCredentials: true,
         }
       );
-      console.log(res.data);
+
       if (Object.keys(res.data).length > 0) {
         if (status === "charge") setTrans(res.data?.charges);
         else if (status === "transfer") setTrans(res.data?.transfers);
@@ -102,8 +102,14 @@ const PaymentHistory = () => {
               amount,
               currency,
               bank_account: {object, bank_code, brand} = {},
+              card: {
+                object: object_charge,
+                bank: bank_charge,
+                brand: brand_charge,
+              } = {},
               created_at,
               recipient,
+              customer,
             } = tran;
             created_at = formatDate(created_at);
             return (
@@ -111,8 +117,15 @@ const PaymentHistory = () => {
                 <div className="header">
                   <h3>{`Transaction ID : ${id}`}</h3>
                 </div>
-                <h3>{`recipient : ${recipient}`}</h3>
-                <h3>{`payment method : ${object} ${bank_code} ${brand}`}</h3>
+                {status === "charge" && <h3>{`customer : ${customer}`}</h3>}
+                {status === "transfer" && <h3>{`recipient : ${recipient}`}</h3>}
+                {status === "charge" && (
+                  <h3>{`card : ${object_charge} ${bank_charge} ${brand_charge}`}</h3>
+                )}
+                {status === "transfer" && (
+                  <h3>{`payment method : ${object} ${bank_code} ${brand}`}</h3>
+                )}
+
                 <h3>{`created at : ${created_at}`}</h3>
                 <div className="footer">
                   <PDFDownloadLink
