@@ -38,6 +38,7 @@ This website has the following features:
 Here's a screenshot of the car listing page:
 
 <img width="1680" alt="Screenshot 2566-04-27 at 13 51 53" src="https://user-images.githubusercontent.com/70096049/234782962-741dd6af-490a-4969-aafd-33aa164e00be.png">
+
 ![Screenshot 2566-05-14 at 01 25 55](https://github.com/2110336-2565-2/Sec1_Group6_MonkeyD_Frontend/assets/70096049/de54fb34-e8e9-483f-ac5f-e575520f30aa)
 
 
